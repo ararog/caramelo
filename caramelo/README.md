@@ -8,7 +8,7 @@ This crate provides a set of traits for macthing types.
 
 Add caramelo to your `Cargo.toml`:
 
-```rust
+```toml
 caramelo = { version = "0.1.0", features = ["caramelo"] }
 ```
 

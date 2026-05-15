@@ -8,7 +8,7 @@ A collection of Rust crates for pattern matching and type checking.
 
 Add caramelo to your `Cargo.toml`:
 
-```rust
+```toml
 caramelo = { version = "0.1.0", features = ["caramelo"] }
 ```
 

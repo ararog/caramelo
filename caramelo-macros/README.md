@@ -8,7 +8,7 @@ This crate provides procedural macros for the caramelo crate.
 
 Add caramelo-macros to your `Cargo.toml`:
 
-```rust
+```toml
 caramelo-macros = { version = "0.1.0", features = ["caramelo-macros"] }
 ```
 
