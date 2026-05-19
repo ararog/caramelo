@@ -1,10 +1,12 @@
 use crate::Matcher;
 use std::fmt::Debug;
 
+/// Creates a matcher that matches values not equal to the given value
 pub fn ne<T>(value: T) -> NotEqual<T> {
     NotEqual(value)
 }
 
+/// Matcher that matches values not equal to the given value
 pub struct NotEqual<T>(T);
 
 impl<T> Matcher<T> for NotEqual<T>

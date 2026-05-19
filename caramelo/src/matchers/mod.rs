@@ -1,11 +1,19 @@
+mod any;
 mod between;
+mod empty;
 mod equals;
 mod greater_than;
+mod item;
+mod length;
 mod less_than;
 mod not_equal;
 
+pub use any::any;
 pub use between::between;
+pub use empty::empty;
 pub use equals::eq;
-pub use greater_than::gt;
-pub use less_than::lt;
+pub use greater_than::{ge, gt};
+pub use item::item;
+pub use length::{len, length};
+pub use less_than::{le, lt};
 pub use not_equal::ne;
