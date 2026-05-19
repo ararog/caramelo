@@ -9,7 +9,7 @@ This crate provides a set of traits for macthing types.
 Add caramelo to your `Cargo.toml`:
 
 ```toml
-caramelo = { version = "0.1.0", features = ["caramelo"] }
+caramelo = { version = "0.1.0-beta.1" }
 ```
 
 ## Usage Example

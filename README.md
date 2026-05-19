@@ -9,7 +9,7 @@
 Add caramelo to your `Cargo.toml`:
 
 ```toml
-caramelo = { version = "0.1.0", features = ["caramelo"] }
+caramelo = { version = "0.1.0-beta.1" }
 ```
 
 ## Usage Example
@@ -17,17 +17,17 @@ caramelo = { version = "0.1.0", features = ["caramelo"] }
 Here's how simple it is to create unit tests with caramelo:
 
 ```rust
-use caramelo::{Equal, expect};
+use caramelo::{expect, matchers::eq};
 
 #[test]
 fn test_equal() {
-    expect(1).to_be(Equal(1));
+    expect(1).to_be(eq(1));
 }
 
 #[test]
 #[should_panic(expected = "Expected 1 to be equals to 2")]
 fn test_not_equal() {
-    expect(1).to_be(Equal(2));
+    expect(1).to_be(eq(2));
 }
 ```
 

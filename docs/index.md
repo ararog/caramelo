@@ -19,13 +19,24 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-caramelo = { version = "0.0.9", features = ["http1", "tokio-rt"] }
+caramelo = { version = "0.1.0-beta.1" }
 ```
 
 Basic usage:
 
 ```rust
+use caramelo::{expect, matchers::eq};
 
+#[test]
+fn test_equal() {
+    expect(1).to_be(eq(1));
+}
+
+#[test]
+#[should_panic(expected = "Expected 1 to be equals to 2")]
+fn test_not_equal() {
+    expect(1).to_be(eq(2));
+}
 ```
 
 ## Examples
