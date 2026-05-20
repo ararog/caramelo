@@ -1,5 +1,7 @@
+use std::fmt::Display;
+
 /// Trait for inequality assertions
-pub trait IsNe: PartialEq + std::fmt::Display {
+pub trait IsNe: PartialEq + Display {
     /// Asserts that the value is not equal to the expected value
     fn is_ne(&self, other: &Self) {
         if self.eq(other) {

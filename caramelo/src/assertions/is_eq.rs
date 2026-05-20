@@ -1,5 +1,7 @@
+use std::fmt::Display;
+
 /// Trait for equality assertions
-pub trait IsEq: PartialEq + std::fmt::Display {
+pub trait IsEq: PartialEq + Display {
     /// Asserts that the value is equal to the expected value
     fn is_eq(&self, other: &Self) {
         if !self.eq(other) {

@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 /// Trait for equality assertions
 pub trait Is {
     /// Asserts that the value is equal to the expected value
@@ -6,7 +8,7 @@ pub trait Is {
 
 impl<T> Is for Option<T>
 where
-    T: std::fmt::Debug,
+    T: Debug,
 {
     fn is(&self, other: Self) {
         match (self, other) {
@@ -20,8 +22,8 @@ where
 
 impl<T, E> Is for Result<T, E>
 where
-    T: std::fmt::Debug,
-    E: std::fmt::Debug,
+    T: Debug,
+    E: Debug,
 {
     fn is(&self, other: Self) {
         match (self, other) {

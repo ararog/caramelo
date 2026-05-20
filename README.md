@@ -16,7 +16,7 @@ Several useful matchers:
 
 ## Assertion traits
 
-- Is: is, is_eq and is_ne
+- is, is_eq, is_ne, is_lt, is_le, is_gt and is_ge
 
 ## Quick Start
 
