@@ -31,7 +31,9 @@ caramelo = { version = "0.1.0-beta.1" }
 Here's how simple it is to create unit tests with caramelo:
 
 ```rust
-use caramelo::{expect, matchers::eq};
+use caramelo::{expect, matchers::eq, assertions::Is};
+
+/// Test equality matcher
 
 #[test]
 fn test_equal() {
@@ -43,6 +45,8 @@ fn test_equal() {
 fn test_not_equal() {
     expect(1).to_be(eq(2));
 }
+
+/// Test is assertion
 
 #[test]
 fn test_is() {
