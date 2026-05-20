@@ -24,4 +24,3 @@ impl IsLt for f32 {}
 impl IsLt for f64 {}
 impl IsLt for bool {}
 impl IsLt for char {}
-
