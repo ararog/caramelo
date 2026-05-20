@@ -4,6 +4,20 @@
 
 Caramelo (caramel in Portuguese) is a comprehensive, production-ready unit testing framework for Rust with a focus on simplicity and ease of use.
 
+## Features
+
+Several useful matchers:
+
+- logical: eq, ne, le, lt, ge and gt
+- range: between
+- array: item, len
+- wildcard: any
+- string: contains, starts-with, ends-with
+
+## Assertion traits
+
+- Is: is, is_eq and is_ne
+
 ## Quick Start
 
 Add caramelo to your `Cargo.toml`:
@@ -28,6 +42,17 @@ fn test_equal() {
 #[should_panic(expected = "Expected 1 to be equals to 2")]
 fn test_not_equal() {
     expect(1).to_be(eq(2));
+}
+
+#[test]
+fn test_is() {
+    "a".is("a");
+}
+
+#[test]
+#[should_panic(expected = "Expected a to be equal to b")]
+fn test_is_panic() {
+    "a".is("b");
 }
 ```
 

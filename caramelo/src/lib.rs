@@ -2,6 +2,9 @@
 #![deny(missing_docs)]
 use std::fmt::Debug;
 
+/// Module containing assertions
+pub mod assertions;
+
 /// Module containing matchers for assertions
 pub mod matchers;
 
