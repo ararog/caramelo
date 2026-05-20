@@ -23,3 +23,4 @@ impl IsNe for u64 {}
 impl IsNe for f32 {}
 impl IsNe for f64 {}
 impl IsNe for bool {}
+impl IsNe for char {}

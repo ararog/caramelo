@@ -23,3 +23,5 @@ impl IsEq for u64 {}
 impl IsEq for f32 {}
 impl IsEq for f64 {}
 impl IsEq for bool {}
+impl IsEq for char {}
+

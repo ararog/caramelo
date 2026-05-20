@@ -23,3 +23,4 @@ impl IsLe for u64 {}
 impl IsLe for f32 {}
 impl IsLe for f64 {}
 impl IsLe for bool {}
+impl IsLe for char {}

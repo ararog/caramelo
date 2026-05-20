@@ -1,9 +1,7 @@
 use std::fmt::Display;
 
-use crate::assertions::IsEq;
-
 /// Trait for equality assertions
-pub trait IsLt: PartialEq + Display {
+pub trait IsLt: PartialOrd + Display {
     /// Asserts that the value is equal to the expected value
     fn is_eq(&self, other: &Self) {
         if !self.eq(other) {
@@ -25,3 +23,5 @@ impl IsLt for u64 {}
 impl IsLt for f32 {}
 impl IsLt for f64 {}
 impl IsLt for bool {}
+impl IsLt for char {}
+

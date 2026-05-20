@@ -23,3 +23,5 @@ impl IsGe for u64 {}
 impl IsGe for f32 {}
 impl IsGe for f64 {}
 impl IsGe for bool {}
+impl IsGe for char {}
+

@@ -23,3 +23,4 @@ impl IsGt for u64 {}
 impl IsGt for f32 {}
 impl IsGt for f64 {}
 impl IsGt for bool {}
+impl IsGt for char {}
