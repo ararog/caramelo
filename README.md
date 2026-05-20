@@ -12,6 +12,16 @@ Add caramelo to your `Cargo.toml`:
 caramelo = { version = "0.1.0-beta.1" }
 ```
 
+## Features
+
+Several useful matchers:
+
+- logical: eq, ne, le, lt, ge and gt
+- range: between
+- array: item, len
+- wildcard: any
+- string: contains, starts-with, ends-with
+
 ## Usage Example
 
 Here's how simple it is to create unit tests with caramelo:
