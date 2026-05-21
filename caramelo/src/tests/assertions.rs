@@ -1,4 +1,4 @@
-use crate::assertions::{HasItem, Is, IsEq, IsNe};
+use crate::assertions::{HasItem, HasPat, Is, IsEq, IsNe};
 
 #[test]
 fn test_has_item() {
@@ -85,4 +85,15 @@ fn test_ne() {
 #[should_panic(expected = "Expected a to be not equal to a")]
 fn test_ne_panic() {
     "a".is_ne(&"a");
+}
+
+#[test]
+fn test_has_pattern() {
+    "hello".has_pat("ell");
+}
+
+#[test]
+#[should_panic(expected = "Expected \"hello\" to match \"xyz\"")]
+fn test_has_pattern_panic() {
+    "hello".has_pat("xyz");
 }

@@ -1,6 +1,6 @@
 use crate::{
     expect,
-    matchers::{any, empty, eq, ge, gt, item, le, len, length, lt, ne},
+    matchers::{any, contains, empty, eq, ge, gt, item, le, len, length, lt, ne},
 };
 
 #[test]
@@ -95,4 +95,15 @@ fn test_any_char() {
 #[test]
 fn test_any_string() {
     expect("hello").to_be(any::<&str>());
+}
+
+#[test]
+fn test_contains() {
+    expect("hello").to(contains("ell"));
+}
+
+#[test]
+#[should_panic(expected = "Expected \"hello\" to contains Regex(\"xyz\")")]
+fn test_contains_failure() {
+    expect("hello").to(contains("xyz"));
 }

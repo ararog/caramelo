@@ -14,7 +14,7 @@ pub trait HasPat: Display {
         let regex = regex::Regex::new(other);
         if let Ok(regex) = regex {
             if !regex.is_match(&self.to_string()) {
-                panic!("Expected {} to match {}", self, other);
+                panic!("Expected \"{}\" to match \"{}\"", self, other);
             }
         } else {
             panic!("Invalid regex pattern: {}", other);
