@@ -19,7 +19,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-caramelo = { version = "0.1.0-beta.1" }
+caramelo = { version = "0.1.0" }
 ```
 
 Basic usage:

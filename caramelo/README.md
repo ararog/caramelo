@@ -23,7 +23,7 @@ Several useful matchers:
 Add caramelo to your `Cargo.toml`:
 
 ```toml
-caramelo = { version = "0.1.0-beta.1" }
+caramelo = { version = "0.1.0" }
 ```
 
 ## Usage Example
