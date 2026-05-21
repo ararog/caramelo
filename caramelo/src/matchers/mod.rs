@@ -1,5 +1,6 @@
 mod any;
 mod between;
+mod contains;
 mod empty;
 mod equals;
 mod greater_than;
@@ -10,6 +11,7 @@ mod not_equal;
 
 pub use any::any;
 pub use between::between;
+pub use contains::contains;
 pub use empty::empty;
 pub use equals::eq;
 pub use greater_than::{ge, gt};

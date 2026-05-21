@@ -13,6 +13,8 @@ mod tests;
 
 /// Enum representing the type of match operation
 pub enum MatchType {
+    /// Represents "to" match operation
+    To,
     /// Represents "to be" match operation
     ToBe,
     /// Represents "to have" match operation
@@ -22,6 +24,7 @@ pub enum MatchType {
 impl MatchType {
     fn description(&self) -> &str {
         match self {
+            MatchType::To => "to",
             MatchType::ToBe => "to be",
             MatchType::ToHave => "to have",
         }
@@ -53,6 +56,11 @@ where
                 matcher.description()
             );
         }
+    }
+
+    /// Asserts that the value matches the given matcher using "to be" syntax
+    pub fn to(&self, matcher: M) {
+        self.assert(matcher, MatchType::To);
     }
 
     /// Asserts that the value matches the given matcher using "to be" syntax

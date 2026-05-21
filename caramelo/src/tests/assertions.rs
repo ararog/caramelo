@@ -1,4 +1,17 @@
-use crate::assertions::{Is, IsEq, IsNe};
+use crate::assertions::{HasItem, Is, IsEq, IsNe};
+
+#[test]
+fn test_has_item() {
+    let vec = vec![1, 2, 3];
+    vec.has_item(&2);
+}
+
+#[test]
+#[should_panic(expected = "Expected [1, 2, 3] to contains 4")]
+fn test_has_no_item() {
+    let vec = vec![1, 2, 3];
+    vec.has_item(&4);
+}
 
 #[test]
 fn test_is_none() {

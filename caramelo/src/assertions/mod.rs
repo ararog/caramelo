@@ -1,3 +1,6 @@
+mod has;
+mod has_item;
+mod has_pat;
 mod is;
 mod is_eq;
 mod is_ge;
@@ -6,6 +9,9 @@ mod is_le;
 mod is_lt;
 mod is_ne;
 
+pub use has::Has;
+pub use has_item::HasItem;
+pub use has_pat::HasPat;
 pub use is::Is;
 pub use is_eq::IsEq;
 pub use is_ge::IsGe;
