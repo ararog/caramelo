@@ -1,6 +1,6 @@
 use crate::{
     expect,
-    matchers::{any, contains, empty, eq, ge, gt, item, le, len, length, lt, ne},
+    matchers::{any, between, contains, empty, eq, ge, gt, item, le, len, length, lt, ne},
 };
 
 #[test]
@@ -106,4 +106,26 @@ fn test_contains() {
 #[should_panic(expected = "Expected \"hello\" to contains Regex(\"xyz\")")]
 fn test_contains_failure() {
     expect("hello").to(contains("xyz"));
+}
+
+#[test]
+fn test_any() {
+    expect(1).to_be(any::<i32>());
+}
+
+#[test]
+fn test_not_any_char() {
+    // This one wont compile because 'a' is a char, not an i32
+    // expect('a').to_be(any::<char>());
+}
+
+#[test]
+fn test_between() {
+    expect(5).to_be(between(1, 10));
+}
+
+#[test]
+#[should_panic(expected = "Expected 1 to be between 2 and 10")]
+fn test_not_between() {
+    expect(1).to_be(between(2, 10));
 }
