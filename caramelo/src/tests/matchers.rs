@@ -135,6 +135,12 @@ fn test_contains() {
 }
 
 #[test]
+#[should_panic(expected = "Invalid regex pattern")]
+fn test_contains_invalid_regex() {
+    expect("hello").to(contains(r"\[[/w+"));
+}
+
+#[test]
 #[should_panic(expected = "Expected \"hello\" to contains Regex(\"xyz\")")]
 fn test_contains_failure() {
     expect("hello").to(contains("xyz"));
