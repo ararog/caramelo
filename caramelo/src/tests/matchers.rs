@@ -26,8 +26,20 @@ fn test_greater_than() {
 }
 
 #[test]
+#[should_panic(expected = "Expected 0 to be greater than 1")]
+fn test_not_greater_than() {
+    expect(0).to_be(gt(1));
+}
+
+#[test]
 fn test_greater_than_or_equal() {
     expect(1).to_be(ge(1));
+}
+
+#[test]
+#[should_panic(expected = "Expected 0 to be greater than or equal to 1")]
+fn test_not_greater_than_or_equal() {
+    expect(0).to_be(ge(1));
 }
 
 #[test]
@@ -36,8 +48,20 @@ fn test_less_than() {
 }
 
 #[test]
+#[should_panic(expected = "Expected 2 to be less than 1")]
+fn test_not_less_than() {
+    expect(2).to_be(lt(1));
+}
+
+#[test]
 fn test_less_than_or_equal() {
     expect(2).to_be(le(2));
+}
+
+#[test]
+#[should_panic(expected = "Expected 3 to be less than or equal to 2")]
+fn test_not_less_than_or_equal() {
+    expect(3).to_be(le(2));
 }
 
 #[test]

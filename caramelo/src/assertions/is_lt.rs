@@ -2,10 +2,18 @@ use std::fmt::Display;
 
 /// Trait for equality assertions
 pub trait IsLt: PartialOrd + Display {
-    /// Asserts that the value is equal to the expected value
-    fn is_eq(&self, other: &Self) {
-        if !self.eq(other) {
-            panic!("Expected {} to be equal to {}", self, other);
+    /// Asserts that the value is less than the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsLt;
+    ///
+    /// 3.is_lt(&5);
+    /// ```
+    fn is_lt(&self, other: &Self) {
+        if !self.lt(other) {
+            panic!("Expected {} to be less than {}", self, other);
         }
     }
 }

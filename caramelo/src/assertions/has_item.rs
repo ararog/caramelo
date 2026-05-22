@@ -5,7 +5,15 @@ pub trait HasItem<T>: AsRef<[T]> + Debug
 where
     T: PartialEq + Debug,
 {
-    /// Asserts that the value is equal to the expected value
+    /// Asserts that the value contains the expected item
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::HasItem;
+    ///
+    /// vec![1, 2, 3].has_item(&2);
+    /// ```
     fn has_item(&self, other: &T) {
         if !self
             .as_ref()

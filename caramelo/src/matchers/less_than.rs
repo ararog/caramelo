@@ -2,6 +2,15 @@ use crate::Matcher;
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values less than the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::lt;
+///
+/// expect(3).to_be(lt(5));
+/// ```
 pub fn lt<T>(value: T) -> LessThan<T> {
     LessThan(value)
 }
@@ -23,6 +32,15 @@ where
 }
 
 /// Creates a matcher that matches values less than or equal to the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::le;
+///
+/// expect(3).to_be(le(3));
+/// ```
 pub fn le<T>(value: T) -> LessThanOrEqual<T> {
     LessThanOrEqual(value)
 }

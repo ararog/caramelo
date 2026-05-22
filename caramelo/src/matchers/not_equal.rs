@@ -2,6 +2,15 @@ use crate::Matcher;
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values not equal to the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::ne;
+///
+/// expect(5).to_be(ne(3));
+/// ```
 pub fn ne<T>(value: T) -> NotEqual<T> {
     NotEqual(value)
 }

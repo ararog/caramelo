@@ -3,6 +3,15 @@ use std::fmt::Debug;
 use crate::Matcher;
 
 /// Creates a matcher that matches empty values
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::empty;
+///
+/// expect("").to_be(empty());
+/// ```
 pub fn empty() -> Empty {
     Empty
 }

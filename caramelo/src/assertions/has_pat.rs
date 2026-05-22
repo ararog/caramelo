@@ -10,6 +10,14 @@ pub trait HasPat: Display {
     /// # Panics
     /// * If the regular expression is invalid
     /// * If the value does not match the regular expression
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::HasPat;
+    ///
+    ///"hello".has_pat(r"el+");
+    /// ```
     fn has_pat(&self, other: &str) {
         let regex = regex::Regex::new(other);
         if let Ok(regex) = regex {

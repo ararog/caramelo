@@ -1,8 +1,16 @@
 use std::fmt::Display;
 
-/// Trait for equality assertions
+/// Trait for contains assertions
 pub trait Has: Display {
-    /// Asserts that the value is equal to the expected value
+    /// Asserts that the value contains the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::Has;
+    ///
+    /// "hello".has(&"el");
+    /// ```
     fn has(&self, other: &Self) {
         let self_str = self.to_string();
         let other_str = other.to_string();

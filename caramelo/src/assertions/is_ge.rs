@@ -3,6 +3,14 @@ use std::fmt::Display;
 /// Trait for greater than or equal assertions
 pub trait IsGe: PartialOrd + Display {
     /// Asserts that the value is greater than or equal to the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsGe;
+    ///
+    /// 5.is_ge(&3);
+    /// ```
     fn is_ge(&self, other: &Self) {
         if !self.ge(other) {
             panic!("Expected {} to be greater than or equal to {}", self, other);

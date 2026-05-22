@@ -3,6 +3,14 @@ use std::fmt::Display;
 /// Trait for less than or equal assertions
 pub trait IsLe: PartialOrd + Display {
     /// Asserts that the value is less than or equal to the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsLe;
+    ///
+    /// 3.is_le(&5);
+    /// ```
     fn is_le(&self, other: &Self) {
         if !self.le(other) {
             panic!("Expected {} to be less than or equal to {}", self, other);

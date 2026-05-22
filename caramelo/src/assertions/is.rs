@@ -3,6 +3,15 @@ use std::fmt::Debug;
 /// Trait for equality assertions
 pub trait Is {
     /// Asserts that the value is equal to the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::Is;
+    ///
+    /// let value = Some(5i32);
+    /// value.is(Some(5i32));
+    /// ```
     fn is(&self, other: Self);
 }
 

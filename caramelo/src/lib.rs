@@ -58,17 +58,41 @@ where
         }
     }
 
-    /// Asserts that the value matches the given matcher using "to be" syntax
+    /// Asserts that the value matches the given matcher using "to" syntax
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::expect;
+    ///
+    /// expect(5).to(caramelo::matchers::eq(5));
+    /// ```
     pub fn to(&self, matcher: M) {
         self.assert(matcher, MatchType::To);
     }
 
     /// Asserts that the value matches the given matcher using "to be" syntax
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::expect;
+    ///
+    /// expect(5).to_be(caramelo::matchers::eq(5));
+    /// ```
     pub fn to_be(&self, matcher: M) {
         self.assert(matcher, MatchType::ToBe);
     }
 
     /// Asserts that the value matches the given matcher using "to have" syntax
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::expect;
+    ///
+    /// expect(vec![1, 2, 3]).to_have(caramelo::matchers::length(3));
+    /// ```
     pub fn to_have(&self, matcher: M) {
         self.assert(matcher, MatchType::ToHave);
     }

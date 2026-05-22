@@ -3,6 +3,14 @@ use std::fmt::Display;
 /// Trait for inequality assertions
 pub trait IsNe: PartialEq + Display {
     /// Asserts that the value is not equal to the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsNe;
+    ///
+    /// 5.is_ne(&3);
+    /// ```
     fn is_ne(&self, other: &Self) {
         if self.eq(other) {
             panic!("Expected {} to be not equal to {}", self, other);

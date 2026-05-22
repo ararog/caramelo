@@ -2,6 +2,15 @@ use crate::Matcher;
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values greater than the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::gt;
+///
+/// expect(5).to_be(gt(3));
+/// ```
 pub fn gt<T>(value: T) -> GreaterThan<T> {
     GreaterThan(value)
 }
@@ -23,6 +32,15 @@ where
 }
 
 /// Creates a matcher that matches values greater than or equal to the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::ge;
+///
+/// expect(5).to_be(ge(5));
+/// ```
 pub fn ge<T>(value: T) -> GreaterThanOrEqual<T> {
     GreaterThanOrEqual(value)
 }

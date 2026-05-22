@@ -3,6 +3,14 @@ use std::fmt::Display;
 /// Trait for greater than assertions
 pub trait IsGt: PartialOrd + Display {
     /// Asserts that the value is greater than the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsGt;
+    ///
+    /// 5.is_gt(&3);
+    /// ```
     fn is_gt(&self, other: &Self) {
         if !self.gt(other) {
             panic!("Expected {} to be greater than {}", self, other);

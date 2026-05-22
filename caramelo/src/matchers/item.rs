@@ -2,6 +2,15 @@ use crate::Matcher;
 use std::fmt::{Debug, Display};
 
 /// Creates a matcher that matches vectors containing the given item
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::item;
+///
+/// expect(vec![1, 2, 3]).to_have(item(2));
+/// ```
 pub fn item<I>(item: I) -> Item<I> {
     Item { item }
 }

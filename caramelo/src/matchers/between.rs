@@ -2,6 +2,15 @@ use crate::Matcher;
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values between min and max (inclusive)
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::between;
+///
+/// expect(5).to_be(between(1, 10));
+/// ```
 pub fn between<T>(min: T, max: T) -> Between<T> {
     Between { min, max }
 }

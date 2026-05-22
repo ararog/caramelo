@@ -3,6 +3,14 @@ use std::fmt::Display;
 /// Trait for equality assertions
 pub trait IsEq: PartialEq + Display {
     /// Asserts that the value is equal to the expected value
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::assertions::IsEq;
+    ///
+    /// 5.is_eq(&5);
+    /// ```
     fn is_eq(&self, other: &Self) {
         if !self.eq(other) {
             panic!("Expected {} to be equal to {}", self, other);
