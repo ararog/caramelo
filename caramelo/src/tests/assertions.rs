@@ -1,4 +1,15 @@
-use crate::assertions::{HasItem, HasPat, Is, IsEq, IsNe};
+use crate::assertions::{Has, HasItem, HasPat, Is, IsEq, IsGe, IsGt, IsLe, IsLt, IsNe};
+
+#[test]
+fn test_has() {
+    "Hello".has(&"llo");
+}
+
+#[test]
+#[should_panic(expected = "Expected Hello to contain xyz")]
+fn test_has_panic() {
+    "Hello".has(&"xyz");
+}
 
 #[test]
 fn test_has_item() {
@@ -85,6 +96,50 @@ fn test_ne() {
 #[should_panic(expected = "Expected a to be not equal to a")]
 fn test_ne_panic() {
     "a".is_ne(&"a");
+}
+
+#[test]
+fn test_is_lt() {
+    'a'.is_lt(&'b');
+}
+
+#[test]
+#[should_panic(expected = "Expected b to be less than a")]
+fn test_is_lt_panic() {
+    'b'.is_lt(&'a');
+}
+
+#[test]
+fn test_is_le_eq() {
+    'a'.is_le(&'a');
+}
+
+#[test]
+#[should_panic(expected = "Expected b to be less than or equal to a")]
+fn test_is_le_panic() {
+    'b'.is_le(&'a');
+}
+
+#[test]
+fn test_is_ge() {
+    'b'.is_ge(&'b');
+}
+
+#[test]
+#[should_panic(expected = "Expected a to be greater than or equal to b")]
+fn test_is_ge_panic() {
+    'a'.is_ge(&'b');
+}
+
+#[test]
+fn test_is_gt() {
+    'b'.is_gt(&'a');
+}
+
+#[test]
+#[should_panic(expected = "Expected a to be greater than b")]
+fn test_is_gt_panic() {
+    'a'.is_gt(&'b');
 }
 
 #[test]

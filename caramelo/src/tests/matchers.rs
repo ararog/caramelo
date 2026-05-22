@@ -1,3 +1,5 @@
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
+
 use crate::{
     expect,
     matchers::{any, between, contains, empty, eq, ge, gt, item, le, len, length, lt, ne},
@@ -91,6 +93,12 @@ fn test_item_letter() {
 }
 
 #[test]
+#[should_panic(expected = "Expected [\"a\", \"b\", \"c\"] to have item d")]
+fn test_item_string_not_in_list() {
+    expect(vec!["a", "b", "c"]).to_have(item("d"));
+}
+
+#[test]
 fn test_length() {
     expect(vec![1, 2, 3]).to_have(length(3));
 }
@@ -152,4 +160,46 @@ fn test_between() {
 #[should_panic(expected = "Expected 1 to be between 2 and 10")]
 fn test_not_between() {
     expect(1).to_be(between(2, 10));
+}
+
+#[test]
+fn test_hashmap_length() {
+    let mut map = HashMap::new();
+    map.insert("key", "value");
+    expect(map).to_have(length(1));
+}
+
+#[test]
+fn test_btreemap_length() {
+    let mut map = BTreeMap::new();
+    map.insert("key", "value");
+    expect(map).to_have(length(1));
+}
+
+#[test]
+fn test_hashset_length() {
+    let mut set = HashSet::new();
+    set.insert("key");
+    expect(set).to_have(length(1));
+}
+
+#[test]
+fn test_btreehashset_length() {
+    let mut set = BTreeSet::new();
+    set.insert("key");
+    expect(set).to_have(length(1));
+}
+
+#[test]
+fn test_vecdeque_length() {
+    let mut set = VecDeque::new();
+    set.push_back("key");
+    expect(set).to_have(length(1));
+}
+
+#[test]
+fn test_linkedlist_length() {
+    let mut set = LinkedList::new();
+    set.push_back("key");
+    expect(set).to_have(length(1));
 }
