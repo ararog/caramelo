@@ -170,10 +170,26 @@ fn test_hashmap_length() {
 }
 
 #[test]
+#[should_panic(expected = "Expected {\"key\": \"value\"} to have length equals to 2")]
+fn test_hashmap_length_failure() {
+    let mut map = HashMap::new();
+    map.insert("key", "value");
+    expect(map).to_have(length(2));
+}
+
+#[test]
 fn test_btreemap_length() {
     let mut map = BTreeMap::new();
     map.insert("key", "value");
     expect(map).to_have(length(1));
+}
+
+#[test]
+#[should_panic(expected = "Expected {\"key\": \"value\"} to have length equals to 2")]
+fn test_btreemap_length_failure() {
+    let mut map = BTreeMap::new();
+    map.insert("key", "value");
+    expect(map).to_have(length(2));
 }
 
 #[test]
@@ -184,10 +200,26 @@ fn test_hashset_length() {
 }
 
 #[test]
+#[should_panic(expected = "Expected {\"key\"} to have length equals to 2")]
+fn test_hashset_length_failure() {
+    let mut set = HashSet::new();
+    set.insert("key");
+    expect(set).to_have(length(2));
+}
+
+#[test]
 fn test_btreehashset_length() {
     let mut set = BTreeSet::new();
     set.insert("key");
     expect(set).to_have(length(1));
+}
+
+#[test]
+#[should_panic(expected = "Expected {\"key\"} to have length equals to 2")]
+fn test_btreehashset_length_failure() {
+    let mut set = BTreeSet::new();
+    set.insert("key");
+    expect(set).to_have(length(2));
 }
 
 #[test]
@@ -198,8 +230,24 @@ fn test_vecdeque_length() {
 }
 
 #[test]
+#[should_panic(expected = "Expected [\"key\"] to have length equals to 2")]
+fn test_vecdeque_length_failure() {
+    let mut set = VecDeque::new();
+    set.push_back("key");
+    expect(set).to_have(length(2));
+}
+
+#[test]
 fn test_linkedlist_length() {
     let mut set = LinkedList::new();
     set.push_back("key");
     expect(set).to_have(length(1));
+}
+
+#[test]
+#[should_panic(expected = "Expected [\"key\"] to have length equals to 2")]
+fn test_linkedlist_length_failure() {
+    let mut set = LinkedList::new();
+    set.push_back("key");
+    expect(set).to_have(length(2));
 }
