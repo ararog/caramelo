@@ -7,6 +7,14 @@ members = [
   "caramelo-macros",
 ]
 
+[workspace.package]
+edition = "2021"
+authors = ["Rogerio Araújo <rogerio.araujo@gmail.com>"]
+repository = "https://github.com/ararog/caramelo"
+homepage = "https://github.com/ararog/caramelo"
+license = "MIT OR Apache-2.0"
+rust-version = "1.75.0"
+
 [workspace.dependencies]
 caramelo = { path = "caramelo", version = "0.1.0" }
 
