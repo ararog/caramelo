@@ -17,8 +17,13 @@ fn test_equal_failure() {
 }
 
 #[test]
-#[should_panic(expected = "Expected 1 to be not equal to 1")]
 fn test_not_equal() {
+    expect(1).to_be(ne(2));
+}
+
+#[test]
+#[should_panic(expected = "Expected 1 to be not equal to 1")]
+fn test_not_equal_failure() {
     expect(1).to_be(ne(1));
 }
 
