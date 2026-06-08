@@ -1,12 +1,12 @@
 use crate::{
     expect,
-    matchers::{self, path},
-    Matcher,
+    matchers::{header, header_value, method, path},
 };
+use http::{header::CONTENT_TYPE, HeaderName, Method, Request};
 
 #[test]
 fn test_path_matcher() {
-    let request = http::Request::get("/api/users")
+    let request = Request::get("/api/users")
         .body(())
         .unwrap();
     expect(request).to_have(path(r"^/api/.*$"));
@@ -15,7 +15,7 @@ fn test_path_matcher() {
 #[test]
 #[should_panic = "Expected Request { method: GET, uri: /users, version: HTTP/1.1, headers: {}, body: () } to have path matching Regex(\"^/api/.*$\")"]
 fn test_path_matcher_panic() {
-    let request = http::Request::get("/users")
+    let request = Request::get("/users")
         .body(())
         .unwrap();
     expect(request).to_have(path(r"^/api/.*$"));
@@ -23,17 +23,66 @@ fn test_path_matcher_panic() {
 
 #[test]
 fn test_method_matcher() {
-    let request = http::Request::get("/api/users")
+    let request = Request::get("/api/users")
         .body(())
         .unwrap();
-    expect(request).to_have(matchers::method(http::Method::GET));
+    expect(request).to_have(method(Method::GET));
 }
 
 #[test]
 #[should_panic = "Expected Request { method: POST, uri: /api/users, version: HTTP/1.1, headers: {}, body: () } to have method matching GET"]
 fn test_method_matcher_panic() {
-    let request = http::Request::post("/api/users")
+    let request = Request::post("/api/users")
         .body(())
         .unwrap();
-    expect(request).to_have(matchers::method(http::Method::GET));
+    expect(request).to_have(method("GET"));
+}
+
+#[test]
+#[should_panic = "Expected Request { method: POST, uri: /api/users, version: HTTP/1.1, headers: {}, body: () } to have method matching POST and path matching Regex(\"^/api/posts$\")"]
+fn test_method_and_path_matcher_panic() {
+    let request = Request::post("/api/users")
+        .body(())
+        .unwrap();
+    expect(request)
+        .to_have(method(Method::POST))
+        .and(path(r"^/api/posts$"));
+}
+
+#[test]
+fn test_header_matcher() {
+    let request = Request::get("/api/users")
+        .header("content-type", "application/json")
+        .body(())
+        .unwrap();
+    expect(request).to_have(header(CONTENT_TYPE));
+}
+
+#[test]
+#[should_panic = "Expected Request { method: GET, uri: /api/users, version: HTTP/1.1, headers: {\"content-store\": \"application/json\"}, body: () } to have header matching content-type"]
+fn test_header_matcher_failure() {
+    let request = Request::get("/api/users")
+        .header("content-store", "application/json")
+        .body(())
+        .unwrap();
+    expect(request).to_have(header(CONTENT_TYPE));
+}
+
+#[test]
+fn test_header_value_regex() {
+    let request = Request::get("/api/users")
+        .header("content-type", "application/json")
+        .body(())
+        .unwrap();
+    expect(request).to_have(header_value("content-type", r"^application/.*"));
+}
+
+#[test]
+#[should_panic = "Expected Request { method: GET, uri: /api/users, version: HTTP/1.1, headers: {\"content-type\": \"application/json\"}, body: () } to have header content-type with value matching Regex(\"^text/.*\")"]
+fn test_header_value_regex_failure() {
+    let request = Request::get("/api/users")
+        .header("content-type", "application/json")
+        .body(())
+        .unwrap();
+    expect(request).to_have(header_value("content-type", r"^text/.*"));
 }

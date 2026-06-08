@@ -262,3 +262,18 @@ fn test_linkedlist_length_failure() {
     set.push_back("key");
     expect(set).to_have(length(2));
 }
+
+#[test]
+fn test_and() {
+    expect(5)
+        .to_be(gt(1))
+        .and(lt(6));
+}
+
+#[test]
+#[should_panic(expected = "Expected 5 to be greater than 1 and less than 4")]
+fn test_and_failure() {
+    expect(5)
+        .to_be(gt(1))
+        .and(lt(4));
+}

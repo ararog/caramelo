@@ -17,8 +17,10 @@ all-features = true
 
 [features]
 default = ["http"]
-http = ["dep:http"]
+http = ["dep:http", "dep:http-body", "dep:http-body-util"]
 
 [dependencies]
 http = { version = "1.4.1", optional = true }
+http-body = { version = "1.0.1", optional = true }
+http-body-util = { version = "0.1.3", optional = true }
 regex = "1.12.3"

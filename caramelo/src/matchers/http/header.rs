@@ -2,18 +2,47 @@ use http::HeaderName;
 
 use crate::Matcher;
 
+/// Trait for converting values into HeaderName.
+pub trait AsHeaderName {
+    /// Converts the value into a HeaderName.
+    fn into_header_name(self) -> HeaderName;
+}
+
+impl AsHeaderName for HeaderName {
+    fn into_header_name(self) -> HeaderName {
+        self
+    }
+}
+
+impl AsHeaderName for String {
+    fn into_header_name(self) -> HeaderName {
+        let upper = self.to_uppercase();
+        match upper.parse() {
+            Ok(header_name) => header_name,
+            Err(_) => panic!("Invalid header name"),
+        }
+    }
+}
+
+impl AsHeaderName for &str {
+    fn into_header_name(self) -> HeaderName {
+        self.to_string()
+            .into_header_name()
+    }
+}
+
 /// Creates a matcher that checks if the request has the given header.
-pub fn has_header<H>(value: H) -> HasHeader
+pub fn header<H>(value: H) -> Header
 where
-    H: Into<HeaderName>,
+    H: AsHeaderName,
 {
-    HasHeader(value.into())
+    Header(value.into_header_name())
 }
 
 /// A matcher that checks if the request has the given header.
-pub struct HasHeader(http::header::HeaderName);
+pub struct Header(http::header::HeaderName);
 
-impl<T> Matcher<http::Request<T>> for HasHeader {
+impl<T> Matcher<http::Request<T>> for Header {
     fn matches(&self, value: &http::Request<T>) -> bool {
         value
             .headers()
@@ -26,24 +55,24 @@ impl<T> Matcher<http::Request<T>> for HasHeader {
 }
 
 /// Creates a matcher that checks if the request path matches the given regex pattern.
-pub fn has_header_value<N>(name: N, value: &str) -> HasHeaderName
+pub fn header_value<N>(name: N, value: &str) -> HeaderValue
 where
-    N: Into<HeaderName>,
+    N: AsHeaderName,
 {
     let regex = regex::Regex::new(value);
     match regex {
-        Ok(regex) => HasHeaderName { name: name.into(), regex },
+        Ok(regex) => HeaderValue { name: name.into_header_name(), regex },
         Err(_) => panic!("Invalid regex pattern"),
     }
 }
 
 /// A matcher that checks if the request path matches a regex pattern.
-pub struct HasHeaderName {
+pub struct HeaderValue {
     name: HeaderName,
     regex: regex::Regex,
 }
 
-impl<T> Matcher<http::Request<T>> for HasHeaderName {
+impl<T> Matcher<http::Request<T>> for HeaderValue {
     fn matches(&self, value: &http::Request<T>) -> bool {
         value
             .headers()

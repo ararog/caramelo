@@ -19,6 +19,8 @@ pub enum MatchType {
     ToBe,
     /// Represents "to have" match operation
     ToHave,
+    /// Represents "and" match operation
+    And,
 }
 
 impl MatchType {
@@ -27,34 +29,75 @@ impl MatchType {
             MatchType::To => "to",
             MatchType::ToBe => "to be",
             MatchType::ToHave => "to have",
+            MatchType::And => "",
         }
     }
 }
 
 /// Main expectation struct for assertions
-pub struct Expect<T, M> {
+pub struct Expect<T> {
     value: T,
-    _matcher: std::marker::PhantomData<M>,
+    matches: Vec<String>,
 }
 
-impl<T, M> Expect<T, M>
+impl<T> Expect<T>
 where
     T: Debug,
-    M: Matcher<T>,
 {
     /// Creates a new expectation with the given value
     pub fn new(value: T) -> Self {
-        Expect { value, _matcher: std::marker::PhantomData }
+        Expect { value, matches: Vec::new() }
     }
 
-    fn assert(&self, matcher: M, match_type: MatchType) {
+    fn assert<M>(&mut self, matcher: M, match_type: MatchType)
+    where
+        M: Matcher<T>,
+    {
         if !matcher.matches(&self.value) {
-            panic!(
-                "Expected {:?} {} {}",
-                self.value,
-                match_type.description(),
-                matcher.description()
-            );
+            if self
+                .matches
+                .is_empty()
+            {
+                panic!(
+                    "Expected {:?} {} {}",
+                    self.value,
+                    match_type.description(),
+                    matcher.description()
+                );
+            } else {
+                let mut message = Vec::new();
+
+                self.matches.push(
+                    matcher
+                        .description()
+                        .to_string(),
+                );
+
+                for match_str in &self.matches {
+                    message.push(match_str.clone());
+                }
+
+                panic!("Expected {}", message.join(" and "));
+            }
+        } else {
+            if self
+                .matches
+                .is_empty()
+            {
+                self.matches
+                    .push(format!(
+                        "{:?} {} {}",
+                        self.value,
+                        match_type.description(),
+                        matcher.description()
+                    ));
+            } else {
+                self.matches.push(
+                    matcher
+                        .description()
+                        .to_string(),
+                );
+            }
         }
     }
 
@@ -63,12 +106,16 @@ where
     /// # Examples
     ///
     /// ```
-    /// use caramelo::expect;
+    /// use caramelo::{expect, matchers::eq};
     ///
-    /// expect(5).to(caramelo::matchers::eq(5));
+    /// expect(5).to(eq(5));
     /// ```
-    pub fn to(&self, matcher: M) {
+    pub fn to<M>(mut self, matcher: M) -> Self
+    where
+        M: Matcher<T>,
+    {
         self.assert(matcher, MatchType::To);
+        self
     }
 
     /// Asserts that the value matches the given matcher using "to be" syntax
@@ -76,12 +123,16 @@ where
     /// # Examples
     ///
     /// ```
-    /// use caramelo::expect;
+    /// use caramelo::{expect, matchers::eq};
     ///
-    /// expect(5).to_be(caramelo::matchers::eq(5));
+    /// expect(5).to_be(eq(5));
     /// ```
-    pub fn to_be(&self, matcher: M) {
+    pub fn to_be<M>(mut self, matcher: M) -> Self
+    where
+        M: Matcher<T>,
+    {
         self.assert(matcher, MatchType::ToBe);
+        self
     }
 
     /// Asserts that the value matches the given matcher using "to have" syntax
@@ -89,17 +140,38 @@ where
     /// # Examples
     ///
     /// ```
-    /// use caramelo::expect;
+    /// use caramelo::{expect, matchers::length};
     ///
-    /// expect(vec![1, 2, 3]).to_have(caramelo::matchers::length(3));
+    /// expect(vec![1, 2, 3]).to_have(length(3));
     /// ```
-    pub fn to_have(&self, matcher: M) {
+    pub fn to_have<M>(mut self, matcher: M) -> Self
+    where
+        M: Matcher<T>,
+    {
         self.assert(matcher, MatchType::ToHave);
+        self
+    }
+
+    /// Asserts that the value matches the given matcher using "and" syntax
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::{expect, matchers::{eq, gt}};
+    ///
+    /// expect(5).to_be(eq(5)).and(gt(0));
+    /// ```
+    pub fn and<M>(mut self, matcher: M) -> Self
+    where
+        M: Matcher<T>,
+    {
+        self.assert(matcher, MatchType::And);
+        self
     }
 }
 
 /// Function to create a new expectation
-pub fn expect<T: Debug, M: Matcher<T>>(value: T) -> Expect<T, M> {
+pub fn expect<T: Debug>(value: T) -> Expect<T> {
     Expect::new(value)
 }
 
