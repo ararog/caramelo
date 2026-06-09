@@ -1,6 +1,26 @@
-use crate::Matcher;
+use crate::{http::Request, Matcher};
 
 /// Creates a matcher that checks if the request query matches the given regex pattern.
+///
+/// # Arguments
+///
+/// * `value` - The regex pattern to match against.
+///
+/// # Returns
+///
+/// * `Query` - A matcher that checks if the request query matches the given regex pattern.
+///
+/// # Panics
+///
+/// * `Invalid regex pattern` - If the regex pattern is invalid.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::query;
+///
+/// let matcher = query(r"^/api/v1/.*$");
+/// ```
 pub fn query(value: &str) -> Query {
     let regex = regex::Regex::new(value);
     match regex {
@@ -10,16 +30,28 @@ pub fn query(value: &str) -> Query {
 }
 
 /// A matcher that checks if the request query matches a regex pattern.
+///
+/// # Arguments
+///
+/// * `regex` - The regex pattern to match against.
+///
+/// # Returns
+///
+/// * `Query` - A matcher that checks if the request query matches the given regex pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::query;
+///
+/// let matcher = query(r"^/api/v1/.*$");
+/// ```
 pub struct Query(regex::Regex);
 
-impl<T> Matcher<http::Request<T>> for Query {
-    fn matches(&self, value: &http::Request<T>) -> bool {
-        self.0.is_match(
-            value
-                .uri()
-                .query()
-                .unwrap_or(""),
-        )
+impl Matcher<Request> for Query {
+    fn matches(&self, value: &Request) -> bool {
+        self.0
+            .is_match(value.path())
     }
 
     fn description(&self) -> String {

@@ -8,6 +8,10 @@ pub mod assertions;
 /// Module containing matchers for assertions
 pub mod matchers;
 
+/// Module containing request wrapper
+#[cfg(feature = "http")]
+pub mod http;
+
 #[cfg(test)]
 mod tests;
 

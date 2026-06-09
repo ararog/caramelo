@@ -1,6 +1,8 @@
-use crate::Matcher;
+use crate::{http::Request, Matcher};
 
+/// Trait for converting values into http::Method.
 pub trait AsMethod {
+    /// Converts the value into a http::Method.
     fn into_method(self) -> http::Method;
 }
 
@@ -33,6 +35,14 @@ impl AsMethod for &str {
 }
 
 /// Creates a matcher that checks if the request method matches the given method.
+///
+/// # Arguments
+///
+/// * `value` - The method to match against.
+///
+/// # Returns
+///
+/// * `Method` - A matcher that checks if the request method matches the given method.
 pub fn method<M>(value: M) -> Method
 where
     M: AsMethod,
@@ -41,10 +51,26 @@ where
 }
 
 /// A matcher that checks if the request method matches a specific HTTP method.
+///
+/// # Arguments
+///
+/// * `method` - The HTTP method to match against.
+///
+/// # Returns
+///
+/// * `Method` - A matcher that checks if the request method matches the given method.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::method;
+///
+/// let matcher = method("GET");
+/// ```
 pub struct Method(http::Method);
 
-impl<T> Matcher<http::Request<T>> for Method {
-    fn matches(&self, value: &http::Request<T>) -> bool {
+impl Matcher<Request> for Method {
+    fn matches(&self, value: &Request) -> bool {
         self.0 == value.method()
     }
 

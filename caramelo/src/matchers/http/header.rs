@@ -1,10 +1,14 @@
 use http::HeaderName;
 
-use crate::Matcher;
+use crate::{http::Request, Matcher};
 
 /// Trait for converting values into HeaderName.
 pub trait AsHeaderName {
     /// Converts the value into a HeaderName.
+    ///
+    /// # Returns
+    ///
+    /// * `HeaderName` - The converted HeaderName.
     fn into_header_name(self) -> HeaderName;
 }
 
@@ -32,6 +36,22 @@ impl AsHeaderName for &str {
 }
 
 /// Creates a matcher that checks if the request has the given header.
+///
+/// # Arguments
+///
+/// * `value` - The header name to match against.
+///
+/// # Returns
+///
+/// * `Header` - A matcher that checks if the request has the given header.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::header;
+///
+/// let matcher = header("Content-Type");
+/// ```
 pub fn header<H>(value: H) -> Header
 where
     H: AsHeaderName,
@@ -40,10 +60,26 @@ where
 }
 
 /// A matcher that checks if the request has the given header.
+///
+/// # Arguments
+///
+/// * `name` - The header name to match against.
+///
+/// # Returns
+///
+/// * `Header` - A matcher that checks if the request has the given header.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::header;
+///
+/// let matcher = header("Content-Type");
+/// ```
 pub struct Header(http::header::HeaderName);
 
-impl<T> Matcher<http::Request<T>> for Header {
-    fn matches(&self, value: &http::Request<T>) -> bool {
+impl Matcher<Request> for Header {
+    fn matches(&self, value: &Request) -> bool {
         value
             .headers()
             .contains_key(&self.0)
@@ -55,6 +91,23 @@ impl<T> Matcher<http::Request<T>> for Header {
 }
 
 /// Creates a matcher that checks if the request path matches the given regex pattern.
+///
+/// # Arguments
+///
+/// * `name` - The header name to match against.
+/// * `value` - The regex pattern to match against.
+///
+/// # Returns
+///
+/// * `HeaderValue` - A matcher that checks if the request path matches the given regex pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::header_value;
+///
+/// let matcher = header_value("Content-Type", r"^application/json$");
+/// ```
 pub fn header_value<N>(name: N, value: &str) -> HeaderValue
 where
     N: AsHeaderName,
@@ -67,13 +120,30 @@ where
 }
 
 /// A matcher that checks if the request path matches a regex pattern.
+///
+/// # Arguments
+///
+/// * `name` - The header name to match against.
+/// * `regex` - The regex pattern to match against.
+///
+/// # Returns
+///
+/// * `HeaderValue` - A matcher that checks if the request path matches the given regex pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::header_value;
+///
+/// let matcher = header_value("Content-Type", r"^application/json$");
+/// ```
 pub struct HeaderValue {
     name: HeaderName,
     regex: regex::Regex,
 }
 
-impl<T> Matcher<http::Request<T>> for HeaderValue {
-    fn matches(&self, value: &http::Request<T>) -> bool {
+impl Matcher<Request> for HeaderValue {
+    fn matches(&self, value: &Request) -> bool {
         value
             .headers()
             .get(&self.name)
