@@ -6,13 +6,16 @@ Caramelo (caramel in Portuguese) is a comprehensive, production-ready unit testi
 
 ## Features
 
-Several useful matchers:
+## Matchers
 
 - logical: eq, ne, le, lt, ge and gt
 - range: between
 - array: item, len
 - wildcard: any
 - string: contains, starts-with, ends-with
+- http: method, path, header, header_value, body
+- json: exact_json_body, partial_json_body
+- xml: exact_xml_body, partial_xml_body
 
 ## Assertion traits
 
@@ -25,6 +28,12 @@ Add caramelo to your `Cargo.toml`:
 ```toml
 caramelo = { version = "0.1.0" }
 ```
+
+## Feature flags
+
+- `http` - Enable HTTP matchers
+- `json` - Enable JSON matchers
+- `xml` - Enable XML matchers
 
 ## Usage Example
 

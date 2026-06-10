@@ -19,30 +19,29 @@ caramelo-macros = { version = "0.1.0" }
 Here's how simple it is to create unit tests with caramelo-macros:
 
 ```rust
-use caramelo_macros::{eq, is, lt, ne};
+use caramelo_macros::dry_match;
 
-#[test]
-fn test_expect_is() {
-    let value = Some(1);
-    is!(&value; Some(1));
+struct User {
+    name: String,
+    age: u32,
+}
+
+impl User {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn age(&self) -> u32 {
+        self.age
+    }
 }
 
 #[test]
-fn test_expect_eq() {
-    let value = 1;
-    eq!(&value; &1);
-}
+#[should_panic = "Expected 30 to be greater than 32"]
+fn test_caramelo() {
+    let user = User { name: "John".to_string(), age: 30 };
 
-#[test]
-fn test_expect_ne() {
-    let value = 1;
-    ne!(&value; &2);
-}
-
-#[test]
-fn test_expect_lt() {
-    let value = 1;
-    lt!(&value; &2);
+    dry_match!(user is { name: == "John", age: > 32 });
 }
 ```
 

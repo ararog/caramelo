@@ -66,6 +66,9 @@ name = "caramelo-macros"
 version = "0.1.0"
 dependencies = [
  "caramelo",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
