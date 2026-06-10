@@ -10,6 +10,7 @@ mod kw {
     syn::custom_keyword!(or);
 }
 
+#[allow(dead_code)]
 pub(crate) struct DryMatchArgs {
     pub(crate) variable: Option<Ident>,
     pub(crate) brace_token: token::Brace,
@@ -19,7 +20,6 @@ pub(crate) struct DryMatchArgs {
 impl Parse for DryMatchArgs {
     fn parse(input: ParseStream) -> Result<Self> {
         let mut variable = None;
-        let mut fields = Punctuated::new();
         match input.parse::<Ident>() {
             Ok(ident) => {
                 variable = Some(ident);
@@ -41,12 +41,13 @@ impl Parse for DryMatchArgs {
 
         let content;
         let brace_token = syn::braced!(content in input);
-        fields = content.parse_terminated(FieldArgs::parse, Token![,])?;
+        let fields = content.parse_terminated(FieldArgs::parse, Token![,])?;
 
         Ok(DryMatchArgs { variable, brace_token, fields })
     }
 }
 
+#[allow(dead_code)]
 pub(crate) struct FieldArgs {
     pub(crate) field: Ident,
     pub(crate) colon_token: Token![:],
