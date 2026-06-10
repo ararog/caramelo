@@ -4,6 +4,10 @@
 
 Do you find yourself writing a lot of repetitive test code? Do you want to make your tests more readable and easier to understand? If so, caramelo-macros is for you!
 
+## Available macros
+
+- `dry_match!` - A macro that allows you to write tests in a more readable way. Keep in mind your struct must implement accessor methods that return the same type as the field.
+
 Type less, test more!
 
 ## Quick Start
@@ -18,7 +22,7 @@ caramelo-macros = { version = "0.1.0" }
 
 Here's how simple it is to create unit tests with caramelo-macros:
 
-```rust
+```rust,ignore
 use caramelo_macros::dry_match;
 
 struct User {
@@ -26,6 +30,8 @@ struct User {
     age: u32,
 }
 
+// Keep in mind accessor methods must
+// return the same type as the field
 impl User {
     pub fn name(&self) -> &str {
         &self.name
