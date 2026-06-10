@@ -22,11 +22,11 @@ json = ["dep:sonic-rs", "dep:serde_json", "dep:jsonpath-rust"]
 xml = ["dep:simdxml", "dep:serde", "dep:serde-xml-rs"]
 
 [dependencies]
-http = { version = "1.4.1", optional = true }
+http = { version = "1.4.2", optional = true }
 http-body = { version = "1.0.1", optional = true }
 http-body-util = { version = "0.1.3", optional = true }
 jsonpath-rust = { version = "1.0.4", optional = true }
-regex = "1.12.3"
+regex = "1.12.4"
 serde = { version = "1.0.219", optional = true }
 serde_json = { version = "1.0.150", optional = true }
 serde-xml-rs = { version = "0.8.2", optional = true }
