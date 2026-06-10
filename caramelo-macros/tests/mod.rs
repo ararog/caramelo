@@ -16,8 +16,15 @@ impl User {
 }
 
 #[test]
-#[should_panic = "Expected 30 to be greater than 32"]
 fn test_caramelo() {
+    let user = User { name: "John".to_string(), age: 30 };
+
+    dry_match!(user is { name: == "John", age: > 29 });
+}
+
+#[test]
+#[should_panic = "Expected 30 to be greater than 32"]
+fn test_caramelo_failure() {
     let user = User { name: "John".to_string(), age: 30 };
 
     dry_match!(user is { name: == "John", age: > 32 });

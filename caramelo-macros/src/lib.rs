@@ -46,6 +46,9 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
             syn::BinOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
             syn::BinOp::Gt(_) => quote! { caramelo::matchers::gt(#value) },
             syn::BinOp::Lt(_) => quote! { caramelo::matchers::lt(#value) },
+            syn::BinOp::Ge(_) => quote! { caramelo::matchers::ge(#value) },
+            syn::BinOp::Le(_) => quote! { caramelo::matchers::le(#value) },
+            syn::BinOp::Ne(_) => quote! { caramelo::matchers::ne(#value) },
             _ => panic!("Unsupported operator"),
         };
         expectations.push(quote! {
