@@ -19,21 +19,21 @@ impl User {
 fn test_caramelo() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { name: eq "John", age: gt 29 });
+    dry_match!(user is { name: == "John", age: > 29 });
 }
 
 #[test]
 fn test_caramelo_bw() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { age: bw (25, 35) });
+    dry_match!(user is { age: 25..=35 });
 }
 
 #[test]
 fn test_caramelo_re() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { name: re ".*hn" });
+    dry_match!(user is { name: ~ ".*hn" });
 }
 
 #[test]
@@ -41,5 +41,5 @@ fn test_caramelo_re() {
 fn test_caramelo_failure() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { name: eq "John", age: gt 32 });
+    dry_match!(user is { name: == "John", age: > 32 });
 }

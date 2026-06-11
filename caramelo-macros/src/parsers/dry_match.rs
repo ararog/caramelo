@@ -1,7 +1,7 @@
 use syn::{
     parse::{Parse, ParseStream},
     punctuated::Punctuated,
-    token, Ident, Result, Token,
+    token, Expr, Ident, Result, Token,
 };
 
 mod kw {
@@ -11,59 +11,53 @@ mod kw {
 }
 
 mod op {
-    syn::custom_keyword!(eq);
-    syn::custom_keyword!(ne);
-    syn::custom_keyword!(lt);
-    syn::custom_keyword!(le);
-    syn::custom_keyword!(gt);
-    syn::custom_keyword!(ge);
-    syn::custom_keyword!(bw);
-    syn::custom_keyword!(re);
+    syn::custom_punctuation!(Equals, ==);
+    syn::custom_punctuation!(NotEquals, !=);
+    syn::custom_punctuation!(LessThan, <);
+    syn::custom_punctuation!(GreaterThan, >);
+    syn::custom_punctuation!(LessEquals, <=);
+    syn::custom_punctuation!(GreaterEquals, >=);
+    syn::custom_punctuation!(Regex, ~);
 }
 
 #[allow(dead_code)]
 pub(crate) enum RelOp {
-    Eq(op::eq),
-    Ne(op::ne),
-    Lt(op::lt),
-    Le(op::le),
-    Gt(op::gt),
-    Ge(op::ge),
-    Bw(op::bw),
-    Re(op::re),
+    Eq(op::Equals),
+    Ne(op::NotEquals),
+    Lt(op::LessThan),
+    Le(op::LessEquals),
+    Gt(op::GreaterThan),
+    Ge(op::GreaterEquals),
+    Re(op::Regex),
 }
 
 impl Parse for RelOp {
     fn parse(input: ParseStream) -> Result<Self> {
-        if input.peek(op::eq) {
+        if input.peek(op::Equals) {
             input
                 .parse()
                 .map(RelOp::Eq)
-        } else if input.peek(op::ne) {
+        } else if input.peek(op::NotEquals) {
             input
                 .parse()
                 .map(RelOp::Ne)
-        } else if input.peek(op::le) {
+        } else if input.peek(op::LessEquals) {
             input
                 .parse()
                 .map(RelOp::Le)
-        } else if input.peek(op::ge) {
+        } else if input.peek(op::GreaterEquals) {
             input
                 .parse()
                 .map(RelOp::Ge)
-        } else if input.peek(op::lt) {
+        } else if input.peek(op::LessThan) {
             input
                 .parse()
                 .map(RelOp::Lt)
-        } else if input.peek(op::gt) {
+        } else if input.peek(op::GreaterThan) {
             input
                 .parse()
                 .map(RelOp::Gt)
-        } else if input.peek(op::bw) {
-            input
-                .parse()
-                .map(RelOp::Bw)
-        } else if input.peek(op::re) {
+        } else if input.peek(op::Regex) {
             input
                 .parse()
                 .map(RelOp::Re)
@@ -112,7 +106,7 @@ impl Parse for DryMatchArgs {
 pub(crate) struct FieldArgs {
     pub(crate) field: Ident,
     pub(crate) colon_token: Token![:],
-    pub(crate) operator: RelOp,
+    pub(crate) operator: Option<RelOp>,
     pub(crate) value: syn::Expr,
 }
 
@@ -120,7 +114,7 @@ impl Parse for FieldArgs {
     fn parse(input: ParseStream) -> Result<Self> {
         let field = input.parse::<Ident>()?;
         let colon_token = input.parse::<Token![:]>()?;
-        let operator = input.parse::<RelOp>()?;
+        let operator = if Expr::peek(&input) { None } else { Some(input.parse::<RelOp>()?) };
         let value = input.parse::<syn::Expr>()?;
         Ok(FieldArgs { field, colon_token, operator, value })
     }
