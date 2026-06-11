@@ -2,9 +2,9 @@
 #![deny(missing_docs)]
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::parse_macro_input;
+use syn::{parse_macro_input, Expr};
 
-use crate::parsers::DryMatchArgs;
+use crate::parsers::{DryMatchArgs, RelOp};
 
 mod parsers;
 
@@ -25,7 +25,7 @@ mod parsers;
 /// #[test]
 /// fn test_dry_match() {
 ///     let user = User { name: "John".to_string(), age: 30 };
-///     dry_match!(user is { name: == "John", age: > 25 });
+///     dry_match!(user is { name: eq "John", age: gt 25 });
 /// }
 /// ```
 #[proc_macro]
@@ -43,13 +43,22 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
         let operator = args.operator;
         let value = args.value;
         let matcher = match operator {
-            syn::BinOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
-            syn::BinOp::Gt(_) => quote! { caramelo::matchers::gt(#value) },
-            syn::BinOp::Lt(_) => quote! { caramelo::matchers::lt(#value) },
-            syn::BinOp::Ge(_) => quote! { caramelo::matchers::ge(#value) },
-            syn::BinOp::Le(_) => quote! { caramelo::matchers::le(#value) },
-            syn::BinOp::Ne(_) => quote! { caramelo::matchers::ne(#value) },
-            _ => panic!("Unsupported operator"),
+            RelOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
+            RelOp::Gt(_) => quote! { caramelo::matchers::gt(#value) },
+            RelOp::Lt(_) => quote! { caramelo::matchers::lt(#value) },
+            RelOp::Ge(_) => quote! { caramelo::matchers::ge(#value) },
+            RelOp::Le(_) => quote! { caramelo::matchers::le(#value) },
+            RelOp::Ne(_) => quote! { caramelo::matchers::ne(#value) },
+            RelOp::Re(_) => quote! { caramelo::matchers::contains(#value) },
+            RelOp::Bw(_) => {
+                if let Expr::Tuple(tuple) = &value {
+                    let first = &tuple.elems[0];
+                    let second = &tuple.elems[1];
+                    quote! { caramelo::matchers::between(#first, #second) }
+                } else {
+                    panic!("between operator requires a tuple");
+                }
+            }
         };
         expectations.push(quote! {
           caramelo::expect(#variable.#field_name()).to_be(#matcher);

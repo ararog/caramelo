@@ -60,6 +60,16 @@ fn test_is_panic() {
 }
 ```
 
+## Subprojects
+
+### [caramelo](https://github.com/ararog/caramelo)
+
+Base crate for caramelo.
+
+### [caramelo-macros](https://github.com/ararog/caramelo/tree/develop/caramelo-macros)
+
+A crate with collection of convenience macros for caramelo.
+
 ## License
 
 Licensed under either of

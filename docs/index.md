@@ -54,6 +54,13 @@ fn test_is_panic() {
 }
 ```
 
+## Crates
+
+| Crate | Description | Documentation |
+|-------|-------------|---------------|
+| [caramelo](./caramelo) | Core testing framework | [![docs.rs](https://img.shields.io/docsrs/caramelo/latest)](https://docs.rs/caramelo) |
+| [caramelo-macros](./caramelo-macros) | Convenience macros | [![docs.rs](https://img.shields.io/docsrs/caramelo-macros/latest)](https://docs.rs/caramelo-macros) |
+
 ## Examples
 
 Check out the [examples](./examples.md) for complete examples of how to use Caramelo in your projects.
