@@ -10,6 +10,14 @@ Do you find yourself writing a lot of repetitive test code? Do you want to make 
 
 Type less, test more!
 
+### Features
+
+- **Match only what matters**: Focus on the fields you care about, ignore the rest
+- **Simple syntax**: Use `==`, `>`, `<`, `>=`, `<=`, `!=`, and `~` (regex) operators
+- **Range matching**: Use `..=` for inclusive ranges (e.g., `25..=35`)
+- **Regex matching**: Use `~` for pattern matching (e.g., `~ ".*hn"`)
+- **Clear error messages**: Panics with descriptive messages when expectations aren't met
+
 ## Quick Start
 
 Add caramelo-macros to your `Cargo.toml`:
@@ -47,7 +55,7 @@ impl User {
 fn test_caramelo() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { name: eq "John", age: gt 32 });
+    dry_match!(user is { name: == "John", age: > 32 });
 }
 ```
 

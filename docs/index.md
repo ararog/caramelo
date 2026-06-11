@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Caramelo - The elegant full-stack web framework
+title: Caramelo - Unit testing framework
 nav_order: 1
-description: "🌟 The elegant full-stack web framework that makes Rust web development effortless"
+description: "Caramelo is a comprehensive, production-ready unit testing framework for Rust with a focus on simplicity and ease of use."
 permalink: /
 ---
 <div align="center">
