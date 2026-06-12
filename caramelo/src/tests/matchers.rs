@@ -2,7 +2,9 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 
 use crate::{
     expect,
-    matchers::{any, between, contains, empty, eq, ge, gt, item, le, len, length, lt, ne},
+    matchers::{
+        any, contains, empty, eq, ge, gt, in_range_inc, in_range_to, item, le, len, length, lt, ne,
+    },
 };
 
 #[test]
@@ -163,14 +165,25 @@ fn test_not_any_char() {
 }
 
 #[test]
-fn test_between() {
-    expect(5).to_be(between(1, 10));
+fn test_in_range_inc() {
+    expect(5).to_be(in_range_inc(1, 10));
 }
 
 #[test]
 #[should_panic(expected = "Expected 1 to be between 2 and 10")]
-fn test_not_between() {
-    expect(1).to_be(between(2, 10));
+fn test_not_in_range_inc() {
+    expect(1).to_be(in_range_inc(2, 10));
+}
+
+#[test]
+fn test_in_range_to() {
+    expect(5).to_be(in_range_to(1, 10));
+}
+
+#[test]
+#[should_panic(expected = "Expected 10 to be between 2 and 10 (exclusive)")]
+fn test_not_in_range_to() {
+    expect(10).to_be(in_range_to(2, 10));
 }
 
 #[test]

@@ -4,9 +4,11 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Expr};
 
-use crate::parsers::{DryMatchArgs, RelOp};
+use crate::{DryMatch, RelOp};
 
-mod parsers;
+pub(crate) use dry_match::*;
+
+mod dry_match;
 
 /// dry_match! is a macro that allows you to write tests in a more readable way.
 /// Keep in mind your struct must implement accessor methods that return the same type as the field.
@@ -30,7 +32,7 @@ mod parsers;
 /// ```
 #[proc_macro]
 pub fn dry_match(item: TokenStream) -> TokenStream {
-    let args = parse_macro_input!(item as DryMatchArgs);
+    let args = parse_macro_input!(item as DryMatch);
     let variable = match args.variable {
         Some(ident) => ident,
         None => panic!("variable is required"),
@@ -39,7 +41,7 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
     let fields = args.fields;
     let mut expectations = Vec::new();
     for args in fields {
-        let field_name = args.field;
+        let references = args.references;
         let operator = args.operator;
         let value = args.value;
         let matcher = match operator {
@@ -63,17 +65,25 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
                             .end
                             .as_ref()
                             .unwrap();
-                        quote! { caramelo::matchers::between(#start, #end) }
+                        quote! { caramelo::matchers::in_range_inc(#start, #end) }
                     }
                     syn::RangeLimits::HalfOpen(_) => {
-                        panic!("range must be inclusive when no operator is specified")
+                        let start = expr_range
+                            .start
+                            .as_ref()
+                            .unwrap();
+                        let end = expr_range
+                            .end
+                            .as_ref()
+                            .unwrap();
+                        quote! { caramelo::matchers::in_range_to(#start, #end) }
                     }
                 },
                 _ => panic!("value must be a range when no operator is specified"),
             },
         };
         expectations.push(quote! {
-          caramelo::expect(#variable.#field_name()).to_be(#matcher);
+          caramelo::expect(#variable #(#references)*).to_be(#matcher);
         });
     }
 

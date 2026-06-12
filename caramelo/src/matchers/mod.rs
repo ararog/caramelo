@@ -12,7 +12,7 @@ mod less_than;
 mod not_equal;
 
 pub use any::any;
-pub use between::between;
+pub use between::*;
 pub use contains::contains;
 pub use empty::empty;
 pub use equals::eq;

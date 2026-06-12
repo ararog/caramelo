@@ -1,5 +1,4 @@
 use crate::Matcher;
-use std::fmt::Debug;
 
 /// Creates a matcher that matches values containing the given string
 ///
@@ -22,13 +21,21 @@ pub fn contains(value: &str) -> Contains {
 /// Matcher that matches values equal to the given value
 pub struct Contains(regex::Regex);
 
-impl<T> Matcher<T> for Contains
-where
-    T: ToString + Debug,
-{
-    fn matches(&self, value: &T) -> bool {
+impl Matcher<String> for Contains {
+    fn matches(&self, value: &String) -> bool {
         self.0
-            .is_match(&value.to_string())
+            .is_match(value)
+    }
+
+    fn description(&self) -> String {
+        format!("contains {:?}", self.0)
+    }
+}
+
+impl Matcher<&str> for Contains {
+    fn matches(&self, value: &&str) -> bool {
+        self.0
+            .is_match(value)
     }
 
     fn description(&self) -> String {
