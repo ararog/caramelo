@@ -2,6 +2,7 @@ use crate::Matcher;
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values between min and max (exclusive)
+/// It is the same as 1..10 in Rust
 ///
 /// # Examples
 ///
@@ -16,6 +17,7 @@ pub fn in_range_to<T>(min: T, max: T) -> Between<T> {
 }
 
 /// Creates a matcher that matches values between min and max (inclusive)
+/// It is the same as 1..=10 in Rust
 ///
 /// # Examples
 ///

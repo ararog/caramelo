@@ -55,7 +55,7 @@ impl User {
 fn test_caramelo() {
     let user = User { name: "John".to_string(), age: 30 };
 
-    dry_match!(user is { name: == "John", age: > 32 });
+    dry_match!(user, User { name: == "John", age: > 32 });
 }
 ```
 

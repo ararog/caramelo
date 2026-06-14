@@ -3,7 +3,8 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 use crate::{
     expect,
     matchers::{
-        any, contains, empty, eq, ge, gt, in_range_inc, in_range_to, item, le, len, length, lt, ne,
+        _in_, any, contains, empty, eq, ge, gt, in_range_inc, in_range_to, item, le, len, length,
+        lt, ne,
     },
 };
 
@@ -289,4 +290,15 @@ fn test_and_failure() {
     expect(5)
         .to_be(gt(1))
         .and(lt(4));
+}
+
+#[test]
+fn test_in() {
+    expect(5).to_be(_in_(vec![1, 2, 3, 4, 5]));
+}
+
+#[test]
+#[should_panic(expected = "Expected 6 to be in [1, 2, 3, 4, 5]")]
+fn test_in_failure() {
+    expect(6).to_be(_in_(vec![1, 2, 3, 4, 5]));
 }

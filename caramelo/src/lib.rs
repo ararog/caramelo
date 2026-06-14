@@ -25,6 +25,8 @@ pub enum MatchType {
     ToHave,
     /// Represents "and" match operation
     And,
+    /// Represents "or" match operation
+    Or,
 }
 
 impl MatchType {
@@ -34,6 +36,7 @@ impl MatchType {
             MatchType::ToBe => "to be",
             MatchType::ToHave => "to have",
             MatchType::And => "",
+            MatchType::Or => "",
         }
     }
 }
@@ -170,6 +173,23 @@ where
         M: Matcher<T>,
     {
         self.assert(matcher, MatchType::And);
+        self
+    }
+
+    /// Asserts that the value matches the given matcher using "or" syntax
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use caramelo::{expect, matchers::{eq, gt}};
+    ///
+    /// expect(5).to_be(eq(5)).or(gt(0));
+    /// ```
+    pub fn or<M>(mut self, matcher: M) -> Self
+    where
+        M: Matcher<T>,
+    {
+        self.assert(matcher, MatchType::Or);
         self
     }
 }
