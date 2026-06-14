@@ -1,5 +1,6 @@
 use caramelo_macros::dry_match;
 
+#[derive(Debug)]
 struct User {
     name: String,
     age: u32,
@@ -102,6 +103,12 @@ fn test_caramelo_failure() {
 fn test_nested() {
     let user = create_user();
     dry_match!(user, User { name: == "John", city.state(): == "NY" });
+}
+
+#[test]
+fn test_method_nested() {
+    let user = create_user();
+    dry_match!(user, User { name(): == "John", city().state(): == "NY" });
 }
 
 #[test]

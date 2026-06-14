@@ -13,29 +13,25 @@ use syn::{
 #[allow(clippy::enum_variant_names)]
 pub(crate) enum Ref {
     RefField(RefField),
-    RefDotField(RefDotField),
-    RefDotMethod(RefDotMethod),
+    RefMethod(RefMethod),
 }
 
 impl Ref {
     pub(crate) fn peek(input: ParseStream) -> bool {
-        RefField::peek(input) || RefDotField::peek(input) || RefDotMethod::peek(input)
+        RefField::peek(input) || RefMethod::peek(input)
     }
 }
 
 impl Parse for Ref {
     fn parse(input: ParseStream) -> Result<Self> {
-        if RefDotMethod::peek(input) {
-            let method = input.parse::<RefDotMethod>()?;
-            Ok(Ref::RefDotMethod(method))
-        } else if RefDotField::peek(input) {
-            let field = input.parse::<RefDotField>()?;
-            Ok(Ref::RefDotField(field))
+        if RefMethod::peek(input) {
+            let method = input.parse::<RefMethod>()?;
+            Ok(Ref::RefMethod(method))
         } else if RefField::peek(input) {
             let field = input.parse::<RefField>()?;
             Ok(Ref::RefField(field))
         } else {
-            Err(input.error("expected field, dot field, or dot method"))
+            Err(input.error("expected field or method"))
         }
     }
 }
@@ -44,8 +40,7 @@ impl quote::ToTokens for Ref {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         match self {
             Ref::RefField(field) => field.to_tokens(tokens),
-            Ref::RefDotField(field) => field.to_tokens(tokens),
-            Ref::RefDotMethod(method) => method.to_tokens(tokens),
+            Ref::RefMethod(method) => method.to_tokens(tokens),
         }
     }
 }
