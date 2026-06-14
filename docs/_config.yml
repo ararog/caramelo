@@ -1,5 +1,5 @@
-title: Sofie
-baseurl: "/sofie" # the subpath of your site, e.g. /blog
+title: Caramelo
+baseurl: "/caramelo" # the subpath of your site, e.g. /blog
 url: "https://ararog.github.io" # the base hostname & protocol for your site
 
 theme: jekyll-theme-cayman
