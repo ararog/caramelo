@@ -9,7 +9,7 @@
 caramelo = { version = "0.1.0" }
 ```
 
-## Quickstart
+## Basic usage:
 
 ```rust
 use caramelo::{expect, matchers::eq, assertions::Is};
@@ -40,6 +40,13 @@ fn test_is_panic() {
     "a".is("b");
 }
 ```
+
+## Crates
+
+| Crate | Description | Documentation |
+|-------|-------------|---------------|
+| [caramelo](./caramelo) | Core testing framework | [![docs.rs](https://img.shields.io/docsrs/caramelo/latest)](https://docs.rs/caramelo) |
+| [caramelo-macros](./caramelo-macros) | Convenience macros | [![docs.rs](https://img.shields.io/docsrs/caramelo-macros/latest)](https://docs.rs/caramelo-macros) |
 
 ## Blog Posts
 
