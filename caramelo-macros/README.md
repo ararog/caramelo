@@ -10,6 +10,106 @@ Do you find yourself writing a lot of repetitive test code? Do you want to make 
 
 Type less, test more!
 
+### Rationale
+
+`dry_match!` primary goal is to reduce boilerplate code in tests by allowing you to match only the fields you care about, ignoring the rest.
+
+So instead of:
+
+```rust, compile_fail
+assert_eq!(user.name, "John");
+assert_eq!(user.age, 30);
+```
+
+You can write:
+
+```rust, compile_fail
+dry_match!(user, User { name: == "John", age: == 30 });
+```
+
+Well, this is a simple example, but you can do much more with `dry_match!`. For example, you can use ranges, pipes, and regex patterns.
+
+Where you usualy write:
+
+```rust, compile_fail
+assert!(user.age == 18 || user.age == 65);
+```
+
+You can write:
+
+```rust, compile_fail
+dry_match!(user, User { age: 18 | 65 });
+```
+
+You can also match nested structures:
+
+```rust, compile_fail
+use caramelo_macros::drymatch;
+
+struct Address {
+    street: String,
+    city: String,
+}
+
+impl Address {
+    pub fn city(&self) -> &str {
+        &self.city
+    }
+}
+
+struct User {
+    name: String,
+    age: u32,
+    address: Address,
+}
+
+impl User {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn age(&self) -> u32 {
+        self.age
+    }
+
+    pub fn address(&self) -> &Address {
+        &self.address
+    }
+}
+
+#[test]
+fn test_nested() {
+    let user = User {
+        name: "John".to_string(),
+        age: 30,
+        address: Address {
+            street: "123 Main St".to_string(),
+            city: "Anytown".to_string(),
+        },
+    };
+
+    dry_match!(user, User { 
+        name: == "John", 
+        age: == 30,
+        address.city: == "Anytown"
+    });
+
+    // but you can also have method calls
+
+    dry_match!(user, User { 
+        name: == "John", 
+        age: == 30,
+        address.city(): == "Anytown"
+    });
+
+    // which is usually written like this:
+
+    assert_eq!(user.name(), "John");
+    assert_eq!(user.age(), 30);
+    assert_eq!(user.address().city(), "Anytown");
+}
+```
+
 ### Features
 
 - **Match only what matters**: Focus on the fields you care about, ignore the rest
