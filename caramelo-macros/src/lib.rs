@@ -74,7 +74,7 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
                                     .as_deref();
                                 match (start, end) {
                                     (Some(start), Some(end)) => {
-                                        quote! { caramelo::matchers::in_range_inc(#start, #end) }
+                                        quote! { caramelo::matchers::in_inc(#start, #end) }
                                     }
                                     (None, Some(end)) => {
                                         quote! { caramelo::matchers::le(#end) }
@@ -91,7 +91,7 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
                                     .as_deref();
                                 match (start, end) {
                                     (Some(start), Some(end)) => {
-                                        quote! { caramelo::matchers::in_range_to(#start, #end) }
+                                        quote! { caramelo::matchers::in_exc(#start, #end) }
                                     }
                                     (Some(start), None) => {
                                         quote! { caramelo::matchers::gt(#start) }

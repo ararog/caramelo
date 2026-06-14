@@ -3,7 +3,7 @@ use proc_macro2::{Punct, Spacing, TokenStream, TokenTree};
 use quote::TokenStreamExt;
 use syn::{
     parse::{Parse, ParseStream},
-    Expr, Lit, Result, Token,
+    Expr, Ident, Lit, Result, Token,
 };
 
 /// Parsed condition expression
@@ -83,20 +83,20 @@ impl quote::ToTokens for Value {
 ///
 /// * `items` - The items to match against
 pub(crate) struct PipedOr {
-    pub(crate) items: Vec<Lit>,
+    pub(crate) items: Vec<PipeItem>,
 }
 
 impl PipedOr {
     pub(crate) fn peek(input: ParseStream) -> bool {
-        input.peek(Lit) && input.peek2(Token![|])
+        PipeItem::peek(input) && input.peek2(Token![|])
     }
 }
 
 impl Parse for PipedOr {
     fn parse(input: ParseStream) -> Result<Self> {
         let mut items = Vec::new();
-        while input.peek(Lit) {
-            items.push(input.parse::<Lit>()?);
+        while PipeItem::peek(input) {
+            items.push(input.parse()?);
 
             if input.peek(Token![|]) {
                 input.parse::<Token![|]>()?;
@@ -119,6 +119,42 @@ impl quote::ToTokens for PipedOr {
                 tokens.append(TokenTree::Punct(Punct::new('|', Spacing::Alone)));
             }
             item.to_tokens(tokens);
+        }
+    }
+}
+
+/// Parsed pipe item
+///
+/// # Arguments
+///
+/// * `PipeItemLit` - The literal value
+/// * `PipeItemIdent` - The identifier
+pub(crate) enum PipeItem {
+    PipeItemLit(Lit),
+    PipeItemIdent(Ident),
+}
+
+impl PipeItem {
+    pub(crate) fn peek(input: ParseStream) -> bool {
+        input.peek(Lit) || input.peek(Ident)
+    }
+}
+
+impl Parse for PipeItem {
+    fn parse(input: ParseStream) -> Result<Self> {
+        if input.peek(Lit) {
+            Ok(PipeItem::PipeItemLit(input.parse()?))
+        } else {
+            Ok(PipeItem::PipeItemIdent(input.parse()?))
+        }
+    }
+}
+
+impl quote::ToTokens for PipeItem {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        match self {
+            PipeItem::PipeItemLit(lit) => lit.to_tokens(tokens),
+            PipeItem::PipeItemIdent(ident) => ident.to_tokens(tokens),
         }
     }
 }

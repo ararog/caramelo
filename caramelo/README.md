@@ -9,8 +9,8 @@ Caramelo (caramel in Portuguese) is a comprehensive, production-ready unit testi
 ## Matchers
 
 - logical: eq, ne, le, lt, ge and gt
-- range: between
-- array: item, len
+- range: in_inc, in_exc
+- array: item, len, \_in_
 - wildcard: any
 - string: contains, starts-with, ends-with
 - http: method, path, header, header_value, body

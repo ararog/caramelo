@@ -9,8 +9,8 @@
 Several useful matchers:
 
 - logical: eq, ne, le, lt, ge and gt
-- range: between
-- array: item, len
+- range: in_to, in_inc
+- array: item, len, \_in_
 - wildcard: any
 - string: contains, starts-with, ends-with
 

@@ -8,11 +8,11 @@ use std::fmt::Debug;
 ///
 /// ```
 /// use caramelo::expect;
-/// use caramelo::matchers::in_range_to;
+/// use caramelo::matchers::in_exc;
 ///
-/// expect(5).to_be(in_range_to(1, 10));
+/// expect(5).to_be(in_exc(1, 10));
 /// ```
-pub fn in_range_to<T>(min: T, max: T) -> Between<T> {
+pub fn in_exc<T>(min: T, max: T) -> Between<T> {
     Between { min, max, inclusive: false }
 }
 
@@ -23,11 +23,11 @@ pub fn in_range_to<T>(min: T, max: T) -> Between<T> {
 ///
 /// ```
 /// use caramelo::expect;
-/// use caramelo::matchers::in_range_inc;
+/// use caramelo::matchers::in_inc;
 ///
-/// expect(5).to_be(in_range_inc(1, 10));
+/// expect(5).to_be(in_inc(1, 10));
 /// ```
-pub fn in_range_inc<T>(min: T, max: T) -> Between<T> {
+pub fn in_inc<T>(min: T, max: T) -> Between<T> {
     Between { min, max, inclusive: true }
 }
 

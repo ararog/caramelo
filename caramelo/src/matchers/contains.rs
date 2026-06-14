@@ -19,6 +19,15 @@ pub fn contains(value: &str) -> Contains {
 }
 
 /// Matcher that matches values equal to the given value
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::contains;
+///
+/// expect("hello").to(contains("ell"));
+/// ```
 pub struct Contains(regex::Regex);
 
 impl Matcher<String> for Contains {

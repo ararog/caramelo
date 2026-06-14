@@ -14,7 +14,8 @@ Type less, test more!
 
 - **Match only what matters**: Focus on the fields you care about, ignore the rest
 - **Simple syntax**: Use `==`, `>`, `<`, `>=`, `<=`, `!=`, and `~` (regex) operators
-- **Range matching**: Use `..=` for inclusive ranges (e.g., `25..=35`)
+- **Range matching**: Use `1..=2, 1..2, 1.., ..2 and ..=2` for inclusive and exclusive ranges
+- **Piped matching**: Use `|` to match any of the values (e.g., `age: 25 | 30`)
 - **Regex matching**: Use `~` for pattern matching (e.g., `~ ".*hn"`)
 - **Clear error messages**: Panics with descriptive messages when expectations aren't met
 

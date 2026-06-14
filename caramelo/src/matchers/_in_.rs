@@ -3,11 +3,29 @@ use std::{collections::HashSet, fmt::Debug};
 use crate::Matcher;
 
 /// Creates a matcher that checks if a value is in a collection.
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::_in_;
+///
+/// expect("John").to_be(_in_(vec!["John", "Jane"]));
+/// ```
 pub fn _in_<T>(items: T) -> In<T> {
     In { items }
 }
 
 /// A matcher that checks if a value is in a collection.
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::expect;
+/// use caramelo::matchers::_in_;
+///
+/// expect("John").to_be(_in_(vec!["John", "Jane"]));
+/// ```
 pub struct In<T> {
     items: T,
 }

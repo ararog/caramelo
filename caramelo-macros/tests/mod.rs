@@ -1,14 +1,15 @@
 use caramelo_macros::dry_match;
 
-struct City {
-    name: String,
-    state: String,
-}
-
 struct User {
     name: String,
     age: u32,
     city: City,
+}
+
+#[derive(Debug, PartialEq)]
+struct City {
+    name: String,
+    state: String,
 }
 
 #[allow(dead_code)]
@@ -104,14 +105,28 @@ fn test_nested() {
 }
 
 #[test]
-fn test_set() {
+fn test_pipe() {
     let user = create_user();
     dry_match!(user, User { name: "John" | "Jane" });
 }
 
 #[test]
+fn test_pipe_integer() {
+    let user = create_user();
+    dry_match!(user, User { age: 25 | 30 });
+}
+
+#[test]
+fn test_pipe_object() {
+    let user = create_user();
+    let new_york = City { name: "New York".to_string(), state: "NY".to_string() };
+    let los_angeles = City { name: "Los Angeles".to_string(), state: "CA".to_string() };
+    dry_match!(user, User { city: new_york | los_angeles });
+}
+
+#[test]
 #[should_panic = "Expected \"John\" to be in [\"Michael\", \"Jane\"]"]
-fn test_set_fail() {
+fn test_pipe_fail() {
     let user = create_user();
     dry_match!(user, User { name: "Michael" | "Jane" });
 }
