@@ -22,11 +22,19 @@ impl Parse for Accessor {
         while Ref::peek(input) {
             references.push(input.parse::<Ref>()?);
         }
+        if references.is_empty() {
+            panic!("Expected at least one reference");
+        }
+
         let colon_token = input.parse::<Token![:]>()?;
         let mut conditions = Vec::new();
         while Condition::peek(input) {
             conditions.push(input.parse::<Condition>()?);
         }
+        if conditions.is_empty() {
+            panic!("Expected at least one condition");
+        }
+
         Ok(Accessor { references, colon_token, conditions })
     }
 }

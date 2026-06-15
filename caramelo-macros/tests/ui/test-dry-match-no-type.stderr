@@ -1,0 +1,7 @@
+error: proc macro panicked
+ --> tests/ui/test-dry-match-no-type.rs:9:5
+  |
+9 |     dry_match!(user, { name: "Jane" });
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: Expected type

@@ -1,0 +1,7 @@
+error: proc macro panicked
+ --> tests/ui/test-dry-match-no-reference.rs:9:5
+  |
+9 |     dry_match!(user, User { 2: });
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: Expected at least one reference

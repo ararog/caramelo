@@ -1,0 +1,7 @@
+error: proc macro panicked
+ --> tests/ui/test-dry-match-no-variable.rs:4:5
+  |
+4 |     dry_match!(1, 2);
+  |     ^^^^^^^^^^^^^^^^
+  |
+  = help: message: Expected variable

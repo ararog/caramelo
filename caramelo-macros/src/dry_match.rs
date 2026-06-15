@@ -28,7 +28,7 @@ impl Parse for DryMatch {
                 variable = Some(ident);
             }
             Err(e) => {
-                panic!("Expected variable: {}", e);
+                panic!("Expected variable");
             }
         }
 
@@ -37,7 +37,7 @@ impl Parse for DryMatch {
                 // ok
             }
             Err(e) => {
-                panic!("Expected ',': {}", e);
+                panic!("Expected ','");
             }
         }
 
@@ -46,13 +46,17 @@ impl Parse for DryMatch {
                 // ok
             }
             Err(e) => {
-                panic!("Expected type: {}", e);
+                panic!("Expected type");
             }
         }
 
         let content;
         let brace_token = syn::braced!(content in input);
         let fields = content.parse_terminated(Accessor::parse, Token![,])?;
+
+        if fields.is_empty() {
+            panic!("Expected at least one accessor");
+        }
 
         Ok(DryMatch { variable, brace_token, fields })
     }

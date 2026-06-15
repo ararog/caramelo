@@ -1,0 +1,7 @@
+error: proc macro panicked
+ --> tests/ui/test-dry-match-no-acessor.rs:9:5
+  |
+9 |     dry_match!(user, User {});
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: Expected at least one accessor
