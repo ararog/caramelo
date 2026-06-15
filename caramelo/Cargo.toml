@@ -1,6 +1,6 @@
 [package]
 name = "caramelo"
-version = "0.1.0"
+version = "0.1.1-beta.1"
 edition.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -16,7 +16,7 @@ rust-version.workspace = true
 all-features = true
 
 [features]
-default = ["http", "json", "xml"]
+default = []
 http = ["dep:http", "dep:http-body", "dep:http-body-util"]
 json = ["dep:sonic-rs", "dep:serde_json", "dep:jsonpath-rust"]
 xml = ["dep:simdxml", "dep:serde", "dep:serde-xml-rs"]

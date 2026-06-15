@@ -18,6 +18,7 @@ pub use contains::contains;
 pub use empty::empty;
 pub use equals::eq;
 pub use greater_than::{ge, gt};
+#[cfg(feature = "http")]
 pub use http::*;
 pub use item::item;
 pub use length::{len, length};
