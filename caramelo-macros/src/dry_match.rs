@@ -1,3 +1,4 @@
+#![allow(unused_variables, unused_assignments, dead_code)]
 use crate::acessor::Accessor;
 use syn::{
     parse::{Parse, ParseStream},
@@ -6,7 +7,6 @@ use syn::{
     Ident, Result, Token, Type,
 };
 
-#[allow(dead_code)]
 /// Parsed dry match expression
 ///
 /// # Arguments
@@ -14,7 +14,7 @@ use syn::{
 /// * `variable` - The variable to match against
 /// * `brace_token` - The brace token
 /// * `fields` - The fields to match against
-pub(crate) struct DryMatch {
+pub struct DryMatch {
     pub(crate) variable: Option<Ident>,
     pub(crate) brace_token: Brace,
     pub(crate) fields: Punctuated<Accessor, Token![,]>,
@@ -27,7 +27,7 @@ impl Parse for DryMatch {
             Ok(ident) => {
                 variable = Some(ident);
             }
-            Err(e) => {
+            Err(_) => {
                 panic!("Expected variable");
             }
         }
@@ -36,7 +36,7 @@ impl Parse for DryMatch {
             Ok(_) => {
                 // ok
             }
-            Err(e) => {
+            Err(_) => {
                 panic!("Expected ','");
             }
         }
@@ -45,7 +45,7 @@ impl Parse for DryMatch {
             Ok(_) => {
                 // ok
             }
-            Err(e) => {
+            Err(_) => {
                 panic!("Expected type");
             }
         }

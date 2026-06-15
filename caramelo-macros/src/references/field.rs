@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use proc_macro2::TokenStream;
 use syn::ext::IdentExt;
 use syn::{
