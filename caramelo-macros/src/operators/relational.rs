@@ -79,7 +79,7 @@ impl Parse for RelOp {
                 .parse()
                 .map(RelOp::Re)
         } else {
-            Err(input.error("Expected binary operator"))
+            Err(input.error("Expected any of ==, !=, <, <=, >, >=, ~"))
         }
     }
 }

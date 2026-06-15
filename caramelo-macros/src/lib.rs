@@ -62,34 +62,35 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
                     RelOp::Ne(_) => quote! { caramelo::matchers::ne(#value) },
                     RelOp::Re(_) => quote! { caramelo::matchers::contains(#value) },
                 },
-                None => match value {
-                    Value::ValueExpr(expr) => match expr {
-                        Expr::Range(expr_range) => match expr_range.limits {
-                            syn::RangeLimits::Closed(_) => {
-                                let start = expr_range
-                                    .start
-                                    .as_deref();
-                                let end = expr_range
-                                    .end
-                                    .as_deref();
-                                match (start, end) {
-                                    (Some(start), Some(end)) => {
-                                        quote! { caramelo::matchers::in_inc(#start, #end) }
+                None => {
+                    match value {
+                        Value::ValueExpr(expr) => match expr {
+                            Expr::Range(expr_range) => match expr_range.limits {
+                                syn::RangeLimits::Closed(_) => {
+                                    let start = expr_range
+                                        .start
+                                        .as_deref();
+                                    let end = expr_range
+                                        .end
+                                        .as_deref();
+                                    match (start, end) {
+                                        (Some(start), Some(end)) => {
+                                            quote! { caramelo::matchers::in_inc(#start, #end) }
+                                        }
+                                        (None, Some(end)) => {
+                                            quote! { caramelo::matchers::le(#end) }
+                                        }
+                                        _ => panic!("Expected closed range: start..=end or ..=end"),
                                     }
-                                    (None, Some(end)) => {
-                                        quote! { caramelo::matchers::le(#end) }
-                                    }
-                                    _ => panic!("start and end must be specified for closed range"),
                                 }
-                            }
-                            syn::RangeLimits::HalfOpen(_) => {
-                                let start = expr_range
-                                    .start
-                                    .as_deref();
-                                let end = expr_range
-                                    .end
-                                    .as_deref();
-                                match (start, end) {
+                                syn::RangeLimits::HalfOpen(_) => {
+                                    let start = expr_range
+                                        .start
+                                        .as_deref();
+                                    let end = expr_range
+                                        .end
+                                        .as_deref();
+                                    match (start, end) {
                                     (Some(start), Some(end)) => {
                                         quote! { caramelo::matchers::in_exc(#start, #end) }
                                     }
@@ -99,24 +100,23 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
                                     (None, Some(end)) => {
                                         quote! { caramelo::matchers::lt(#end) }
                                     }
-                                    _ => panic!(
-                                        "start and end must be specified for half-open range"
-                                    ),
+                                    _ => panic!("Expected half-open range: start..end, start.. or ..end"),
                                 }
-                            }
+                                }
+                            },
+                            _ => panic!("Expected range expression"),
                         },
-                        _ => panic!("unsupported expression type"),
-                    },
-                    Value::ValuePipedOr(piped_or) => {
-                        let items = piped_or
-                            .items
-                            .iter()
-                            .map(|item| {
-                                quote! { #item }
-                            });
-                        quote! { caramelo::matchers::_in_(vec![#(#items),*]) }
+                        Value::ValuePipedOr(piped_or) => {
+                            let items = piped_or
+                                .items
+                                .iter()
+                                .map(|item| {
+                                    quote! { #item }
+                                });
+                            quote! { caramelo::matchers::_in_(vec![#(#items),*]) }
+                        }
                     }
-                },
+                }
             };
             if index == 0 {
                 matches.push(quote! {
