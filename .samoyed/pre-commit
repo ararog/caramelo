@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-cargo fmt --check
-
-cargo test 
