@@ -28,6 +28,10 @@ where
         value.contains(&self.item)
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("item {}", self.item)
     }

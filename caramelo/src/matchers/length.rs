@@ -28,11 +28,24 @@ pub fn len(value: usize) -> Length {
     length(value)
 }
 
+/// Matcher that matches values with a specific length
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::{expect, matchers::length};
+///
+/// expect(vec![1, 2, 3]).to_have(length(3));
+/// ```
 pub struct Length(usize);
 
 impl<T> Matcher<Vec<T>> for Length {
     fn matches(&self, value: &Vec<T>) -> bool {
         self.0 == value.len()
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
     }
 
     fn description(&self) -> String {
@@ -45,6 +58,10 @@ impl<T> Matcher<VecDeque<T>> for Length {
         self.0 == value.len()
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
     }
@@ -53,6 +70,10 @@ impl<T> Matcher<VecDeque<T>> for Length {
 impl<T> Matcher<LinkedList<T>> for Length {
     fn matches(&self, value: &LinkedList<T>) -> bool {
         self.0 == value.len()
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
     }
 
     fn description(&self) -> String {
@@ -65,6 +86,10 @@ impl<K, V> Matcher<HashMap<K, V>> for Length {
         self.0 == value.len()
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
     }
@@ -73,6 +98,10 @@ impl<K, V> Matcher<HashMap<K, V>> for Length {
 impl<K, V> Matcher<BTreeMap<K, V>> for Length {
     fn matches(&self, value: &BTreeMap<K, V>) -> bool {
         self.0 == value.len()
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
     }
 
     fn description(&self) -> String {
@@ -85,6 +114,10 @@ impl<K, V> Matcher<HashSet<K, V>> for Length {
         self.0 == value.len()
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
     }
@@ -93,6 +126,10 @@ impl<K, V> Matcher<HashSet<K, V>> for Length {
 impl<T> Matcher<BTreeSet<T>> for Length {
     fn matches(&self, value: &BTreeSet<T>) -> bool {
         self.0 == value.len()
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
     }
 
     fn description(&self) -> String {

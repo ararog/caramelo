@@ -1,4 +1,5 @@
 mod _in_;
+mod and;
 mod any;
 mod contains;
 mod empty;
@@ -10,18 +11,21 @@ mod item;
 mod length;
 mod less_than;
 mod not_equal;
+mod or;
 mod range;
 
 pub use _in_::*;
-pub use any::any;
-pub use contains::contains;
-pub use empty::empty;
-pub use equals::eq;
-pub use greater_than::{ge, gt};
+pub use and::*;
+pub use any::*;
+pub use contains::*;
+pub use empty::*;
+pub use equals::*;
+pub use greater_than::*;
 #[cfg(feature = "http")]
 pub use http::*;
-pub use item::item;
-pub use length::{len, length};
-pub use less_than::{le, lt};
-pub use not_equal::ne;
+pub use item::*;
+pub use length::*;
+pub use less_than::*;
+pub use not_equal::*;
+pub use or::*;
 pub use range::*;

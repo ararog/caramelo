@@ -1,6 +1,6 @@
 use crate::operators::{LogicOp, RelOp};
 use proc_macro2::{Punct, Spacing, TokenStream, TokenTree};
-use quote::TokenStreamExt;
+use quote::{quote, TokenStreamExt};
 use syn::{
     parse::{Parse, ParseStream},
     Expr, Ident, Lit, Result, Token,
@@ -36,14 +36,74 @@ impl Parse for Condition {
 
 impl quote::ToTokens for Condition {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        if let Some(rel_op) = &self.rel_op {
-            rel_op.to_tokens(tokens);
-        }
-        self.value
-            .to_tokens(tokens);
-        if let Some(logic_op) = &self.logic_op {
-            logic_op.to_tokens(tokens);
-        }
+        let value = &self.value;
+        let matcher = match &self.rel_op {
+            Some(op) => match op {
+                RelOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
+                RelOp::Gt(_) => quote! { caramelo::matchers::gt(#value) },
+                RelOp::Lt(_) => quote! { caramelo::matchers::lt(#value) },
+                RelOp::Ge(_) => quote! { caramelo::matchers::ge(#value) },
+                RelOp::Le(_) => quote! { caramelo::matchers::le(#value) },
+                RelOp::Ne(_) => quote! { caramelo::matchers::ne(#value) },
+                RelOp::Re(_) => quote! { caramelo::matchers::contains(#value) },
+            },
+            None => match &self.value {
+                Value::ValueExpr(expr) => match expr {
+                    Expr::Range(expr_range) => match expr_range.limits {
+                        syn::RangeLimits::Closed(_) => {
+                            let start = expr_range
+                                .start
+                                .as_deref();
+                            let end = expr_range
+                                .end
+                                .as_deref();
+                            match (start, end) {
+                                (Some(start), Some(end)) => {
+                                    quote! { caramelo::matchers::in_inc(#start, #end) }
+                                }
+                                (None, Some(end)) => {
+                                    quote! { caramelo::matchers::le(#end) }
+                                }
+                                _ => panic!("Expected closed range: start..=end or ..=end"),
+                            }
+                        }
+                        syn::RangeLimits::HalfOpen(_) => {
+                            let start = expr_range
+                                .start
+                                .as_deref();
+                            let end = expr_range
+                                .end
+                                .as_deref();
+                            match (start, end) {
+                                (Some(start), Some(end)) => {
+                                    quote! { caramelo::matchers::in_exc(#start, #end) }
+                                }
+                                (Some(start), None) => {
+                                    quote! { caramelo::matchers::gt(#start) }
+                                }
+                                (None, Some(end)) => {
+                                    quote! { caramelo::matchers::lt(#end) }
+                                }
+                                _ => {
+                                    panic!("Expected half-open range: start..end, start.. or ..end")
+                                }
+                            }
+                        }
+                    },
+                    _ => panic!("Expected range expression"),
+                },
+                Value::ValuePipedOr(piped_or) => {
+                    let items = piped_or
+                        .items
+                        .iter()
+                        .map(|item| {
+                            quote! { #item }
+                        });
+                    quote! { caramelo::matchers::_in_(vec![#(#items),*]) }
+                }
+            },
+        };
+        tokens.extend(matcher);
     }
 }
 

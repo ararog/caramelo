@@ -26,6 +26,10 @@ where
         *value > self.0
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         format!("greater than {:?}", self.0)
     }
@@ -54,6 +58,10 @@ where
 {
     fn matches(&self, value: &T) -> bool {
         *value >= self.0
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
     }
 
     fn description(&self) -> String {

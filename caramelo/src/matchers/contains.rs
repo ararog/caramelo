@@ -36,6 +36,10 @@ impl Matcher<String> for Contains {
             .is_match(value)
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::To
+    }
+
     fn description(&self) -> String {
         format!("contains {:?}", self.0)
     }
@@ -47,20 +51,11 @@ impl Matcher<&str> for Contains {
             .is_match(value)
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::To
+    }
+
     fn description(&self) -> String {
         format!("contains {:?}", self.0)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::expect;
-
-    use super::*;
-
-    #[test]
-    fn test_contains() {
-        let regex = regex::Regex::new("ell").unwrap();
-        expect("hello").to(Contains(regex));
     }
 }

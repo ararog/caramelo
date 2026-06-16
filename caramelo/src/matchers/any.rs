@@ -19,6 +19,10 @@ where
         true
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         "any value".to_string()
     }

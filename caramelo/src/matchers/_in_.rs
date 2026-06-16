@@ -39,6 +39,10 @@ where
             .contains(value)
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         format!("in {:?}", self.items)
     }
@@ -48,6 +52,10 @@ impl Matcher<String> for In<Vec<&str>> {
     fn matches(&self, value: &String) -> bool {
         self.items
             .contains(&value.as_str())
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
     }
 
     fn description(&self) -> String {
@@ -62,6 +70,10 @@ where
     fn matches(&self, value: &T) -> bool {
         self.items
             .contains(value)
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
     }
 
     fn description(&self) -> String {

@@ -26,6 +26,10 @@ where
         self.0 != *value
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         format!("not equal to {:?}", self.0)
     }

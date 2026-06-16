@@ -50,6 +50,10 @@ where
         }
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         if self.inclusive {
             format!("between {:?} and {:?}", self.min, self.max)

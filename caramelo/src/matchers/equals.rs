@@ -26,6 +26,10 @@ where
         self.0 == *value
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         format!("equals to {:?}", self.0)
     }
@@ -34,6 +38,10 @@ where
 impl Matcher<String> for Equal<&str> {
     fn matches(&self, value: &String) -> bool {
         self.0 == *value
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
     }
 
     fn description(&self) -> String {

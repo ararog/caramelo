@@ -91,3 +91,10 @@ fn test_pipe_fail() {
     let user = create_user();
     dry_match!(user, User { name: "Michael" | "Jane" });
 }
+
+#[test]
+#[should_panic = "Expected \"John\" to be equals to \"Joha\" and contains Regex(\"A.*\")"]
+fn test_and_failure() {
+    let user = create_user();
+    dry_match!(user, User { name: == "Joha" and ~ "A.*", age: > 29 });
+}

@@ -1,5 +1,7 @@
 #![allow(unused_variables, unused_assignments, dead_code)]
-use crate::acessor::Accessor;
+use crate::{acessor::Accessor, operators::LogicOp};
+use proc_macro2::TokenStream;
+use quote::quote;
 use syn::{
     parse::{Parse, ParseStream},
     punctuated::Punctuated,
@@ -59,5 +61,53 @@ impl Parse for DryMatch {
         }
 
         Ok(DryMatch { variable, brace_token, fields })
+    }
+}
+
+impl quote::ToTokens for DryMatch {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let mut expectations = Vec::new();
+        let variable = &self.variable;
+        let fields = &self.fields;
+        for field in fields {
+            let references = &field.references;
+            let conditions = &field.conditions;
+            let mut and_conditions = Vec::new();
+            let mut or_conditions = Vec::new();
+            let logic_operator = conditions
+                .first()
+                .and_then(|c| c.logic_op.as_ref());
+            for condition in conditions.iter() {
+                if let Some(operator) = logic_operator {
+                    match operator {
+                        LogicOp::LogicOpAnd(_) => {
+                            and_conditions.push(condition);
+                        }
+                        LogicOp::LogicOpOr(_) => {
+                            or_conditions.push(condition);
+                        }
+                    }
+                }
+            }
+            if !and_conditions.is_empty() {
+                expectations.push(quote! {
+                    caramelo::expect(#variable #(#references)*).to_self(caramelo::and!(#(#and_conditions),*));
+                });
+            } else if !or_conditions.is_empty() {
+                expectations.push(quote! {
+                    caramelo::expect(#variable #(#references)*).to_self(caramelo::or!(#(#or_conditions),*));
+                });
+            } else {
+                expectations.push(quote! {
+                    caramelo::expect(#variable #(#references)*).to_self(#(#conditions),*);
+                });
+            }
+        }
+
+        let expanded = quote! {
+            #(#expectations)*
+        };
+
+        tokens.extend(expanded);
     }
 }

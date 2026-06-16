@@ -27,6 +27,10 @@ where
         *value == T::default()
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToBe
+    }
+
     fn description(&self) -> String {
         "empty".to_owned()
     }
