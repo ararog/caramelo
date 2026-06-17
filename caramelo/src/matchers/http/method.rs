@@ -74,6 +74,10 @@ impl Matcher<Request> for Method {
         self.0 == value.method()
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("method matching {}", self.0)
     }

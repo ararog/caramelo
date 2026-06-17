@@ -54,6 +54,10 @@ impl Matcher<Request> for Query {
             .is_match(value.path())
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("query matching {:?}", self.0)
     }

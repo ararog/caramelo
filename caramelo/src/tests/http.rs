@@ -1,5 +1,5 @@
 use crate::{
-    expect,
+    and, expect,
     http::Request,
     matchers::{header, header_value, method, path},
 };
@@ -21,7 +21,7 @@ fn test_path_matcher_panic() {
         .empty()
         .unwrap();
 
-    expect(request).to_have(path(r"^/api/.*$"));
+    expect(request).to_have(and!(path(r"^/api/.*$"), method(Method::GET)));
 }
 
 #[test]
@@ -50,9 +50,7 @@ fn test_method_and_path_matcher_panic() {
         .empty()
         .unwrap();
 
-    expect(request)
-        .to_have(method(Method::POST))
-        .and(path(r"^/api/posts$"));
+    expect(request).to_have(and!(method(Method::POST), path(r"^/api/posts$")));
 }
 
 #[test]

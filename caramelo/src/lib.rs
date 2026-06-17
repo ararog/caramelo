@@ -173,7 +173,7 @@ pub trait Matcher<T> {
 /// ```
 macro_rules! and {
     ($($matcher:expr),*) => {
-        caramelo::matchers::and(vec![$(Box::new($matcher)),*])
+        $crate::matchers::and(vec![$(Box::new($matcher)),*])
     };
 }
 
@@ -189,6 +189,6 @@ macro_rules! and {
 /// ```
 macro_rules! or {
     ($($matcher:expr),*) => {
-        caramelo::matchers::or(vec![$(Box::new($matcher)),*])
+        $crate::matchers::or(vec![$(Box::new($matcher)),*])
     };
 }

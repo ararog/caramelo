@@ -85,6 +85,10 @@ impl Matcher<Request> for Header {
             .contains_key(&self.0)
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("header matching {}", self.0)
     }
@@ -153,6 +157,10 @@ impl Matcher<Request> for HeaderValue {
                         .unwrap_or(""),
                 )
             })
+    }
+
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
     }
 
     fn description(&self) -> String {

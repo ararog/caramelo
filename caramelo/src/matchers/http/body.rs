@@ -61,6 +61,10 @@ impl Matcher<Request> for Body {
         }
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("body contents matching {:?}", self.0)
     }
@@ -125,6 +129,10 @@ pub(crate) mod json {
             }
         }
 
+        fn matcher_type(&self) -> crate::MatchType {
+            crate::MatchType::ToHave
+        }
+
         fn description(&self) -> String {
             format!("body contents matching {}", self.0)
         }
@@ -185,6 +193,10 @@ pub(crate) mod json {
             } else {
                 false
             }
+        }
+
+        fn matcher_type(&self) -> crate::MatchType {
+            crate::MatchType::ToHave
         }
 
         fn description(&self) -> String {
@@ -273,6 +285,10 @@ pub(crate) mod xml {
             }
         }
 
+        fn matcher_type(&self) -> crate::MatchType {
+            crate::MatchType::ToHave
+        }
+
         fn description(&self) -> String {
             format!("body contents matching {}", self.0)
         }
@@ -333,6 +349,10 @@ pub(crate) mod xml {
             } else {
                 false
             }
+        }
+
+        fn matcher_type(&self) -> crate::MatchType {
+            crate::MatchType::ToHave
         }
 
         fn description(&self) -> String {

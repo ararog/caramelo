@@ -54,6 +54,10 @@ impl Matcher<Request> for Path {
             .is_match(value.path())
     }
 
+    fn matcher_type(&self) -> crate::MatchType {
+        crate::MatchType::ToHave
+    }
+
     fn description(&self) -> String {
         format!("path matching {:?}", self.0)
     }

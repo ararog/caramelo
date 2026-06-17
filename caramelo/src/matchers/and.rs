@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use crate::Matcher;
 
 /// Creates a matcher that matches values that satisfy all given matchers
@@ -28,7 +30,10 @@ pub struct And<T> {
     matchers: Vec<Box<dyn Matcher<T>>>,
 }
 
-impl<T> Matcher<T> for And<T> {
+impl<T> Matcher<T> for And<T>
+where
+    T: 'static,
+{
     fn matches(&self, value: &T) -> bool {
         self.matchers
             .iter()
