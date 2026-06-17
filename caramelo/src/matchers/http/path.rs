@@ -1,4 +1,4 @@
-use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
+use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
 /// Creates a matcher that checks if the request path matches the given regex pattern.
 ///
@@ -59,7 +59,7 @@ impl Matcher<Request> for Path {
     }
 }
 
-impl TypedMatch<Request> for Path {
+impl TypedMatcher<Request> for Path {
     fn matcher_type(&self) -> crate::MatchType {
         ToHave
     }

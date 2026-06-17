@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, To},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 
 /// Creates a matcher that matches values that satisfy all given matchers
@@ -13,7 +13,7 @@ use crate::{
 ///
 /// expect("hello").to_self(and!(contains("ell"), contains("llo")));
 /// ```
-pub fn and<T>(matchers: Vec<Box<dyn TypedMatch<T>>>) -> And<T> {
+pub fn and<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> And<T> {
     And { matchers }
 }
 
@@ -28,7 +28,7 @@ pub fn and<T>(matchers: Vec<Box<dyn TypedMatch<T>>>) -> And<T> {
 /// expect("hello").to_self(and!(contains("ell"), contains("llo")));
 /// ```
 pub struct And<T> {
-    matchers: Vec<Box<dyn TypedMatch<T>>>,
+    matchers: Vec<Box<dyn TypedMatcher<T>>>,
 }
 
 impl<T> Matcher<T> for And<T>
@@ -50,14 +50,14 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for And<T>
+impl<T> TypedMatcher<T> for And<T>
 where
     T: 'static,
 {
     fn matcher_type(&self) -> MatchType {
         self.matchers
             .first()
-            .map(|m| TypedMatch::matcher_type(m.as_ref()))
+            .map(|m| TypedMatcher::matcher_type(m.as_ref()))
             .unwrap_or(To)
     }
 }

@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, To},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 use std::fmt::Debug;
 
@@ -34,7 +34,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for NotEqual<T>
+impl<T> TypedMatcher<T> for NotEqual<T>
 where
     T: PartialEq + Debug,
 {

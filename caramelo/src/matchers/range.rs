@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, ToBe},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 use std::fmt::Debug;
 
@@ -62,7 +62,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for Between<T>
+impl<T> TypedMatcher<T> for Between<T>
 where
     T: PartialOrd + Debug,
 {

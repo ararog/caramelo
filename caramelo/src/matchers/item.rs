@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, ToHave},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 use std::fmt::{Debug, Display};
 
@@ -36,7 +36,7 @@ where
     }
 }
 
-impl<T> TypedMatch<Vec<T>> for Item<T>
+impl<T> TypedMatcher<Vec<T>> for Item<T>
 where
     T: PartialEq + Display + Debug,
 {

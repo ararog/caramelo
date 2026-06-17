@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, To},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 
 /// Creates a matcher that matches values containing the given string
@@ -44,7 +44,7 @@ impl Matcher<String> for Contains {
     }
 }
 
-impl TypedMatch<String> for Contains {
+impl TypedMatcher<String> for Contains {
     fn matcher_type(&self) -> MatchType {
         To
     }
@@ -61,7 +61,7 @@ impl Matcher<&str> for Contains {
     }
 }
 
-impl TypedMatch<&str> for Contains {
+impl TypedMatcher<&str> for Contains {
     fn matcher_type(&self) -> MatchType {
         To
     }

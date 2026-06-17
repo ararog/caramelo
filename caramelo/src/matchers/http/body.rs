@@ -1,5 +1,5 @@
 use crate::MatchType::ToHave;
-use crate::{http::Request, Matcher, TypedMatch};
+use crate::{http::Request, Matcher, TypedMatcher};
 
 pub use self::json::*;
 pub use self::xml::*;
@@ -67,7 +67,7 @@ impl Matcher<Request> for Body {
     }
 }
 
-impl TypedMatch<Request> for Body {
+impl TypedMatcher<Request> for Body {
     fn matcher_type(&self) -> crate::MatchType {
         ToHave
     }
@@ -78,7 +78,7 @@ pub(crate) mod json {
     use jsonpath_rust::JsonPath;
     use sonic_rs::Serialize;
 
-    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
+    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
     /// Creates a matcher that checks if the request body matches the given JSON exactly.
     ///
@@ -137,7 +137,7 @@ pub(crate) mod json {
         }
     }
 
-    impl TypedMatch<Request> for BodyWithExactJson {
+    impl TypedMatcher<Request> for BodyWithExactJson {
         fn matcher_type(&self) -> crate::MatchType {
             ToHave
         }
@@ -205,7 +205,7 @@ pub(crate) mod json {
         }
     }
 
-    impl TypedMatch<Request> for BodyWithPartialJson {
+    impl TypedMatcher<Request> for BodyWithPartialJson {
         fn matcher_type(&self) -> crate::MatchType {
             ToHave
         }
@@ -218,7 +218,7 @@ pub(crate) mod xml {
     use serde_xml_rs::to_string;
     use simdxml::parse;
 
-    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
+    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
     /// Creates a matcher that checks if the request body matches the given XML exactly.
     ///
@@ -297,7 +297,7 @@ pub(crate) mod xml {
         }
     }
 
-    impl TypedMatch<Request> for BodyWithExactXml {
+    impl TypedMatcher<Request> for BodyWithExactXml {
         fn matcher_type(&self) -> crate::MatchType {
             ToHave
         }
@@ -365,7 +365,7 @@ pub(crate) mod xml {
         }
     }
 
-    impl TypedMatch<Request> for BodyWithPartialXml {
+    impl TypedMatcher<Request> for BodyWithPartialXml {
         fn matcher_type(&self) -> crate::MatchType {
             ToHave
         }

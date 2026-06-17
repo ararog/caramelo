@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, ToBe},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 use std::fmt::Debug;
 
@@ -34,7 +34,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for Equal<T>
+impl<T> TypedMatcher<T> for Equal<T>
 where
     T: PartialEq + Debug,
 {
@@ -53,7 +53,7 @@ impl Matcher<String> for Equal<&str> {
     }
 }
 
-impl TypedMatch<String> for Equal<&str> {
+impl TypedMatcher<String> for Equal<&str> {
     fn matcher_type(&self) -> MatchType {
         ToBe
     }

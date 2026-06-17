@@ -1,4 +1,4 @@
-use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
+use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
 /// Trait for converting values into http::Method.
 pub trait AsMethod {
@@ -79,7 +79,7 @@ impl Matcher<Request> for Method {
     }
 }
 
-impl TypedMatch<Request> for Method {
+impl TypedMatcher<Request> for Method {
     fn matcher_type(&self) -> crate::MatchType {
         ToHave
     }

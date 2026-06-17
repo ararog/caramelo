@@ -2,7 +2,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 
 use crate::{
     MatchType::{self, ToHave},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 
 /// Creates a matcher that matches values with the given length
@@ -52,7 +52,7 @@ impl<T> Matcher<Vec<T>> for Length {
     }
 }
 
-impl<T> TypedMatch<Vec<T>> for Length {
+impl<T> TypedMatcher<Vec<T>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -68,7 +68,7 @@ impl<T> Matcher<VecDeque<T>> for Length {
     }
 }
 
-impl<T> TypedMatch<VecDeque<T>> for Length {
+impl<T> TypedMatcher<VecDeque<T>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -84,7 +84,7 @@ impl<T> Matcher<LinkedList<T>> for Length {
     }
 }
 
-impl<T> TypedMatch<LinkedList<T>> for Length {
+impl<T> TypedMatcher<LinkedList<T>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -100,7 +100,7 @@ impl<K, V> Matcher<HashMap<K, V>> for Length {
     }
 }
 
-impl<K, V> TypedMatch<HashMap<K, V>> for Length {
+impl<K, V> TypedMatcher<HashMap<K, V>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -116,7 +116,7 @@ impl<K, V> Matcher<BTreeMap<K, V>> for Length {
     }
 }
 
-impl<K, V> TypedMatch<BTreeMap<K, V>> for Length {
+impl<K, V> TypedMatcher<BTreeMap<K, V>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -132,7 +132,7 @@ impl<K, V> Matcher<HashSet<K, V>> for Length {
     }
 }
 
-impl<K, V> TypedMatch<HashSet<K, V>> for Length {
+impl<K, V> TypedMatcher<HashSet<K, V>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }
@@ -148,7 +148,7 @@ impl<T> Matcher<BTreeSet<T>> for Length {
     }
 }
 
-impl<T> TypedMatch<BTreeSet<T>> for Length {
+impl<T> TypedMatcher<BTreeSet<T>> for Length {
     fn matcher_type(&self) -> MatchType {
         ToHave
     }

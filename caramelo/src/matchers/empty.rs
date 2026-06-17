@@ -2,7 +2,7 @@ use std::fmt::Debug;
 
 use crate::{
     MatchType::{self, ToBe},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 
 /// Creates a matcher that matches empty values
@@ -35,7 +35,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for Empty
+impl<T> TypedMatcher<T> for Empty
 where
     T: PartialEq + Default + Debug,
 {

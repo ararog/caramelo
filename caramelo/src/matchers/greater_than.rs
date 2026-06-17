@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, ToBe},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 use std::fmt::Debug;
 
@@ -34,7 +34,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for GreaterThan<T>
+impl<T> TypedMatcher<T> for GreaterThan<T>
 where
     T: PartialOrd + Debug,
 {
@@ -73,7 +73,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for GreaterThanOrEqual<T>
+impl<T> TypedMatcher<T> for GreaterThanOrEqual<T>
 where
     T: PartialOrd + Debug,
 {

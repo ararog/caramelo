@@ -1,6 +1,6 @@
 use crate::{
     MatchType::{self, To},
-    Matcher, TypedMatch,
+    Matcher, TypedMatcher,
 };
 
 /// Creates a matcher that matches values that satisfy any of the given matchers
@@ -13,7 +13,7 @@ use crate::{
 ///
 /// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
 /// ```
-pub fn or<T>(matchers: Vec<Box<dyn TypedMatch<T>>>) -> Or<T> {
+pub fn or<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> Or<T> {
     Or { matchers }
 }
 
@@ -28,7 +28,7 @@ pub fn or<T>(matchers: Vec<Box<dyn TypedMatch<T>>>) -> Or<T> {
 /// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
 /// ```
 pub struct Or<T> {
-    matchers: Vec<Box<dyn TypedMatch<T>>>,
+    matchers: Vec<Box<dyn TypedMatcher<T>>>,
 }
 
 impl<T> Matcher<T> for Or<T> {
@@ -47,11 +47,11 @@ impl<T> Matcher<T> for Or<T> {
     }
 }
 
-impl<T> TypedMatch<T> for Or<T> {
+impl<T> TypedMatcher<T> for Or<T> {
     fn matcher_type(&self) -> MatchType {
         self.matchers
             .first()
-            .map(|m| TypedMatch::<T>::matcher_type(m.as_ref()))
+            .map(|m| TypedMatcher::<T>::matcher_type(m.as_ref()))
             .unwrap_or(To)
     }
 }

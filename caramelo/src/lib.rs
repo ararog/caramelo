@@ -75,9 +75,9 @@ where
     /// ```
     pub fn to<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatch<T>,
+        M: TypedMatcher<T>,
     {
-        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::To {
+        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::To {
             self.assert(matcher, MatchType::To);
         } else {
             panic!("Matcher must be a 'to' matcher");
@@ -96,9 +96,9 @@ where
     /// ```
     pub fn to_be<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatch<T>,
+        M: TypedMatcher<T>,
     {
-        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::ToBe {
+        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::ToBe {
             self.assert(matcher, MatchType::ToBe);
         } else {
             panic!("Matcher must be a 'to be' matcher");
@@ -117,9 +117,9 @@ where
     /// ```
     pub fn to_have<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatch<T>,
+        M: TypedMatcher<T>,
     {
-        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::ToHave {
+        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::ToHave {
             self.assert(matcher, MatchType::ToHave);
         } else {
             panic!("Matcher must be a 'to have' matcher");
@@ -138,9 +138,9 @@ where
     /// ```
     pub fn to_self<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatch<T>,
+        M: TypedMatcher<T>,
     {
-        let matcher_type = TypedMatch::<T>::matcher_type(&matcher);
+        let matcher_type = TypedMatcher::<T>::matcher_type(&matcher);
         self.assert(matcher, matcher_type);
         self
     }
@@ -160,7 +160,7 @@ pub trait Matcher<T> {
 }
 
 /// Trait for matchers that have a specific type
-pub trait TypedMatch<T>: Matcher<T> {
+pub trait TypedMatcher<T>: Matcher<T> {
     /// Returns the type of the matcher
     fn matcher_type(&self) -> MatchType;
 }

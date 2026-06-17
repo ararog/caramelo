@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fmt::Debug};
 
-use crate::{MatchType::ToBe, Matcher, TypedMatch};
+use crate::{MatchType::ToBe, Matcher, TypedMatcher};
 
 /// Creates a matcher that checks if a value is in a collection.
 ///
@@ -44,7 +44,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for In<Vec<T>>
+impl<T> TypedMatcher<T> for In<Vec<T>>
 where
     T: PartialEq + Debug,
 {
@@ -64,7 +64,7 @@ impl Matcher<String> for In<Vec<&str>> {
     }
 }
 
-impl TypedMatch<String> for In<Vec<&str>> {
+impl TypedMatcher<String> for In<Vec<&str>> {
     fn matcher_type(&self) -> crate::MatchType {
         ToBe
     }
@@ -84,7 +84,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for In<HashSet<T>>
+impl<T> TypedMatcher<T> for In<HashSet<T>>
 where
     T: Eq + std::hash::Hash + Debug,
 {
@@ -104,7 +104,7 @@ impl Matcher<String> for In<HashSet<&str>> {
     }
 }
 
-impl TypedMatch<String> for In<HashSet<&str>> {
+impl TypedMatcher<String> for In<HashSet<&str>> {
     fn matcher_type(&self) -> crate::MatchType {
         ToBe
     }

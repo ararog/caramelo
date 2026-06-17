@@ -1,4 +1,4 @@
-use crate::{MatchType::ToBe, Matcher, TypedMatch};
+use crate::{MatchType::ToBe, Matcher, TypedMatcher};
 use std::{fmt::Debug, marker::PhantomData};
 
 /// Creates a matcher that matches any value
@@ -24,7 +24,7 @@ where
     }
 }
 
-impl<T> TypedMatch<T> for Any<T>
+impl<T> TypedMatcher<T> for Any<T>
 where
     T: PartialOrd + Debug,
 {
