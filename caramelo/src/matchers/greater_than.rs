@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToBe},
+    Matcher, TypedMatch,
+};
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values greater than the given value
@@ -26,12 +29,17 @@ where
         *value > self.0
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("greater than {:?}", self.0)
+    }
+}
+
+impl<T> TypedMatch<T> for GreaterThan<T>
+where
+    T: PartialOrd + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }
 
@@ -60,11 +68,16 @@ where
         *value >= self.0
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("greater than or equal to {:?}", self.0)
+    }
+}
+
+impl<T> TypedMatch<T> for GreaterThanOrEqual<T>
+where
+    T: PartialOrd + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }

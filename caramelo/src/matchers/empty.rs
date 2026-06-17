@@ -1,6 +1,9 @@
 use std::fmt::Debug;
 
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToBe},
+    Matcher, TypedMatch,
+};
 
 /// Creates a matcher that matches empty values
 ///
@@ -27,11 +30,16 @@ where
         *value == T::default()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         "empty".to_owned()
+    }
+}
+
+impl<T> TypedMatch<T> for Empty
+where
+    T: PartialEq + Default + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }

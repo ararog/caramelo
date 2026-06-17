@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fmt::Debug};
 
-use crate::Matcher;
+use crate::{MatchType::ToBe, Matcher, TypedMatch};
 
 /// Creates a matcher that checks if a value is in a collection.
 ///
@@ -39,12 +39,17 @@ where
             .contains(value)
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("in {:?}", self.items)
+    }
+}
+
+impl<T> TypedMatch<T> for In<Vec<T>>
+where
+    T: PartialEq + Debug,
+{
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
     }
 }
 
@@ -54,12 +59,14 @@ impl Matcher<String> for In<Vec<&str>> {
             .contains(&value.as_str())
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("in {:?}", self.items)
+    }
+}
+
+impl TypedMatch<String> for In<Vec<&str>> {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
     }
 }
 
@@ -72,11 +79,33 @@ where
             .contains(value)
     }
 
+    fn description(&self) -> String {
+        format!("in {:?}", self.items)
+    }
+}
+
+impl<T> TypedMatch<T> for In<HashSet<T>>
+where
+    T: Eq + std::hash::Hash + Debug,
+{
     fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
+        ToBe
+    }
+}
+
+impl Matcher<String> for In<HashSet<&str>> {
+    fn matches(&self, value: &String) -> bool {
+        self.items
+            .contains(value.as_str())
     }
 
     fn description(&self) -> String {
         format!("in {:?}", self.items)
+    }
+}
+
+impl TypedMatch<String> for In<HashSet<&str>> {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
     }
 }

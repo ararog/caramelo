@@ -75,9 +75,9 @@ where
     /// ```
     pub fn to<M>(mut self, matcher: M) -> Self
     where
-        M: Matcher<T>,
+        M: TypedMatch<T>,
     {
-        if matcher.matcher_type() == MatchType::To {
+        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::To {
             self.assert(matcher, MatchType::To);
         } else {
             panic!("Matcher must be a 'to' matcher");
@@ -96,9 +96,9 @@ where
     /// ```
     pub fn to_be<M>(mut self, matcher: M) -> Self
     where
-        M: Matcher<T>,
+        M: TypedMatch<T>,
     {
-        if matcher.matcher_type() == MatchType::ToBe {
+        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::ToBe {
             self.assert(matcher, MatchType::ToBe);
         } else {
             panic!("Matcher must be a 'to be' matcher");
@@ -117,9 +117,9 @@ where
     /// ```
     pub fn to_have<M>(mut self, matcher: M) -> Self
     where
-        M: Matcher<T>,
+        M: TypedMatch<T>,
     {
-        if matcher.matcher_type() == MatchType::ToHave {
+        if TypedMatch::<T>::matcher_type(&matcher) == MatchType::ToHave {
             self.assert(matcher, MatchType::ToHave);
         } else {
             panic!("Matcher must be a 'to have' matcher");
@@ -138,9 +138,9 @@ where
     /// ```
     pub fn to_self<M>(mut self, matcher: M) -> Self
     where
-        M: Matcher<T>,
+        M: TypedMatch<T>,
     {
-        let matcher_type = matcher.matcher_type();
+        let matcher_type = TypedMatch::<T>::matcher_type(&matcher);
         self.assert(matcher, matcher_type);
         self
     }
@@ -155,10 +155,14 @@ pub fn expect<T: Debug>(value: T) -> Expect<T> {
 pub trait Matcher<T> {
     /// Checks if the matcher matches the given value
     fn matches(&self, value: &T) -> bool;
-    /// Returns the type of the matcher
-    fn matcher_type(&self) -> MatchType;
     /// Returns a description of the matcher
     fn description(&self) -> String;
+}
+
+/// Trait for matchers that have a specific type
+pub trait TypedMatch<T>: Matcher<T> {
+    /// Returns the type of the matcher
+    fn matcher_type(&self) -> MatchType;
 }
 
 #[macro_export]
@@ -169,7 +173,7 @@ pub trait Matcher<T> {
 /// ```
 /// use caramelo::{expect, and, matchers::{eq, gt}};
 ///
-/// expect(5).to_be(and!(eq(5), gt(3)));
+/// expect(5).to_self(and!(eq(5), gt(3)));
 /// ```
 macro_rules! and {
     ($($matcher:expr),*) => {
@@ -185,7 +189,7 @@ macro_rules! and {
 /// ```
 /// use caramelo::{expect, or, matchers::{eq, gt}};
 ///
-/// expect(5).to_be(or!(eq(5), gt(10)));
+/// expect(5).to_self(or!(eq(5), gt(10)));
 /// ```
 macro_rules! or {
     ($($matcher:expr),*) => {

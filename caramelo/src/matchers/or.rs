@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, To},
+    Matcher, TypedMatch,
+};
 
 /// Creates a matcher that matches values that satisfy any of the given matchers
 ///
@@ -8,9 +11,9 @@ use crate::Matcher;
 /// use caramelo::{or, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to(or!(contains("ell"), contains("xyz")));
+/// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
 /// ```
-pub fn or<T>(matchers: Vec<Box<dyn Matcher<T>>>) -> Or<T> {
+pub fn or<T>(matchers: Vec<Box<dyn TypedMatch<T>>>) -> Or<T> {
     Or { matchers }
 }
 
@@ -22,10 +25,10 @@ pub fn or<T>(matchers: Vec<Box<dyn Matcher<T>>>) -> Or<T> {
 /// use caramelo::{or, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to(or!(contains("ell"), contains("xyz")));
+/// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
 /// ```
 pub struct Or<T> {
-    matchers: Vec<Box<dyn Matcher<T>>>,
+    matchers: Vec<Box<dyn TypedMatch<T>>>,
 }
 
 impl<T> Matcher<T> for Or<T> {
@@ -35,18 +38,20 @@ impl<T> Matcher<T> for Or<T> {
             .any(|m| m.matches(value))
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        self.matchers
-            .first()
-            .map(|m| m.matcher_type())
-            .unwrap_or(crate::MatchType::To)
-    }
-
     fn description(&self) -> String {
         self.matchers
             .iter()
             .map(|m| m.description())
             .collect::<Vec<_>>()
             .join(" or ")
+    }
+}
+
+impl<T> TypedMatch<T> for Or<T> {
+    fn matcher_type(&self) -> MatchType {
+        self.matchers
+            .first()
+            .map(|m| TypedMatch::<T>::matcher_type(m.as_ref()))
+            .unwrap_or(To)
     }
 }

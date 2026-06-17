@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, To},
+    Matcher, TypedMatch,
+};
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values not equal to the given value
@@ -9,7 +12,7 @@ use std::fmt::Debug;
 /// use caramelo::expect;
 /// use caramelo::matchers::ne;
 ///
-/// expect(5).to_be(ne(3));
+/// expect(5).to(ne(3));
 /// ```
 pub fn ne<T>(value: T) -> NotEqual<T> {
     NotEqual(value)
@@ -26,11 +29,16 @@ where
         self.0 != *value
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("not equal to {:?}", self.0)
+    }
+}
+
+impl<T> TypedMatch<T> for NotEqual<T>
+where
+    T: PartialEq + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        To
     }
 }

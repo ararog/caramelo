@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToBe},
+    Matcher, TypedMatch,
+};
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values equal to the given value
@@ -26,12 +29,17 @@ where
         self.0 == *value
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("equals to {:?}", self.0)
+    }
+}
+
+impl<T> TypedMatch<T> for Equal<T>
+where
+    T: PartialEq + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }
 
@@ -40,11 +48,13 @@ impl Matcher<String> for Equal<&str> {
         self.0 == *value
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         format!("equals to {:?}", self.0)
+    }
+}
+
+impl TypedMatch<String> for Equal<&str> {
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }

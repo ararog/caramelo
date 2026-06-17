@@ -1,4 +1,4 @@
-use crate::{http::Request, Matcher};
+use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
 
 /// Creates a matcher that checks if the request query matches the given regex pattern.
 ///
@@ -54,11 +54,13 @@ impl Matcher<Request> for Query {
             .is_match(value.path())
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("query matching {:?}", self.0)
+    }
+}
+
+impl TypedMatch<Request> for Query {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
     }
 }

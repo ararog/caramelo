@@ -1,6 +1,6 @@
 use http::HeaderName;
 
-use crate::{http::Request, Matcher};
+use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
 
 /// Trait for converting values into HeaderName.
 pub trait AsHeaderName {
@@ -85,12 +85,14 @@ impl Matcher<Request> for Header {
             .contains_key(&self.0)
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("header matching {}", self.0)
+    }
+}
+
+impl TypedMatch<Request> for Header {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
     }
 }
 
@@ -159,11 +161,13 @@ impl Matcher<Request> for HeaderValue {
             })
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("header {} with value matching {:?}", self.name, self.regex)
+    }
+}
+
+impl TypedMatch<Request> for HeaderValue {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
     }
 }

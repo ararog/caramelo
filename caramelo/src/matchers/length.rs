@@ -1,6 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
 
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToHave},
+    Matcher, TypedMatch,
+};
 
 /// Creates a matcher that matches values with the given length
 ///
@@ -44,12 +47,14 @@ impl<T> Matcher<Vec<T>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<T> TypedMatch<Vec<T>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -58,12 +63,14 @@ impl<T> Matcher<VecDeque<T>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<T> TypedMatch<VecDeque<T>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -72,12 +79,14 @@ impl<T> Matcher<LinkedList<T>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<T> TypedMatch<LinkedList<T>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -86,12 +95,14 @@ impl<K, V> Matcher<HashMap<K, V>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<K, V> TypedMatch<HashMap<K, V>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -100,12 +111,14 @@ impl<K, V> Matcher<BTreeMap<K, V>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<K, V> TypedMatch<BTreeMap<K, V>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -114,12 +127,14 @@ impl<K, V> Matcher<HashSet<K, V>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<K, V> TypedMatch<HashSet<K, V>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }
 
@@ -128,11 +143,13 @@ impl<T> Matcher<BTreeSet<T>> for Length {
         self.0 == value.len()
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("length equals to {}", self.0)
+    }
+}
+
+impl<T> TypedMatch<BTreeSet<T>> for Length {
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }

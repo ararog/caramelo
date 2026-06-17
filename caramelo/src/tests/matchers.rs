@@ -21,13 +21,13 @@ fn test_equal_failure() {
 
 #[test]
 fn test_not_equal() {
-    expect(1).to_be(ne(2));
+    expect(1).to(ne(2));
 }
 
 #[test]
-#[should_panic(expected = "Expected 1 to be not equal to 1")]
+#[should_panic(expected = "Expected 1 to not equal to 1")]
 fn test_not_equal_failure() {
-    expect(1).to_be(ne(1));
+    expect(1).to(ne(1));
 }
 
 #[test]
@@ -279,24 +279,24 @@ fn test_linkedlist_length_failure() {
 
 #[test]
 fn test_and() {
-    expect(5).to_be(and(vec![Box::new(gt(1)), Box::new(lt(6))]));
+    expect(5).to_self(and(vec![Box::new(gt(1)), Box::new(lt(6))]));
 }
 
 #[test]
 #[should_panic(expected = "Expected 5 to be greater than 1 and less than 4")]
 fn test_and_failure() {
-    expect(5).to_be(and(vec![Box::new(gt(1)), Box::new(lt(4))]));
+    expect(5).to_self(and(vec![Box::new(gt(1)), Box::new(lt(4))]));
 }
 
 #[test]
 fn test_or() {
-    expect(5).to_be(or(vec![Box::new(gt(10)), Box::new(lt(6))]));
+    expect(5).to_self(or(vec![Box::new(gt(10)), Box::new(lt(6))]));
 }
 
 #[test]
 #[should_panic(expected = "Expected 5 to be greater than 10 or less than 4")]
 fn test_or_failure() {
-    expect(5).to_be(or(vec![Box::new(gt(10)), Box::new(lt(4))]));
+    expect(5).to_self(or(vec![Box::new(gt(10)), Box::new(lt(4))]));
 }
 
 #[test]

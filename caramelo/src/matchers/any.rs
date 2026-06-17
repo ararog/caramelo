@@ -1,4 +1,4 @@
-use crate::Matcher;
+use crate::{MatchType::ToBe, Matcher, TypedMatch};
 use std::{fmt::Debug, marker::PhantomData};
 
 /// Creates a matcher that matches any value
@@ -19,11 +19,16 @@ where
         true
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         "any value".to_string()
+    }
+}
+
+impl<T> TypedMatch<T> for Any<T>
+where
+    T: PartialOrd + Debug,
+{
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
     }
 }

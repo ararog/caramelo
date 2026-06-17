@@ -1,4 +1,5 @@
-use crate::{http::Request, Matcher};
+use crate::MatchType::ToHave;
+use crate::{http::Request, Matcher, TypedMatch};
 
 pub use self::json::*;
 pub use self::xml::*;
@@ -61,12 +62,14 @@ impl Matcher<Request> for Body {
         }
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("body contents matching {:?}", self.0)
+    }
+}
+
+impl TypedMatch<Request> for Body {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
     }
 }
 
@@ -75,7 +78,7 @@ pub(crate) mod json {
     use jsonpath_rust::JsonPath;
     use sonic_rs::Serialize;
 
-    use crate::{http::Request, Matcher};
+    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
 
     /// Creates a matcher that checks if the request body matches the given JSON exactly.
     ///
@@ -129,12 +132,14 @@ pub(crate) mod json {
             }
         }
 
-        fn matcher_type(&self) -> crate::MatchType {
-            crate::MatchType::ToHave
-        }
-
         fn description(&self) -> String {
             format!("body contents matching {}", self.0)
+        }
+    }
+
+    impl TypedMatch<Request> for BodyWithExactJson {
+        fn matcher_type(&self) -> crate::MatchType {
+            ToHave
         }
     }
 
@@ -195,12 +200,14 @@ pub(crate) mod json {
             }
         }
 
-        fn matcher_type(&self) -> crate::MatchType {
-            crate::MatchType::ToHave
-        }
-
         fn description(&self) -> String {
             format!("body contents containing {}", self.0)
+        }
+    }
+
+    impl TypedMatch<Request> for BodyWithPartialJson {
+        fn matcher_type(&self) -> crate::MatchType {
+            ToHave
         }
     }
 }
@@ -211,7 +218,7 @@ pub(crate) mod xml {
     use serde_xml_rs::to_string;
     use simdxml::parse;
 
-    use crate::{http::Request, Matcher};
+    use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatch};
 
     /// Creates a matcher that checks if the request body matches the given XML exactly.
     ///
@@ -285,12 +292,14 @@ pub(crate) mod xml {
             }
         }
 
-        fn matcher_type(&self) -> crate::MatchType {
-            crate::MatchType::ToHave
-        }
-
         fn description(&self) -> String {
             format!("body contents matching {}", self.0)
+        }
+    }
+
+    impl TypedMatch<Request> for BodyWithExactXml {
+        fn matcher_type(&self) -> crate::MatchType {
+            ToHave
         }
     }
 
@@ -351,12 +360,14 @@ pub(crate) mod xml {
             }
         }
 
-        fn matcher_type(&self) -> crate::MatchType {
-            crate::MatchType::ToHave
-        }
-
         fn description(&self) -> String {
             format!("body contents containing {}", self.0)
+        }
+    }
+
+    impl TypedMatch<Request> for BodyWithPartialXml {
+        fn matcher_type(&self) -> crate::MatchType {
+            ToHave
         }
     }
 }

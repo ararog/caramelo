@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToHave},
+    Matcher, TypedMatch,
+};
 use std::fmt::{Debug, Display};
 
 /// Creates a matcher that matches vectors containing the given item
@@ -28,11 +31,16 @@ where
         value.contains(&self.item)
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToHave
-    }
-
     fn description(&self) -> String {
         format!("item {}", self.item)
+    }
+}
+
+impl<T> TypedMatch<Vec<T>> for Item<T>
+where
+    T: PartialEq + Display + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToHave
     }
 }

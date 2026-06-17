@@ -1,4 +1,7 @@
-use crate::Matcher;
+use crate::{
+    MatchType::{self, ToBe},
+    Matcher, TypedMatch,
+};
 use std::fmt::Debug;
 
 /// Creates a matcher that matches values between min and max (exclusive)
@@ -50,15 +53,20 @@ where
         }
     }
 
-    fn matcher_type(&self) -> crate::MatchType {
-        crate::MatchType::ToBe
-    }
-
     fn description(&self) -> String {
         if self.inclusive {
             format!("between {:?} and {:?}", self.min, self.max)
         } else {
             format!("between {:?} and {:?} (exclusive)", self.min, self.max)
         }
+    }
+}
+
+impl<T> TypedMatch<T> for Between<T>
+where
+    T: PartialOrd + Debug,
+{
+    fn matcher_type(&self) -> MatchType {
+        ToBe
     }
 }
