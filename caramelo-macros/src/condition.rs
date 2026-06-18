@@ -37,6 +37,7 @@ impl Parse for Condition {
 impl quote::ToTokens for Condition {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let value = &self.value;
+        let logic_op = &self.logic_op;
         let matcher = match &self.rel_op {
             Some(op) => match op {
                 RelOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
@@ -103,6 +104,7 @@ impl quote::ToTokens for Condition {
                 }
             },
         };
+
         tokens.extend(matcher);
     }
 }

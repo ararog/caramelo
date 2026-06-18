@@ -23,7 +23,7 @@ fn test_range_exclusive() {
 #[test]
 fn test_range_end_inclusive() {
     let user = create_user();
-    dry_match!(user, User { age: ..=30 });
+    dry_match!(user, User { age(): ..=30 });
 }
 
 #[test]
@@ -57,6 +57,12 @@ fn test_caramelo_failure() {
 fn test_nested() {
     let user = create_user();
     dry_match!(user, User { name: == "John", city.state(): == "NY" });
+}
+
+#[test]
+fn test_method_nested_city() {
+    let user = create_user();
+    dry_match!(user, User { name(): == "John", city().name(): == "New York" });
 }
 
 #[test]

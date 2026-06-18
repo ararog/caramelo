@@ -11,7 +11,7 @@ use crate::{
 /// use caramelo::{or, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
+/// expect("hello").to_match(or!(contains("ell"), contains("xyz")));
 /// ```
 pub fn or<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> Or<T> {
     Or { matchers }
@@ -25,10 +25,17 @@ pub fn or<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> Or<T> {
 /// use caramelo::{or, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to_self(or!(contains("ell"), contains("xyz")));
+/// expect("hello").to_match(or!(contains("ell"), contains("xyz")));
 /// ```
 pub struct Or<T> {
     matchers: Vec<Box<dyn TypedMatcher<T>>>,
+}
+
+impl<T> Or<T> {
+    /// Creates a new Or matcher with the given matchers
+    pub fn new(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> Self {
+        Or { matchers }
+    }
 }
 
 impl<T> Matcher<T> for Or<T> {

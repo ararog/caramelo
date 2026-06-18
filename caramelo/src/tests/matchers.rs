@@ -6,6 +6,7 @@ use crate::{
         _in_, and, any, contains, empty, eq, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
         or,
     },
+    MatcherExt,
 };
 
 #[test]
@@ -279,24 +280,24 @@ fn test_linkedlist_length_failure() {
 
 #[test]
 fn test_and() {
-    expect(5).to_self(and(vec![Box::new(gt(1)), Box::new(lt(6))]));
+    expect(5).to_be(gt(1).and(lt(6)));
 }
 
 #[test]
 #[should_panic(expected = "Expected 5 to be greater than 1 and less than 4")]
 fn test_and_failure() {
-    expect(5).to_self(and(vec![Box::new(gt(1)), Box::new(lt(4))]));
+    expect(5).to_be(gt(1).and(lt(4)));
 }
 
 #[test]
 fn test_or() {
-    expect(5).to_self(or(vec![Box::new(gt(10)), Box::new(lt(6))]));
+    expect(5).to_be(gt(10).or(lt(6)));
 }
 
 #[test]
 #[should_panic(expected = "Expected 5 to be greater than 10 or less than 4")]
 fn test_or_failure() {
-    expect(5).to_self(or(vec![Box::new(gt(10)), Box::new(lt(4))]));
+    expect(5).to_be(gt(10).or(lt(4)));
 }
 
 #[test]

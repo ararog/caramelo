@@ -11,7 +11,7 @@ use crate::{
 /// use caramelo::{and, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to_self(and!(contains("ell"), contains("llo")));
+/// expect("hello").to_match(and!(contains("ell"), contains("llo")));
 /// ```
 pub fn and<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> And<T> {
     And { matchers }
@@ -25,10 +25,17 @@ pub fn and<T>(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> And<T> {
 /// use caramelo::{and, expect};
 /// use caramelo::matchers::{contains};
 ///
-/// expect("hello").to_self(and!(contains("ell"), contains("llo")));
+/// expect("hello").to_match(and!(contains("ell"), contains("llo")));
 /// ```
 pub struct And<T> {
     matchers: Vec<Box<dyn TypedMatcher<T>>>,
+}
+
+impl<T> And<T> {
+    /// Creates a new And matcher with the given matchers
+    pub fn new(matchers: Vec<Box<dyn TypedMatcher<T>>>) -> Self {
+        And { matchers }
+    }
 }
 
 impl<T> Matcher<T> for And<T>

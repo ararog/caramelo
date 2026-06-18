@@ -1,12 +1,12 @@
 #![allow(unused_variables, unused_assignments, dead_code)]
-use crate::{acessor::Accessor, operators::LogicOp};
-use proc_macro2::TokenStream;
+use crate::{acessor::Accessor, condition, operators::LogicOp};
+use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use syn::{
     parse::{Parse, ParseStream},
     punctuated::Punctuated,
-    token::Brace,
-    Ident, Result, Token, Type,
+    token::{Brace, Dot, Semi},
+    ExprMethodCall, Ident, Path, Result, Token, Type,
 };
 
 /// Parsed dry match expression
@@ -66,48 +66,39 @@ impl Parse for DryMatch {
 
 impl quote::ToTokens for DryMatch {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        let mut expectations = Vec::new();
+        let mut expectations = TokenStream::new();
         let variable = &self.variable;
         let fields = &self.fields;
         for field in fields {
             let references = &field.references;
-            let conditions = &field.conditions;
-            let mut and_conditions = Vec::new();
-            let mut or_conditions = Vec::new();
-            let logic_operator = conditions
-                .first()
-                .and_then(|c| c.logic_op.as_ref());
-            for condition in conditions.iter() {
-                if let Some(operator) = logic_operator {
-                    match operator {
-                        LogicOp::LogicOpAnd(_) => {
-                            and_conditions.push(condition);
-                        }
-                        LogicOp::LogicOpOr(_) => {
-                            or_conditions.push(condition);
-                        }
+            let mut conditions = TokenStream::new();
+            for (index, condition) in field
+                .conditions
+                .iter()
+                .enumerate()
+            {
+                if let Some(op) = &condition.logic_op {
+                    if index == 0 {
+                        conditions.extend(quote! { #condition.#op });
+                    } else {
+                        conditions.extend(quote! { (#condition).#op });
+                    }
+                } else {
+                    if index == 0 {
+                        conditions.extend(quote! { #condition });
+                    } else {
+                        conditions.extend(quote! { (#condition) });
                     }
                 }
             }
-            if !and_conditions.is_empty() {
-                expectations.push(quote! {
-                    caramelo::expect(#variable #(#references)*).to_self(caramelo::and!(#(#and_conditions),*));
-                });
-            } else if !or_conditions.is_empty() {
-                expectations.push(quote! {
-                    caramelo::expect(#variable #(#references)*).to_self(caramelo::or!(#(#or_conditions),*));
-                });
-            } else {
-                expectations.push(quote! {
-                    caramelo::expect(#variable #(#references)*).to_self(#(#conditions),*);
-                });
-            }
+            expectations.extend(quote! {
+                caramelo::expect(#variable #(#references)*)
+            });
+            expectations.extend(Dot::default().to_token_stream());
+
+            expectations.extend(quote! { to_match(#conditions); });
         }
 
-        let expanded = quote! {
-            #(#expectations)*
-        };
-
-        tokens.extend(expanded);
+        tokens.extend(expectations);
     }
 }

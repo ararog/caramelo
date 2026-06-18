@@ -2,6 +2,8 @@
 #![deny(missing_docs)]
 use std::fmt::Debug;
 
+use crate::matchers::{and, or, And, Or};
+
 /// Module containing assertions
 pub mod assertions;
 
@@ -35,6 +37,36 @@ impl MatchType {
         }
     }
 }
+
+/// Trait for matchers used in assertions
+pub trait Matcher<T> {
+    /// Checks if the matcher matches the given value
+    fn matches(&self, value: &T) -> bool;
+    /// Returns a description of the matcher
+    fn description(&self) -> String;
+}
+
+/// Trait for matchers that have a specific type
+pub trait TypedMatcher<T>: Matcher<T> {
+    /// Returns the type of the matcher
+    fn matcher_type(&self) -> MatchType;
+}
+
+/// Trait for extending matchers with additional methods
+pub trait MatcherExt<T>: TypedMatcher<T> + Sized + 'static {
+    /// Combines this matcher with another using AND logic
+    fn and<M: TypedMatcher<T> + 'static>(self, matcher: M) -> And<T> {
+        and(vec![Box::new(self), Box::new(matcher)])
+    }
+
+    /// Combines this matcher with another using OR logic
+    fn or<M: TypedMatcher<T> + 'static>(self, matcher: M) -> Or<T> {
+        or(vec![Box::new(self), Box::new(matcher)])
+    }
+}
+
+/// Implementation of MatcherExt for any type that implements TypedMatcher
+impl<M, T> MatcherExt<T> for M where M: TypedMatcher<T> + 'static {}
 
 /// Main expectation struct for assertions
 pub struct Expect<T> {
@@ -134,9 +166,9 @@ where
     /// ```
     /// use caramelo::{expect, matchers::length};
     ///
-    /// expect(vec![1, 2, 3]).to_self(length(3));
+    /// expect(vec![1, 2, 3]).to_match(length(3));
     /// ```
-    pub fn to_self<M>(mut self, matcher: M) -> Self
+    pub fn to_match<M>(mut self, matcher: M) -> Self
     where
         M: TypedMatcher<T>,
     {
@@ -151,20 +183,6 @@ pub fn expect<T: Debug>(value: T) -> Expect<T> {
     Expect::new(value)
 }
 
-/// Trait for matchers used in assertions
-pub trait Matcher<T> {
-    /// Checks if the matcher matches the given value
-    fn matches(&self, value: &T) -> bool;
-    /// Returns a description of the matcher
-    fn description(&self) -> String;
-}
-
-/// Trait for matchers that have a specific type
-pub trait TypedMatcher<T>: Matcher<T> {
-    /// Returns the type of the matcher
-    fn matcher_type(&self) -> MatchType;
-}
-
 #[macro_export]
 /// Creates an AND matcher that combines multiple matchers
 ///
@@ -173,7 +191,7 @@ pub trait TypedMatcher<T>: Matcher<T> {
 /// ```
 /// use caramelo::{expect, and, matchers::{eq, gt}};
 ///
-/// expect(5).to_self(and!(eq(5), gt(3)));
+/// expect(5).to_match(and!(eq(5), gt(3)));
 /// ```
 macro_rules! and {
     ($($matcher:expr),*) => {
@@ -189,7 +207,7 @@ macro_rules! and {
 /// ```
 /// use caramelo::{expect, or, matchers::{eq, gt}};
 ///
-/// expect(5).to_self(or!(eq(5), gt(10)));
+/// expect(5).to_match(or!(eq(5), gt(10)));
 /// ```
 macro_rules! or {
     ($($matcher:expr),*) => {

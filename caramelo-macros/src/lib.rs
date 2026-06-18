@@ -36,6 +36,7 @@ pub fn dry_match(item: TokenStream) -> TokenStream {
     let dry_match = parse_macro_input!(item as DryMatch);
 
     let expanded = quote! {
+        use caramelo::MatcherExt;
         #dry_match
     };
 

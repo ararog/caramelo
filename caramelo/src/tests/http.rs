@@ -2,6 +2,7 @@ use crate::{
     and, expect,
     http::Request,
     matchers::{header, header_value, method, path},
+    MatcherExt,
 };
 use http::{header::CONTENT_TYPE, Method, Uri};
 
@@ -50,7 +51,7 @@ fn test_method_and_path_matcher_panic() {
         .empty()
         .unwrap();
 
-    expect(request).to_have(and!(method(Method::POST), path(r"^/api/posts$")));
+    expect(request).to_have(method(Method::POST).and(path(r"^/api/posts$")));
 }
 
 #[test]
