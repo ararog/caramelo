@@ -201,7 +201,7 @@ pub(crate) mod json {
         }
 
         fn description(&self) -> String {
-            format!("body contents containing {}", self.0)
+            format!("body contents matching {}", self.0)
         }
     }
 
@@ -361,7 +361,7 @@ pub(crate) mod xml {
         }
 
         fn description(&self) -> String {
-            format!("body contents containing {}", self.0)
+            format!("body contents matching {}", self.0)
         }
     }
 

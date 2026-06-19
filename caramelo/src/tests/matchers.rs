@@ -3,8 +3,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 use crate::{
     expect,
     matchers::{
-        _in_, and, any, contains, empty, eq, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
-        or,
+        _in_, any, contains, empty, eq, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
     },
     MatcherExt,
 };
@@ -284,6 +283,24 @@ fn test_and() {
 }
 
 #[test]
+#[should_panic(expected = "Matcher must be a 'to' matcher")]
+fn test_to_failure() {
+    expect(5).to(gt(1));
+}
+
+#[test]
+#[should_panic(expected = "Matcher must be a 'to be' matcher")]
+fn test_to_be_failure() {
+    expect("John").to_be(contains("John"));
+}
+
+#[test]
+#[should_panic(expected = "Matcher must be a 'to have' matcher")]
+fn test_to_have_failure() {
+    expect(5).to_have(gt(1));
+}
+
+#[test]
 #[should_panic(expected = "Expected 5 to be greater than 1 and less than 4")]
 fn test_and_failure() {
     expect(5).to_be(gt(1).and(lt(4)));
@@ -301,12 +318,24 @@ fn test_or_failure() {
 }
 
 #[test]
-fn test_in() {
+fn test_in_vec() {
     expect(5).to_be(_in_(vec![1, 2, 3, 4, 5]));
 }
 
 #[test]
 #[should_panic(expected = "Expected 6 to be in [1, 2, 3, 4, 5]")]
-fn test_in_failure() {
+fn test_in_vec_failure() {
     expect(6).to_be(_in_(vec![1, 2, 3, 4, 5]));
+}
+
+#[test]
+fn test_in_i32_hashset() {
+    let set = HashSet::from([1, 2, 3, 4, 5]);
+    expect(5).to_be(_in_(set));
+}
+
+#[test]
+fn test_in_str_hashset() {
+    let set = HashSet::from(["1", "2", "3", "4", "5"]);
+    expect("1").to_be(_in_(set));
 }

@@ -11,8 +11,10 @@ mod item;
 mod length;
 mod less_than;
 mod not_equal;
+mod option;
 mod or;
 mod range;
+mod result;
 
 pub use _in_::*;
 pub use and::*;
@@ -27,5 +29,7 @@ pub use item::*;
 pub use length::*;
 pub use less_than::*;
 pub use not_equal::*;
+pub use option::*;
 pub use or::*;
 pub use range::*;
+pub use result::*;

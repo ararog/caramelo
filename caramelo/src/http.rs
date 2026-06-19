@@ -9,7 +9,6 @@ pub struct RequestBuilder {
     uri: Uri,
     version: http::Version,
     headers: http::HeaderMap,
-    body: Option<String>,
 }
 
 impl RequestBuilder {
@@ -55,13 +54,13 @@ impl RequestBuilder {
     }
 
     /// Builds the request
-    pub fn body(self) -> Result<Request, http::Error> {
+    pub fn body(self, body: &str) -> Result<Request, http::Error> {
         Ok(Request {
             method: self.method,
             version: self.version,
             uri: self.uri,
             headers: self.headers,
-            body: self.body,
+            body: Some(body.to_string()),
         })
     }
 }
@@ -83,7 +82,6 @@ impl Request {
             version: http::Version::HTTP_11,
             uri,
             headers: http::HeaderMap::new(),
-            body: None,
         }
     }
 
