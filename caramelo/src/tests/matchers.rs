@@ -6,8 +6,15 @@ use crate::{
         _in_, any, contains, empty, eq, err, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
         none, ok, some,
     },
-    MatcherExt,
+    MatchType::{To, ToBe},
+    MatcherExt, TypedMatcher,
 };
+
+#[test]
+fn test_init_eq() {
+    let be_eq = eq(2);
+    expect(be_eq.matcher_type()).to_be(eq(ToBe));
+}
 
 #[test]
 fn test_equal() {
@@ -18,6 +25,12 @@ fn test_equal() {
 #[should_panic(expected = "Expected 1 to be equals to 2")]
 fn test_equal_failure() {
     expect(1).to_be(eq(2));
+}
+
+#[test]
+fn test_init_ne() {
+    let be_ne = ne(2);
+    expect(be_ne.matcher_type()).to_be(eq(To));
 }
 
 #[test]
@@ -32,6 +45,12 @@ fn test_not_equal_failure() {
 }
 
 #[test]
+fn test_init_gt() {
+    let be_gt = gt(2);
+    expect(be_gt.matcher_type()).to_be(eq(ToBe));
+}
+
+#[test]
 fn test_greater_than() {
     expect(1).to_be(gt(0));
 }
@@ -40,6 +59,12 @@ fn test_greater_than() {
 #[should_panic(expected = "Expected 0 to be greater than 1")]
 fn test_not_greater_than() {
     expect(0).to_be(gt(1));
+}
+
+#[test]
+fn test_init_ge() {
+    let be_ge = ge(2);
+    expect(be_ge.matcher_type()).to_be(eq(ToBe));
 }
 
 #[test]
@@ -62,6 +87,12 @@ fn test_less_than() {
 #[should_panic(expected = "Expected 2 to be less than 1")]
 fn test_not_less_than() {
     expect(2).to_be(lt(1));
+}
+
+#[test]
+fn test_init_le() {
+    let be_le = le(2);
+    expect(be_le.matcher_type()).to_be(eq(ToBe));
 }
 
 #[test]
@@ -342,6 +373,12 @@ fn test_in_str_hashset() {
 }
 
 #[test]
+fn test_init_some() {
+    let be_some = some::<i32>();
+    expect(be_some.matcher_type()).to_be(eq(ToBe));
+}
+
+#[test]
 fn test_some() {
     expect(Some(1)).to_be(some());
 }
@@ -350,6 +387,12 @@ fn test_some() {
 #[should_panic(expected = "Expected Some(1) to be none")]
 fn test_some_failure() {
     expect(Some(1)).to_be(none());
+}
+
+#[test]
+fn test_init_none() {
+    let be_none = none::<i32>();
+    expect(be_none.matcher_type()).to_be(eq(ToBe));
 }
 
 #[test]
@@ -364,6 +407,12 @@ fn test_none_failure() {
 }
 
 #[test]
+fn test_init_ok() {
+    let be_ok = ok::<i32, &str>();
+    expect(be_ok.matcher_type()).to_be(eq(ToBe));
+}
+
+#[test]
 fn test_ok() {
     expect(Ok::<i32, &str>(5)).to_be(ok());
 }
@@ -372,6 +421,12 @@ fn test_ok() {
 #[should_panic(expected = "Expected Err(\"error\") to be ok")]
 fn test_ok_failure() {
     expect(Err::<i32, &str>("error")).to_be(ok());
+}
+
+#[test]
+fn test_init_err() {
+    let be_err = err::<i32, &str>();
+    expect(be_err.matcher_type()).to_be(eq(ToBe));
 }
 
 #[test]

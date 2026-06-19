@@ -17,10 +17,11 @@ pub mod http;
 #[cfg(test)]
 mod tests;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug, Default)]
 /// Enum representing the type of match operation
 pub enum MatchType {
     /// Represents "to" match operation
+    #[default]
     To,
     /// Represents "to be" match operation
     ToBe,
