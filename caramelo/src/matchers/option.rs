@@ -1,5 +1,5 @@
 use crate::{
-    MatchType::{self, To},
+    MatchType::{self, ToBe},
     Matcher, TypedMatcher,
 };
 
@@ -17,13 +17,13 @@ impl<T> Matcher<Option<T>> for IsSome {
     }
 
     fn description(&self) -> String {
-        "is some".to_string()
+        "some".to_string()
     }
 }
 
 impl<T> TypedMatcher<Option<T>> for IsSome {
     fn matcher_type(&self) -> MatchType {
-        To
+        ToBe
     }
 }
 
@@ -41,12 +41,12 @@ impl<T> Matcher<Option<T>> for IsNone {
     }
 
     fn description(&self) -> String {
-        "is none".to_string()
+        "none".to_string()
     }
 }
 
 impl<T> TypedMatcher<Option<T>> for IsNone {
     fn matcher_type(&self) -> MatchType {
-        To
+        ToBe
     }
 }

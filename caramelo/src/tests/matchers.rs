@@ -3,7 +3,8 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 use crate::{
     expect,
     matchers::{
-        _in_, any, contains, empty, eq, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
+        _in_, any, contains, empty, eq, err, ge, gt, in_exc, in_inc, item, le, len, length, lt, ne,
+        none, ok, some,
     },
     MatcherExt,
 };
@@ -338,4 +339,48 @@ fn test_in_i32_hashset() {
 fn test_in_str_hashset() {
     let set = HashSet::from(["1", "2", "3", "4", "5"]);
     expect("1").to_be(_in_(set));
+}
+
+#[test]
+fn test_some() {
+    expect(Some(1)).to_be(some());
+}
+
+#[test]
+#[should_panic(expected = "Expected Some(1) to be none")]
+fn test_some_failure() {
+    expect(Some(1)).to_be(none());
+}
+
+#[test]
+fn test_none() {
+    expect(None).to_be(none::<i32>());
+}
+
+#[test]
+#[should_panic(expected = "Expected None to be some")]
+fn test_none_failure() {
+    expect(None).to_be(some::<i32>());
+}
+
+#[test]
+fn test_ok() {
+    expect(Ok::<i32, &str>(5)).to_be(ok());
+}
+
+#[test]
+#[should_panic(expected = "Expected Err(\"error\") to be ok")]
+fn test_ok_failure() {
+    expect(Err::<i32, &str>("error")).to_be(ok());
+}
+
+#[test]
+fn test_err() {
+    expect(Err::<i32, &str>("error")).to_be(err());
+}
+
+#[test]
+#[should_panic(expected = "Expected Ok(5) to be err")]
+fn test_err_failure() {
+    expect(Ok::<i32, &str>(5)).to_be(err());
 }

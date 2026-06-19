@@ -1,4 +1,7 @@
-use std::{collections::HashSet, fmt::Debug};
+use std::{
+    collections::{BTreeSet, HashSet},
+    fmt::Debug,
+};
 
 use crate::{MatchType::ToBe, Matcher, TypedMatcher};
 
@@ -105,6 +108,46 @@ impl Matcher<String> for In<HashSet<&str>> {
 }
 
 impl TypedMatcher<String> for In<HashSet<&str>> {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
+    }
+}
+
+impl<T> Matcher<T> for In<BTreeSet<T>>
+where
+    T: Eq + std::hash::Hash + Debug + std::cmp::Ord,
+{
+    fn matches(&self, value: &T) -> bool {
+        self.items
+            .contains(value)
+    }
+
+    fn description(&self) -> String {
+        format!("in {:?}", self.items)
+    }
+}
+
+impl<T> TypedMatcher<T> for In<BTreeSet<T>>
+where
+    T: Eq + std::hash::Hash + Debug + std::cmp::Ord,
+{
+    fn matcher_type(&self) -> crate::MatchType {
+        ToBe
+    }
+}
+
+impl Matcher<String> for In<BTreeSet<&str>> {
+    fn matches(&self, value: &String) -> bool {
+        self.items
+            .contains(value.as_str())
+    }
+
+    fn description(&self) -> String {
+        format!("in {:?}", self.items)
+    }
+}
+
+impl TypedMatcher<String> for In<BTreeSet<&str>> {
     fn matcher_type(&self) -> crate::MatchType {
         ToBe
     }

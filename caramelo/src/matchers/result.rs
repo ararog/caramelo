@@ -1,5 +1,5 @@
 use crate::{
-    MatchType::{self, To},
+    MatchType::{self, ToBe},
     Matcher, TypedMatcher,
 };
 
@@ -17,13 +17,13 @@ impl<T, E> Matcher<Result<T, E>> for IsOk {
     }
 
     fn description(&self) -> String {
-        "is ok".to_string()
+        "ok".to_string()
     }
 }
 
 impl<T, E> TypedMatcher<Result<T, E>> for IsOk {
     fn matcher_type(&self) -> MatchType {
-        To
+        ToBe
     }
 }
 
@@ -41,12 +41,12 @@ impl<T, E> Matcher<Result<T, E>> for IsErr {
     }
 
     fn description(&self) -> String {
-        "is err".to_string()
+        "err".to_string()
     }
 }
 
 impl<T, E> TypedMatcher<Result<T, E>> for IsErr {
     fn matcher_type(&self) -> MatchType {
-        To
+        ToBe
     }
 }
