@@ -1,12 +1,12 @@
 #![allow(unused_variables, unused_assignments, dead_code)]
-use crate::{acessor::Accessor, condition, operators::LogicOp};
-use proc_macro2::{Span, TokenStream};
+use crate::acessor::Accessor;
+use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{
     parse::{Parse, ParseStream},
     punctuated::Punctuated,
-    token::{Brace, Dot, Semi},
-    ExprMethodCall, Ident, Path, Result, Token, Type,
+    token::{Brace, Dot},
+    Ident, Result, Token, Type,
 };
 
 /// Parsed dry match expression

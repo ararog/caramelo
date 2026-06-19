@@ -37,7 +37,6 @@ impl Parse for Condition {
 impl quote::ToTokens for Condition {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let value = &self.value;
-        let logic_op = &self.logic_op;
         let matcher = match &self.rel_op {
             Some(op) => match op {
                 RelOp::Eq(_) => quote! { caramelo::matchers::eq(#value) },
@@ -50,47 +49,9 @@ impl quote::ToTokens for Condition {
             },
             None => match &self.value {
                 Value::ValueExpr(expr) => match expr {
-                    Expr::Range(expr_range) => match expr_range.limits {
-                        syn::RangeLimits::Closed(_) => {
-                            let start = expr_range
-                                .start
-                                .as_deref();
-                            let end = expr_range
-                                .end
-                                .as_deref();
-                            match (start, end) {
-                                (Some(start), Some(end)) => {
-                                    quote! { caramelo::matchers::in_inc(#start, #end) }
-                                }
-                                (None, Some(end)) => {
-                                    quote! { caramelo::matchers::le(#end) }
-                                }
-                                _ => panic!("Expected closed range: start..=end or ..=end"),
-                            }
-                        }
-                        syn::RangeLimits::HalfOpen(_) => {
-                            let start = expr_range
-                                .start
-                                .as_deref();
-                            let end = expr_range
-                                .end
-                                .as_deref();
-                            match (start, end) {
-                                (Some(start), Some(end)) => {
-                                    quote! { caramelo::matchers::in_exc(#start, #end) }
-                                }
-                                (Some(start), None) => {
-                                    quote! { caramelo::matchers::gt(#start) }
-                                }
-                                (None, Some(end)) => {
-                                    quote! { caramelo::matchers::lt(#end) }
-                                }
-                                _ => {
-                                    panic!("Expected half-open range: start..end, start.. or ..end")
-                                }
-                            }
-                        }
-                    },
+                    Expr::Range(expr_range) => {
+                        quote! { caramelo::matchers::between(#expr_range) }
+                    }
                     _ => panic!("Expected range expression"),
                 },
                 Value::ValuePipedOr(piped_or) => {

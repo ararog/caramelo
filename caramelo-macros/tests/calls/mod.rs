@@ -34,10 +34,10 @@ fn test_range_end_exclusive() {
 }
 
 #[test]
-#[should_panic = "Expected 30 to be greater than 30"]
+#[should_panic = "Expected 30 to be greater than or equal to 31"]
 fn test_range_start_inclusive() {
     let user = create_user();
-    dry_match!(user, User { age: 30.. });
+    dry_match!(user, User { age: 31.. });
 }
 
 #[test]
