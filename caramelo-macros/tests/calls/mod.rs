@@ -41,6 +41,12 @@ fn test_range_start_inclusive() {
 }
 
 #[test]
+fn test_custom() {
+    let user = create_user();
+    dry_match!(user, User { age: |&value| { value >= 30 } });
+}
+
+#[test]
 fn test_regex() {
     let user = create_user();
     dry_match!(user, User { name: ~ ".*hn" });

@@ -52,6 +52,9 @@ impl quote::ToTokens for Condition {
                     Expr::Range(expr_range) => {
                         quote! { caramelo::matchers::range(#expr_range) }
                     }
+                    Expr::Closure(closure) => {
+                        quote! { caramelo::matchers::custom(#closure, "custom matcher") }
+                    }
                     _ => panic!("Expected range expression"),
                 },
                 Value::ValuePipedOr(piped_or) => {
