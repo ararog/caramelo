@@ -4,38 +4,38 @@ use crate::{
 };
 use std::{fmt::Debug, ops::RangeBounds};
 
-/// Creates a matcher that matches values between min and max (exclusive)
+/// Creates a matcher that matches values in a range (inclusive or exclusive)
 /// It is the same as 1..10 in Rust
 ///
 /// # Examples
 ///
 /// ```
 /// use caramelo::expect;
-/// use caramelo::matchers::between;
+/// use caramelo::matchers::range;
 ///
-/// expect(5).to_be(between(1..10));
+/// expect(5).to_be(range(1..10));
 /// ```
-pub fn between<R, T>(range: R) -> Between<R, T>
+pub fn range<R, T>(range: R) -> Range<R, T>
 where
     R: RangeBounds<T>,
 {
-    Between::new(range)
+    Range::new(range)
 }
 
-/// Matcher that matches values between min and max (inclusive or exclusive)
-pub struct Between<R, T> {
+/// Matcher that matches values in a range (inclusive or exclusive)
+pub struct Range<R, T> {
     range: R,
     _phantom: std::marker::PhantomData<T>,
 }
 
-impl<R, T> Between<R, T> {
-    /// Creates a new Between matcher
+impl<R, T> Range<R, T> {
+    /// Creates a new Range matcher
     pub fn new(range: R) -> Self {
         Self { range, _phantom: std::marker::PhantomData }
     }
 }
 
-impl<R, T> Matcher<T> for Between<R, T>
+impl<R, T> Matcher<T> for Range<R, T>
 where
     T: PartialOrd + Debug,
     R: RangeBounds<T>,
@@ -81,7 +81,7 @@ where
     }
 }
 
-impl<R, T> TypedMatcher<T> for Between<R, T>
+impl<R, T> TypedMatcher<T> for Range<R, T>
 where
     T: PartialOrd + Debug,
     R: RangeBounds<T>,

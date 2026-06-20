@@ -3,8 +3,8 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 use crate::{
     expect,
     matchers::{
-        _in_, any, between, contains, empty, eq, err, ge, gt, item, le, len, length, lt, ne, none,
-        ok, some,
+        _in_, any, contains, custom, empty, eq, err, ge, gt, item, le, len, length, lt, ne, none,
+        ok, range, some,
     },
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
@@ -199,24 +199,24 @@ fn test_not_any_char() {
 
 #[test]
 fn test_in_range_inc() {
-    expect(5).to_be(between(1..=10));
+    expect(5).to_be(range(1..=10));
 }
 
 #[test]
 #[should_panic(expected = "Expected 1 to be between 2 and 10")]
 fn test_not_in_range_inc() {
-    expect(1).to_be(between(2..=10));
+    expect(1).to_be(range(2..=10));
 }
 
 #[test]
 fn test_in_range_to() {
-    expect(5).to_be(between(1..10));
+    expect(5).to_be(range(1..10));
 }
 
 #[test]
 #[should_panic(expected = "Expected 10 to be between 2 and 10 (exclusive)")]
 fn test_not_in_range_to() {
-    expect(10).to_be(between(2..10));
+    expect(10).to_be(range(2..10));
 }
 
 #[test]
@@ -438,4 +438,17 @@ fn test_err() {
 #[should_panic(expected = "Expected Ok(5) to be err")]
 fn test_err_failure() {
     expect(Ok::<i32, &str>(5)).to_be(err());
+}
+
+#[test]
+fn test_custom() {
+    let is_even = custom(|x: &i32| x % 2 == 0, "even number");
+    expect(4).to_have(is_even);
+}
+
+#[test]
+#[should_panic(expected = "Expected 3 to have even number")]
+fn test_custom_failure() {
+    let is_even = custom(|x: &i32| x % 2 == 0, "even number");
+    expect(3).to_have(is_even);
 }

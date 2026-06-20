@@ -50,7 +50,7 @@ impl quote::ToTokens for Condition {
             None => match &self.value {
                 Value::ValueExpr(expr) => match expr {
                     Expr::Range(expr_range) => {
-                        quote! { caramelo::matchers::between(#expr_range) }
+                        quote! { caramelo::matchers::range(#expr_range) }
                     }
                     _ => panic!("Expected range expression"),
                 },
