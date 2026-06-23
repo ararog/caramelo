@@ -67,7 +67,7 @@ Check out the [examples](./examples.md) for complete examples of how to use Cara
 
 ## Documentation
 
-- [API Reference](https://docs.rs/caramelo)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Contributing Guide](./CONTRIBUTING.md)
 
 ## License

@@ -4,7 +4,7 @@ title: Caramelo Macros - Unit testing macros
 nav_order: 3
 ---
 
-# Caramelo Macros
+## Caramelo Macros
 
 **Caramelo Macros** is a collection of macros for unit testing in Rust.
 
@@ -88,16 +88,16 @@ fn test_nested() {
         },
     };
 
-    dry_match!(user, User { 
-        name: == "John", 
+    dry_match!(user, User {
+        name: == "John",
         age: == 30,
         address.city: == "Anytown"
     });
 
     // but you can also have method calls
 
-    dry_match!(user, User { 
-        name: == "John", 
+    dry_match!(user, User {
+        name: == "John",
         age: == 30,
         address.city(): == "Anytown"
     });
@@ -117,6 +117,8 @@ fn test_nested() {
 - **Range matching**: Use `1..=2, 1..2, 1.., ..2 and ..=2` for inclusive and exclusive ranges
 - **Piped matching**: Use `|` to match any of the values (e.g., `age: 25 | 30`)
 - **Regex matching**: Use `~` for pattern matching (e.g., `~ ".*hn"`)
+- **Combine operators**: You can combine operators with and/or operators (e.g., `age: > 30 and < 50`)
+- **Custom matching**: Use closures for custom matching logic (e.g., `age: |&value| { value >= 30 }`)
 - **Clear error messages**: Panics with descriptive messages when expectations aren't met
 
 ## Installation
@@ -154,7 +156,7 @@ impl User {
 #[test]
 #[should_panic = "Expected 30 to be greater than 32"]
 fn test_caramelo() {
-    let user = User { name: "John".to_string(), age: 30 };
+    let user = User { name: "John", age: 30 };
 
     dry_match!(user, User { name: == "John", age: > 32 });
 }

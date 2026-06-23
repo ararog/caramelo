@@ -8,15 +8,16 @@
 
 Several useful matchers:
 
-- logical: eq, ne, le, lt, ge and gt
-- range: in_to, in_inc
+- relational: eq, ne, le, lt, ge and gt
+- logical: and, or
+- range: 1..2 or 1.. or ..2 and its variants
 - array: item, len, \_in_
 - wildcard: any
 - string: contains, starts-with, ends-with
-
-## Assertion traits
-
-- is, is_eq, is_ne, is_lt, is_le, is_gt and is_ge
+- http: method, path, header, header_value, body
+- json: exact_json_body, partial_json_body
+- xml: exact_xml_body, partial_xml_body
+- others: custom
 
 ## Quick Start
 
@@ -45,19 +46,6 @@ fn test_equal() {
 fn test_not_equal() {
     expect(1).to_be(eq(2));
 }
-
-/// Test is assertion
-
-#[test]
-fn test_is() {
-    "a".is("a");
-}
-
-#[test]
-#[should_panic(expected = "Expected a to be equal to b")]
-fn test_is_panic() {
-    "a".is("b");
-}
 ```
 
 ## Subprojects
@@ -75,9 +63,9 @@ A crate with collection of convenience macros for caramelo.
 Licensed under either of
 
 - Apache License, Version 2.0
-  (LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0)
+  (LICENSE-APACHE or <https://www.apache.org/licenses/LICENSE-2.0>)
 - MIT license
-  (LICENSE-MIT or https://opensource.org/licenses/MIT)
+  (LICENSE-MIT or <https://opensource.org/licenses/MIT>)
 
 at your option.
 

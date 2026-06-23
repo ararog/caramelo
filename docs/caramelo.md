@@ -4,11 +4,9 @@ title: Caramelo - Unit testing framework
 nav_order: 2
 ---
 
-# Caramelo
+## Caramelo
 
 **Caramelo** is a comprehensive, production-ready unit testing framework for Rust with a focus on simplicity and ease of use.
-
-Built on top of [hyper](https://github.com/hyperium/hyper).
 
 ## Installation
 
