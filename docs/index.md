@@ -70,6 +70,14 @@ Check out the [examples](./examples.md) for complete examples of how to use Cara
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Contributing Guide](./CONTRIBUTING.md)
 
+## Other Projects
+
+- [deboa](https://crates.io/crates/deboa) - HTTP client
+- [easyhttpmock](https://crates.io/crates/easyhttpmock) - HTTP mock server
+- [sofie](https://crates.io/crates/sofie) - Fullstack web framework
+- [uget](https://crates.io/crates/uget) - CLI HTTP client
+- [vetis](https://crates.io/crates/vetis) - Very Tiny Http server
+
 ## License
 
 This project is licensed under the [MIT License](./LICENSE.md).
