@@ -25,9 +25,7 @@ caramelo = { version = "0.1.0" }
 Basic usage:
 
 ```rust
-use caramelo::{expect, matchers::eq, assertions::Is};
-
-/// Test equality matcher
+use caramelo::{expect, matchers::eq};
 
 #[test]
 fn test_equal() {
@@ -38,19 +36,6 @@ fn test_equal() {
 #[should_panic(expected = "Expected 1 to be equals to 2")]
 fn test_not_equal() {
     expect(1).to_be(eq(2));
-}
-
-/// Test is assertion
-
-#[test]
-fn test_is() {
-    "a".is("a");
-}
-
-#[test]
-#[should_panic(expected = "Expected a to be equal to b")]
-fn test_is_panic() {
-    "a".is("b");
 }
 ```
 

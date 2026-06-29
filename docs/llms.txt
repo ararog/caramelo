@@ -1,6 +1,6 @@
 # caramelo
 
-**Caramelo** is a comprehensive, production-ready web framework for Rust that combines simplicity with power. Built on top of VeTiS, it provides everything you need to build modern web applications - from REST APIs to full-featured web services - with a clean, intuitive API that makes development a joy.
+**Caramelo** is a comprehensive, production-ready unit testing framework for Rust with a focus on simplicity and ease of use.
 
 ## Installation
 
