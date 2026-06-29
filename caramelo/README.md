@@ -11,8 +11,9 @@ Caramelo (caramel in Portuguese) is a comprehensive, production-ready unit testi
 - relational: eq, ne, le, lt, ge and gt
 - logical: and, or
 - range: 1..2 or 1.. or ..2 and its variants
-- array: item, len, \_in_
+- array: item, len, \_in_, each
 - wildcard: any
+- boolean: falsy, truthy
 - string: contains, starts-with, ends-with
 - http: method, path, header, header_value, body
 - json: exact_json_body, partial_json_body
@@ -38,9 +39,7 @@ caramelo = { version = "0.1.0" }
 Here's how simple it is to create unit tests with caramelo:
 
 ```rust
-use caramelo::{expect, matchers::eq, assertions::Is};
-
-/// Test equality matcher
+use caramelo::{expect, matchers::eq};
 
 #[test]
 fn test_equal() {

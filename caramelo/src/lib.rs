@@ -4,9 +4,6 @@ use std::fmt::Debug;
 
 use crate::matchers::{and, or, And, Or};
 
-/// Module containing assertions
-pub mod assertions;
-
 /// Module containing matchers for assertions
 pub mod matchers;
 

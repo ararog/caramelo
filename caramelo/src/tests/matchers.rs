@@ -3,8 +3,8 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDequ
 use crate::{
     expect,
     matchers::{
-        _in_, any, contains, custom, empty, eq, err, ge, gt, item, le, len, length, lt, ne, none,
-        ok, range, some,
+        _in_, any, contains, custom, each, empty, eq, err, ge, gt, item, le, len, length, lt, ne,
+        none, ok, range, some,
     },
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
@@ -451,4 +451,24 @@ fn test_custom() {
 fn test_custom_failure() {
     let is_even = custom(|x: &i32| x % 2 == 0, "even number");
     expect(3).to_have(is_even);
+}
+
+#[test]
+fn test_equals_str_ref() {
+    let data = Some(&"hello".to_string());
+    #[allow(clippy::unnecessary_literal_unwrap)]
+    expect(data.unwrap()).to_be(eq("hello"));
+}
+
+#[test]
+fn test_each() {
+    expect(vec![1, 2, 3, 4, 5]).to_have(each(gt(0).and(le(6))));
+}
+
+#[test]
+#[should_panic(
+    expected = "Expected [1, 2, 3, 4, 5] to have element 4 that matches greater than 0 and less than 4"
+)]
+fn test_each_failure() {
+    expect(vec![1, 2, 3, 4, 5]).to_have(each(gt(0).and(lt(4))));
 }

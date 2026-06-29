@@ -58,3 +58,19 @@ impl TypedMatcher<String> for Equal<&str> {
         ToBe
     }
 }
+
+impl Matcher<&String> for Equal<&str> {
+    fn matches(&self, value: &&String) -> bool {
+        self.0 == *value
+    }
+
+    fn description(&self) -> String {
+        format!("equals to {:?}", self.0)
+    }
+}
+
+impl TypedMatcher<&String> for Equal<&str> {
+    fn matcher_type(&self) -> MatchType {
+        ToBe
+    }
+}
