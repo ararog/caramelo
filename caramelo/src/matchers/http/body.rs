@@ -1,5 +1,4 @@
-use crate::MatchType::ToHave;
-use crate::{http::Request, Matcher, TypedMatcher};
+use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
 pub use self::json::*;
 pub use self::xml::*;

@@ -5,11 +5,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse_macro_input;
 
-pub(crate) mod acessor;
-pub(crate) mod condition;
 pub(crate) mod dry_match;
-pub(crate) mod operators;
-pub(crate) mod references;
 
 /// dry_match! is a macro that allows you to write tests in a more readable way.
 /// Keep in mind your struct must implement accessor methods that return the same type as the field.

@@ -1,8 +1,7 @@
 #![doc = include_str!("../README.md")]
 #![deny(missing_docs)]
-use std::fmt::Debug;
-
 use crate::matchers::{and, or, And, Or};
+use std::fmt::Debug;
 
 /// Module containing matchers for assertions
 pub mod matchers;
@@ -179,6 +178,34 @@ where
 /// Function to create a new expectation
 pub fn expect<T: Debug>(value: T) -> Expect<T> {
     Expect::new(value)
+}
+
+/// Main expectation struct for assertions
+pub struct Verify<T> {
+    value: T,
+}
+
+impl<T> Verify<T>
+where
+    T: Debug,
+{
+    /// Creates a new expectation with the given value
+    pub fn new(value: T) -> Self {
+        Verify { value }
+    }
+
+    /// Asserts that the value matches the given matcher
+    pub fn assert<M>(&mut self, matcher: M) -> bool
+    where
+        M: Matcher<T>,
+    {
+        matcher.matches(&self.value)
+    }
+}
+
+/// Function to create a new expectation
+pub fn verify<T: Debug>(value: T) -> Verify<T> {
+    Verify::new(value)
 }
 
 #[macro_export]

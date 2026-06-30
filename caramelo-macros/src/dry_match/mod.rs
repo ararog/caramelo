@@ -1,5 +1,5 @@
 #![allow(unused_variables, unused_assignments, dead_code)]
-use crate::acessor::Accessor;
+use crate::dry_match::accessor::Accessor;
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{
@@ -8,6 +8,11 @@ use syn::{
     token::{Brace, Dot},
     Ident, Result, Token, Type,
 };
+
+pub(crate) mod accessor;
+pub(crate) mod condition;
+pub(crate) mod operators;
+pub(crate) mod references;
 
 /// Parsed dry match expression
 ///

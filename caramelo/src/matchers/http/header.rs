@@ -1,6 +1,5 @@
-use http::HeaderName;
-
 use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
+use http::HeaderName;
 
 /// Trait for converting values into HeaderName.
 pub trait AsHeaderName {

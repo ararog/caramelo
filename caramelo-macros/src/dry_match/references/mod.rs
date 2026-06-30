@@ -1,14 +1,14 @@
-mod field;
-mod method;
-
-pub(crate) use field::*;
-pub(crate) use method::*;
-
 use proc_macro2::TokenStream;
 use syn::{
     parse::{Parse, ParseStream},
     Result,
 };
+
+mod field;
+mod method;
+
+pub(crate) use field::*;
+pub(crate) use method::*;
 
 #[allow(clippy::enum_variant_names)]
 pub(crate) enum Ref {

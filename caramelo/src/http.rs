@@ -1,6 +1,5 @@
-use std::ops::Deref;
-
 use http::Uri;
+use std::ops::Deref;
 
 /// A builder for creating http requests
 #[derive(Debug)]

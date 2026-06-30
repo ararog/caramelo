@@ -1,9 +1,8 @@
-use std::fmt::Debug;
-
 use crate::{
     MatchType::{self, ToBe},
     Matcher, TypedMatcher,
 };
+use std::fmt::Debug;
 
 /// Creates a matcher that matches empty values
 ///

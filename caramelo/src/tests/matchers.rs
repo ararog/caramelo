@@ -1,5 +1,3 @@
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
-
 use crate::{
     expect,
     matchers::{
@@ -9,6 +7,7 @@ use crate::{
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
 };
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
 
 #[test]
 fn test_init_eq() {

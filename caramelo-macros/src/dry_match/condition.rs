@@ -1,4 +1,4 @@
-use crate::operators::{LogicOp, RelOp};
+use crate::dry_match::operators::{LogicOp, RelOp};
 use proc_macro2::{Punct, Spacing, TokenStream, TokenTree};
 use quote::{quote, TokenStreamExt};
 use syn::{

@@ -1,9 +1,8 @@
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
-
 use crate::{
     MatchType::{self, ToHave},
     Matcher, TypedMatcher,
 };
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
 
 /// Creates a matcher that matches values with the given length
 ///

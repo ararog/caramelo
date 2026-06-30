@@ -1,9 +1,8 @@
+use crate::{MatchType::ToBe, Matcher, TypedMatcher};
 use std::{
     collections::{BTreeSet, HashSet},
     fmt::Debug,
 };
-
-use crate::{MatchType::ToBe, Matcher, TypedMatcher};
 
 /// Creates a matcher that checks if a value is in a collection.
 ///

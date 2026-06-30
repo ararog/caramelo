@@ -1,4 +1,4 @@
-use crate::{condition::Condition, references::Ref};
+use crate::dry_match::{condition::Condition, references::Ref};
 use syn::{parse::Parse, parse::ParseStream, Result, Token};
 
 #[allow(dead_code)]
