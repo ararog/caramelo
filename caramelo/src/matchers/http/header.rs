@@ -1,5 +1,5 @@
 use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
-use http::HeaderName;
+use http::{HeaderMap, HeaderName};
 
 /// Trait for converting values into HeaderName.
 pub trait AsHeaderName {
@@ -95,6 +95,22 @@ impl TypedMatcher<Request> for Header {
     }
 }
 
+impl Matcher<HeaderMap> for Header {
+    fn matches(&self, value: &HeaderMap) -> bool {
+        value.contains_key(&self.0)
+    }
+
+    fn description(&self) -> String {
+        format!("header matching {}", self.0)
+    }
+}
+
+impl TypedMatcher<HeaderMap> for Header {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
+    }
+}
+
 /// Creates a matcher that checks if the request path matches the given regex pattern.
 ///
 /// # Arguments
@@ -166,6 +182,27 @@ impl Matcher<Request> for HeaderValue {
 }
 
 impl TypedMatcher<Request> for HeaderValue {
+    fn matcher_type(&self) -> crate::MatchType {
+        ToHave
+    }
+}
+
+impl Matcher<HeaderMap> for HeaderValue {
+    fn matches(&self, value: &HeaderMap) -> bool {
+        self.regex.is_match(
+            value
+                .get(&self.name)
+                .and_then(|v| v.to_str().ok())
+                .expect("Header value is not valid UTF-8"),
+        )
+    }
+
+    fn description(&self) -> String {
+        format!("header {} with value matching {:?}", self.name, self.regex)
+    }
+}
+
+impl TypedMatcher<HeaderMap> for HeaderValue {
     fn matcher_type(&self) -> crate::MatchType {
         ToHave
     }

@@ -25,6 +25,9 @@ jobs:
       - name: Install nextest
         uses: taiki-e/install-action@nextest
 
+      - name: Install mold linker
+        uses: rui314/setup-mold@v1
+
       - name: Run all tests
         run: |
           cargo nextest run

@@ -43,6 +43,14 @@ impl AsMethod for &str {
 /// # Returns
 ///
 /// * `Method` - A matcher that checks if the request method matches the given method.
+///
+/// # Examples
+///
+/// ```rust
+/// use caramelo::matchers::method;
+///
+/// let matcher = method("GET");
+/// ```
 pub fn method<M>(value: M) -> Method
 where
     M: AsMethod,

@@ -47,7 +47,7 @@ checksum = "8ae3f5d315924270530207e2a68396c3cc547f6dca3fbdca317cfb1a51edb593"
 
 [[package]]
 name = "caramelo"
-version = "0.1.1-beta.3"
+version = "0.1.1-beta.4"
 dependencies = [
  "http",
  "http-body",
