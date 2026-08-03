@@ -66,22 +66,22 @@ pub trait MatcherExt<T>: TypedMatcher<T> + Sized + 'static {
 impl<M, T> MatcherExt<T> for M where M: TypedMatcher<T> + 'static {}
 
 /// Main expectation struct for assertions
-pub struct Expect<T> {
-    value: T,
+pub struct Expect<E> {
+    value: E,
 }
 
-impl<T> Expect<T>
+impl<E> Expect<E>
 where
-    T: Debug,
+    E: Debug,
 {
     /// Creates a new expectation with the given value
-    pub fn new(value: T) -> Self {
+    pub fn new(value: E) -> Self {
         Expect { value }
     }
 
     fn assert<M>(&mut self, matcher: M, match_type: MatchType)
     where
-        M: Matcher<T>,
+        M: Matcher<E>,
     {
         if !matcher.matches(&self.value) {
             panic!(
@@ -104,9 +104,9 @@ where
     /// ```
     pub fn to<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatcher<T>,
+        M: TypedMatcher<E>,
     {
-        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::To {
+        if TypedMatcher::<E>::matcher_type(&matcher) == MatchType::To {
             self.assert(matcher, MatchType::To);
         } else {
             panic!("Matcher must be a 'to' matcher");
@@ -125,9 +125,9 @@ where
     /// ```
     pub fn to_be<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatcher<T>,
+        M: TypedMatcher<E>,
     {
-        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::ToBe {
+        if TypedMatcher::<E>::matcher_type(&matcher) == MatchType::ToBe {
             self.assert(matcher, MatchType::ToBe);
         } else {
             panic!("Matcher must be a 'to be' matcher");
@@ -146,9 +146,9 @@ where
     /// ```
     pub fn to_have<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatcher<T>,
+        M: TypedMatcher<E>,
     {
-        if TypedMatcher::<T>::matcher_type(&matcher) == MatchType::ToHave {
+        if TypedMatcher::<E>::matcher_type(&matcher) == MatchType::ToHave {
             self.assert(matcher, MatchType::ToHave);
         } else {
             panic!("Matcher must be a 'to have' matcher");
@@ -167,16 +167,16 @@ where
     /// ```
     pub fn to_match<M>(mut self, matcher: M) -> Self
     where
-        M: TypedMatcher<T>,
+        M: TypedMatcher<E>,
     {
-        let matcher_type = TypedMatcher::<T>::matcher_type(&matcher);
+        let matcher_type = TypedMatcher::<E>::matcher_type(&matcher);
         self.assert(matcher, matcher_type);
         self
     }
 }
 
 /// Function to create a new expectation
-pub fn expect<T: Debug>(value: T) -> Expect<T> {
+pub fn expect<E: Debug>(value: E) -> Expect<E> {
     Expect::new(value)
 }
 
