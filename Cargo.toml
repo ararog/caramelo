@@ -16,7 +16,7 @@ license = "MIT OR Apache-2.0"
 rust-version = "1.75.0"
 
 [workspace.dependencies]
-caramelo = { path = "caramelo", version = "0.1.1-beta.3" }
+caramelo = { path = "caramelo" }
 
 [profile.release]
 strip = true
