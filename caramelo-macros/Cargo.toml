@@ -25,4 +25,4 @@ syn = { version = "3.0.3", features = ["full"] }
 caramelo = { workspace = true }
 
 [dev-dependencies]
-trybuild = "1.0.111"
+trybuild = "1.0.120"
