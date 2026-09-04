@@ -4,10 +4,16 @@ use crate::{
         _in_, any, contains, custom, each, empty, eq, err, ge, gt, item, le, len, length, lt, ne,
         none, ok, range, some,
     },
+    pat,
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
 };
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
+
+#[derive(Debug)]
+struct MyStruct {
+    value: i32,
+}
 
 #[test]
 fn test_init_eq() {
@@ -470,4 +476,51 @@ fn test_each() {
 )]
 fn test_each_failure() {
     expect(vec![1, 2, 3, 4, 5]).to_have(each(gt(0).and(lt(4))));
+}
+
+#[test]
+fn test_match_custom() {
+    let data = MyStruct { value: 5 };
+    expect(data).to_have(custom(
+        |val| match val {
+            MyStruct { value } if *value == 5i32 => true,
+            _ => false,
+        },
+        "MyStruct with value 5",
+    ));
+}
+
+#[test]
+#[should_panic(expected = "Expected MyStruct { value: 5 } to have value 5")]
+fn test_match_custom_failure() {
+    let data = MyStruct { value: 5 };
+    expect(data).to_have(custom(
+        |val| match val {
+            MyStruct { value } if *value == 10i32 => true,
+            _ => false,
+        },
+        "value 5",
+    ));
+}
+
+#[test]
+fn test_match_with() {
+    let data = MyStruct { value: 5 };
+    expect(data).to_have(pat!(MyStruct { value } if *value == 5));
+}
+
+#[test]
+#[should_panic(
+    expected = "Expected MyStruct { value: 5 } to have captured by pattern *value == 10"
+)]
+fn test_match_with_failure() {
+    let data = MyStruct { value: 5 };
+    expect(data).to_have(pat!(MyStruct { value } if *value == 10));
+}
+
+#[test]
+#[should_panic(expected = "Expected 25 to have captured by pattern 5 | 10")]
+fn test_match_with_in_failure() {
+    let data = 25;
+    expect(data).to_have(pat!(5 | 10));
 }

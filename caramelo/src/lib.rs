@@ -239,3 +239,41 @@ macro_rules! or {
         $crate::matchers::or(vec![$(Box::new($matcher)),*])
     };
 }
+
+#[macro_export]
+/// Creates an boolean matcher if a value matches a specific pattern
+///
+/// # Examples
+///
+/// ```
+/// use caramelo::{expect, or, matchers::{eq, gt}};
+///
+/// struct MyStruct {
+///     value: i32,
+/// }
+///
+/// let data = MyStruct { value: 5 };
+///
+/// expect(data).to(pat!(MyStruct { value } if value == 5));
+/// `
+macro_rules! pat {
+    ($matcher_exp:pat) => {
+        crate::matchers::custom(
+            |input| match input {
+                $matcher_exp => true,
+                _ => false,
+            },
+            &format!("captured by pattern {}", stringify!($matcher_exp)),
+        )
+    };
+
+    ($matcher_exp:pat if $condition:expr) => {
+        crate::matchers::custom(
+            |input| match input {
+                $matcher_exp if $condition => true,
+                _ => false,
+            },
+            &format!("captured by pattern {}", stringify!($condition)),
+        )
+    };
+}
