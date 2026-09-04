@@ -258,7 +258,7 @@ macro_rules! or {
 /// `
 macro_rules! pat {
     ($matcher_exp:pat) => {
-        crate::matchers::custom(
+        $crate::matchers::custom(
             |input| match input {
                 $matcher_exp => true,
                 _ => false,
@@ -268,7 +268,7 @@ macro_rules! pat {
     };
 
     ($matcher_exp:pat if $condition:expr) => {
-        crate::matchers::custom(
+        $crate::matchers::custom(
             |input| match input {
                 $matcher_exp if $condition => true,
                 _ => false,
