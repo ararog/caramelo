@@ -1,14 +1,15 @@
 use crate::{
     expect,
     matchers::{
-        _in_, any, contains, custom, each, empty, eq, err, ge, gt, item, le, len, length, lt, ne,
-        none, ok, range, some,
+        _in_, any, contains, custom, each, empty, eq, err, falsy, ge, gt, item, le, len, length,
+        lt, ne, none, ok, range, some, truthy,
     },
     pat,
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
 };
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
+use std::ops::Bound::{Excluded, Included};
 
 #[derive(Debug)]
 struct MyStruct {
@@ -33,6 +34,16 @@ fn test_equal_failure() {
 }
 
 #[test]
+fn test_equal_string() {
+    expect(String::from("hello")).to_be(eq(String::from("hello")));
+}
+
+#[test]
+fn test_equal_vec() {
+    expect(vec![1, 2, 3]).to_be(eq(vec![1, 2, 3]));
+}
+
+#[test]
 fn test_init_ne() {
     let be_ne = ne(2);
     expect(be_ne.matcher_type()).to_be(eq(To));
@@ -47,6 +58,33 @@ fn test_not_equal() {
 #[should_panic(expected = "Expected 1 to not equal to 1")]
 fn test_not_equal_failure() {
     expect(1).to(ne(1));
+}
+
+#[test]
+fn test_not_equal_string() {
+    expect(String::from("hello")).to(ne(String::from("world")));
+}
+
+#[test]
+fn test_truthy() {
+    expect(true).to_be(truthy());
+}
+
+#[test]
+#[should_panic(expected = "Expected false to be to be truthy")]
+fn test_truthy_failure() {
+    expect(false).to_be(truthy());
+}
+
+#[test]
+fn test_falsy() {
+    expect(false).to_be(falsy());
+}
+
+#[test]
+#[should_panic(expected = "Expected true to be to be falsy")]
+fn test_falsy_failure() {
+    expect(true).to_be(falsy());
 }
 
 #[test]
@@ -225,6 +263,47 @@ fn test_not_in_range_to() {
 }
 
 #[test]
+fn test_in_range_inclusive_lower_exclusive_upper() {
+    expect(2).to_be(range(2..10));
+}
+
+#[test]
+fn test_in_range_exclusive_lower_inclusive_upper() {
+    expect(10).to_be(range(2..=10));
+}
+
+#[test]
+#[should_panic(expected = "Expected 2 to be between 2 (exclusive) and 10")]
+fn test_not_in_range_exclusive_lower() {
+    expect(2).to_be(range((Excluded(2), Included(10))));
+}
+
+#[test]
+#[should_panic(expected = "Expected 10 to be between 2 and 10 (exclusive)")]
+fn test_not_in_range_exclusive_upper() {
+    expect(10).to_be(range(2..10));
+}
+
+#[test]
+fn test_in_unbounded_range() {
+    expect(10).to_be(range(..));
+    expect(10).to_be(range(..=10));
+    expect(10).to_be(range(10..));
+}
+
+#[test]
+#[should_panic(expected = "Expected 11 to be less than or equal to 10")]
+fn test_not_in_unbounded_upper_range() {
+    expect(11).to_be(range(..=10));
+}
+
+#[test]
+#[should_panic(expected = "Expected 9 to be greater than or equal to 10")]
+fn test_not_in_unbounded_lower_range() {
+    expect(9).to_be(range(10..));
+}
+
+#[test]
 fn test_hashmap_length() {
     let mut map = HashMap::new();
     map.insert("key", "value");
@@ -344,6 +423,17 @@ fn test_and_failure() {
 }
 
 #[test]
+fn test_and_with_both_matchers_matching() {
+    expect(5).to_be(gt(1).and(le(5)));
+}
+
+#[test]
+#[should_panic(expected = "Expected 5 to be greater than 6 and less than 10")]
+fn test_and_failure_on_first_matcher() {
+    expect(5).to_be(gt(6).and(lt(10)));
+}
+
+#[test]
 fn test_or() {
     expect(5).to_be(gt(10).or(lt(6)));
 }
@@ -395,6 +485,11 @@ fn test_some_failure() {
 }
 
 #[test]
+fn test_some_with_none_payload() {
+    expect(Some(None::<i32>)).to_be(some());
+}
+
+#[test]
 fn test_init_none() {
     let be_none = none::<i32>();
     expect(be_none.matcher_type()).to_be(eq(ToBe));
@@ -409,6 +504,11 @@ fn test_none() {
 #[should_panic(expected = "Expected None to be some")]
 fn test_none_failure() {
     expect(None).to_be(some::<i32>());
+}
+
+#[test]
+fn test_none_with_string_payload() {
+    expect(None::<String>).to_be(none());
 }
 
 #[test]
@@ -429,6 +529,11 @@ fn test_ok_failure() {
 }
 
 #[test]
+fn test_ok_with_unit_value() {
+    expect(Ok::<(), &str>(())).to_be(ok());
+}
+
+#[test]
 fn test_init_err() {
     let be_err = err::<i32, &str>();
     expect(be_err.matcher_type()).to_be(eq(ToBe));
@@ -443,6 +548,11 @@ fn test_err() {
 #[should_panic(expected = "Expected Ok(5) to be err")]
 fn test_err_failure() {
     expect(Ok::<i32, &str>(5)).to_be(err());
+}
+
+#[test]
+fn test_err_with_unit_error() {
+    expect(Err::<&str, ()>(())).to_be(err());
 }
 
 #[test]
@@ -523,4 +633,72 @@ fn test_match_with_failure() {
 fn test_match_with_in_failure() {
     let data = 25;
     expect(data).to_have(pat!(5 | 10));
+}
+
+#[test]
+fn test_in_hashset() {
+    let mut data = HashSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("1").to_be(_in_(data));
+}
+
+#[test]
+#[should_panic(expected = "Expected \"2\" to be in")]
+fn test_in_hashset_failure() {
+    let mut data = HashSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("2").to_be(_in_(data));
+}
+
+#[test]
+fn test_in_hashset_string() {
+    let mut data = HashSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("1".to_string()).to_be(_in_(data));
+}
+
+#[test]
+#[should_panic(expected = "Expected \"2\" to be in")]
+fn test_in_hashset_string_failure() {
+    let mut data = HashSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("2".to_string()).to_be(_in_(data));
+}
+
+#[test]
+fn test_in_btreeset_string() {
+    let mut data = BTreeSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("1".to_string()).to_be(_in_(data));
+}
+
+#[test]
+#[should_panic(expected = "Expected \"2\" to be in {\"1\", \"3\"}")]
+fn test_in_btreeset_string_failure() {
+    let mut data = BTreeSet::new();
+    data.insert("1");
+    data.insert("3");
+    expect("2".to_string()).to_be(_in_(data));
+}
+
+#[test]
+fn test_in_btreeset_integer() {
+    let mut data = BTreeSet::new();
+    data.insert(1);
+    data.insert(3);
+    expect(1).to_be(_in_(data));
+}
+
+#[test]
+#[should_panic(expected = "Expected 2 to be in {1, 3}")]
+fn test_in_btreeset_integer_failure() {
+    let mut data = BTreeSet::new();
+    data.insert(1);
+    data.insert(3);
+    expect(2).to_be(_in_(data));
 }
