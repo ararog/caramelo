@@ -181,6 +181,13 @@ impl Request {
         self.uri.path()
     }
 
+    /// Returns the request query string without the leading question mark
+    pub fn query(&self) -> &str {
+        self.uri
+            .query()
+            .unwrap_or("")
+    }
+
     /// Returns the request headers
     pub fn headers(&self) -> &http::HeaderMap {
         &self.headers

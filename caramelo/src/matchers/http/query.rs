@@ -51,7 +51,7 @@ pub struct Query(regex::Regex);
 impl Matcher<Request> for Query {
     fn matches(&self, value: &Request) -> bool {
         self.0
-            .is_match(value.path())
+            .is_match(value.query())
     }
 
     fn description(&self) -> String {

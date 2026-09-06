@@ -1,6 +1,8 @@
 use crate::{http::Request, MatchType::ToHave, Matcher, TypedMatcher};
 
+#[cfg(feature = "json")]
 pub use self::json::*;
+#[cfg(feature = "xml")]
 pub use self::xml::*;
 
 /// Creates a matcher that checks if the request body matches the given regex pattern.

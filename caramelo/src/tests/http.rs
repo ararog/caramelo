@@ -1,7 +1,7 @@
 use crate::{
     and, expect,
     http::Request,
-    matchers::{body, header, header_value, method, path},
+    matchers::{body, header, header_value, method, path, query},
     MatcherExt,
 };
 use http::{header::CONTENT_TYPE, Method, Uri};
@@ -26,6 +26,31 @@ fn test_path_matcher_panic() {
 }
 
 #[test]
+fn test_query_matcher() {
+    let request = Request::get(Uri::from_static("/api/users?active=true"))
+        .empty()
+        .unwrap();
+
+    expect(request).to_have(query(r"^active=true$"));
+}
+
+#[test]
+#[should_panic = "Expected Request { method: GET, uri: /api/users?active=true, version: HTTP/1.1, headers: {}, body: None } to have query matching Regex(\"^page=2$\")"]
+fn test_query_matcher_failure() {
+    let request = Request::get(Uri::from_static("/api/users?active=true"))
+        .empty()
+        .unwrap();
+
+    expect(request).to_have(query(r"^page=2$"));
+}
+
+#[test]
+#[should_panic(expected = "Invalid regex pattern")]
+fn test_query_matcher_invalid_regex() {
+    query(r"\[[/w+");
+}
+
+#[test]
 fn test_method_get_matcher() {
     let request = Request::get(Uri::from_static("/api/users"))
         .empty()
@@ -41,6 +66,24 @@ fn test_method_post_matcher() {
         .unwrap();
 
     expect(request).to_have(method(Method::POST));
+}
+
+#[test]
+fn test_method_head_matcher() {
+    let request = Request::head(Uri::from_static("/api/users"))
+        .empty()
+        .unwrap();
+
+    expect(request).to_have(method(Method::HEAD));
+}
+
+#[test]
+fn test_method_case_insensitive_string_matcher() {
+    let request = Request::head(Uri::from_static("/api/users"))
+        .empty()
+        .unwrap();
+
+    expect(request).to_have(method("head"));
 }
 
 #[test]
@@ -178,6 +221,25 @@ fn test_body_matcher_failure() {
     expect(request).to_have(body("Hello, world!"));
 }
 
+#[test]
+#[should_panic(
+    expected = "Expected Request { method: GET, uri: /api/users, version: HTTP/1.1, headers: {}, body: None } to have body contents matching Regex(\"Hello\")"
+)]
+fn test_body_matcher_without_body() {
+    let request = Request::get(Uri::from_static("/api/users"))
+        .empty()
+        .unwrap();
+
+    expect(request).to_have(body("Hello"));
+}
+
+#[test]
+#[should_panic(expected = "Invalid regex pattern")]
+fn test_body_matcher_invalid_regex() {
+    body(r"\[[/w+");
+}
+
+#[cfg(feature = "json")]
 mod json_tests {
     use crate::{
         expect,
@@ -232,6 +294,7 @@ mod json_tests {
     }
 }
 
+#[cfg(feature = "xml")]
 mod xml_tests {
     use crate::{
         expect,
