@@ -8,8 +8,10 @@ use crate::{
     MatchType::{To, ToBe},
     MatcherExt, TypedMatcher,
 };
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
-use std::ops::Bound::{Excluded, Included};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque},
+    ops::Bound::{Excluded, Included},
+};
 
 #[derive(Debug)]
 struct MyStruct {

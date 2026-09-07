@@ -239,6 +239,53 @@ fn test_body_matcher_invalid_regex() {
     body(r"\[[/w+");
 }
 
+#[cfg(feature = "bytes")]
+mod bytes_test {
+    use crate::{expect, matchers::eq};
+    use bytes::Bytes;
+
+    #[test]
+    fn test_equals_bytes_and_slice() {
+        let data = Bytes::from(&[1u8, 2u8, 3u8][..]);
+        expect(data).to_be(eq(&[1u8, 2u8, 3u8][..]));
+    }
+
+    #[test]
+    #[should_panic = "Expected b\"\\x01\\x02\\x03\" to be equals to [1, 4, 3]"]
+    fn test_equals_bytes_and_slice_failure() {
+        let data = Bytes::from(&[1u8, 2u8, 3u8][..]);
+        expect(data).to_be(eq(&[1u8, 4u8, 3u8][..]));
+    }
+}
+
+#[cfg(feature = "http")]
+mod http_tests {
+    use crate::{expect, matchers::eq};
+    use http::StatusCode;
+
+    #[test]
+    fn test_int_equals_statuscode() {
+        expect(500).to_be(eq(StatusCode::INTERNAL_SERVER_ERROR));
+    }
+
+    #[test]
+    #[should_panic = "Expected 400 to be equals to 500"]
+    fn test_int_equals_statuscode_failure() {
+        expect(400).to_be(eq(StatusCode::INTERNAL_SERVER_ERROR));
+    }
+
+    #[test]
+    fn test_statuscode_equals_int() {
+        expect(StatusCode::INTERNAL_SERVER_ERROR).to_be(eq(500));
+    }
+
+    #[test]
+    #[should_panic = "Expected 500 to be equals to 400"]
+    fn test_statuscode_equals_int_failure() {
+        expect(StatusCode::INTERNAL_SERVER_ERROR).to_be(eq(400));
+    }
+}
+
 #[cfg(feature = "json")]
 mod json_tests {
     use crate::{
