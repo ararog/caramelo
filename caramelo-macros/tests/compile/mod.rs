@@ -1,4 +1,5 @@
 #[test]
+#[cfg(not(tarpaulin))]
 fn ui() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/ui/test-dry-match-no-variable.rs");
